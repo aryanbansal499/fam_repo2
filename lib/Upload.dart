@@ -81,7 +81,7 @@ class _UploadPageState extends State<UploadPage>{
       (
         children: <Widget>
         [
-          Image.file(sampleImage,height: 310.0,width: 600.0,),
+          Image.file(sampleImage,height: 265.0,width: 600.0,),
           
           SizedBox(height: 15.0,),
           RaisedButton
