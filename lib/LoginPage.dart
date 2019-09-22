@@ -2,12 +2,17 @@
 import 'package:flutter/material.dart';
 import 'validation.dart';
 import 'provider.dart';
+import 'DialogBox.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 class _LoginPageState extends State<LoginPage> {
+
+  DialogBox dialogBox = new DialogBox();
   final formKey = GlobalKey<FormState>();
 
   String _email, _password;
@@ -29,6 +34,8 @@ class _LoginPageState extends State<LoginPage> {
       try {
         final auth = Provider.of(context).auth;
         if (_formType == FormType.login) {
+        
+          dialogBox.imformation(context, "Registered","You have successfully Signed In");
           String userId = await auth.signInWithEmailAndPassword(
             _email,
             _password,
@@ -36,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
 
           print('Signed in $userId');
         } else {
+          dialogBox.imformation(context, "Registered","You have successfully Signed Up");
           String userId = await auth.createUserWithEmailAndPassword(
             _email,
             _password,
@@ -44,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           print('Registered in $userId');
         }
       } catch (e) {
+        dialogBox.imformation(context, "Error ",e.toString());
         print(e);
       }
     }
