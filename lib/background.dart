@@ -12,7 +12,7 @@ class Background extends StatelessWidget{
 
     return new Center(
       child: new Image.asset(
-              'assets/images/bg.png',
+              'images/bg.png',
               width: screenSize.width,
               height: screenSize.height,
               fit: BoxFit.fitHeight)
