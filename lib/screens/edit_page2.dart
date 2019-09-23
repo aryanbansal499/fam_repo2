@@ -1,7 +1,7 @@
 // Define a custom Form widget.
 //adapted from https://flutter.dev/docs/cookbook/forms/focus
 import 'package:flutter/material.dart';
-import 'package:my_app/components/image_banner/image_banner.dart';
+import 'package:fam_repo2/image_banner.dart';
 
 class MyCustomForm extends StatefulWidget {
   @override
@@ -95,7 +95,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           controller: scrollController,
           children: [
-            ImageBanner('assets/images/abaca-gold.jpg'),
+            ImageBanner('images/Sitar-British-museum.jpg'),
             TextFormField(
               autofocus: true,
               controller: _editingController,
