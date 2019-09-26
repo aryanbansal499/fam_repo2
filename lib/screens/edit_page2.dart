@@ -15,21 +15,25 @@ class MyCustomForm extends StatefulWidget {
 class _MyCustomFormState extends State<MyCustomForm> {
   // Define the focus node. To manage the lifecycle, create the FocusNode in
   // the initState method, and clean it up in the dispose method.
+
+  //Each field has a different focus node, will focus on field when tapped
   FocusNode nameFocusNode;
   FocusNode descriptionFocusNode;
   FocusNode dateFocusNode;
   FocusNode tagFocusNode;
-
   FocusNode currentFocusNode;
+
+  //controllers
   TextEditingController _editingController;
   ScrollController scrollController;
 
+  //store artefact details
   String name;
   String description;
   DateTime dateTime;
-  var tagList = new List();
+  var tagList = new List<String>();
 
-  String text = "Nothing to show";
+  // String text = "Nothing to show";
 
   // final ArtefactType _artefactType;
   // final var _artefact;
@@ -41,6 +45,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     nameFocusNode = new FocusNode();
     descriptionFocusNode = new FocusNode();
     dateFocusNode = new FocusNode();
+    tagFocusNode = new FocusNode();
 
     currentFocusNode = nameFocusNode;
     _editingController = new TextEditingController();
@@ -55,6 +60,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     super.dispose();
   }
 
+  //converting string to a date formate. still no idea how
   void stringToDate(String dateEntered) {
     if(dateEntered != null) {
       var dateTime = DateTime.parse('12-12-2012 0:0');
@@ -63,15 +69,18 @@ class _MyCustomFormState extends State<MyCustomForm> {
   }
 
 
+  //add a user-defined tag to the tagList
   void addTagToList(String tag) {
     tagList.add(tag);
+
     print("=======================");
     for(int i=0; i < tagList.length; i++) {
-          print(tagList[i]);
+      print(tagList[i]);
 
     }
     print("=======================");
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +91,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
+            //children: arrow + title
             children: const <Widget>[
               Icon(
                 Icons.arrow_back,
@@ -93,12 +103,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ),
             centerTitle: true),
       body: 
+      //background is first in stack, then the column
       Stack(
         children: <Widget>[
           new Background(),
+          //whole column wrapped in padding
           Padding(
-            // padding: EdgeInsets.only(
-            //      bottom: MediaQuery.of(context).viewInsets.bottom),
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,14 +117,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 ImageBanner('assets/images/abaca-gold.jpg'),
                 TextFormField(
                   autofocus: true,
-                  controller: _editingController,
-                  validator: (value) {
-                    if(value.isEmpty){
-                      return 'Please enter a date in this format dd/mm/yyyy';
-                    }
-                    //TODO: convert value to date
-                    return null;
-                  },
                   decoration: InputDecoration(
                   labelText: 'Enter the name of the artefact',
                   hintText:'Name '
@@ -136,8 +138,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     print(this.description);
                     currentFocusNode = dateFocusNode;
                   },
-                  // onTap: (){
-                  //   scrollController.jumpTo(-200);}
                   
                 ),
                 // The first text field is focused on as soon as the app starts.
@@ -147,7 +147,13 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     hintText: 'Enter the date the artefact originated',
                     labelText: 'Date (dd/mm/yyyy) ',
                   ),
-                  
+                  validator: (value) {
+                    if(value.isEmpty){
+                      return 'Please enter a date in this format dd/mm/yyyy';
+                    }
+                    //TODO: convert value to date
+                    return null;
+                  },
                   onFieldSubmitted: (dateEntered) {
                     stringToDate(dateEntered);
                     //TODO: dateEntered to datetime type
@@ -161,15 +167,19 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 ),
                 // The second text field is focused on when a user taps the
                 // FloatingActionButton.
-                TextField(
+                TextFormField(
                   controller: _editingController,
                   focusNode: tagFocusNode,
                   decoration: InputDecoration(
                     hintText: 'Enter tags related to the artefact',
                     labelText: 'Tags: ',
                   ),
-                  onSubmitted: (tag) {
+                  onFieldSubmitted: (tag){
                     addTagToList(tag);
+                    _editingController.text = "";
+                    _editingController.text = tagList.toString();
+
+                    //TODO: displayTag(tag), deleting tags;
                   },
                 ),
                 
