@@ -1,11 +1,13 @@
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:fam_repo2/icon_button.dart';
-import 'package:fam_repo2/background.dart';
-
-
+import 'package:my_app/components/artefact_type.dart';
+import 'package:my_app/components/background.dart';
+import 'package:my_app/components/icon_button.dart';
+import 'package:my_app/components/image_banner/image_banner.dart';
+import 'package:my_app/screens/upload_page/text_section.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadPage2 extends StatefulWidget {
   @override
@@ -33,6 +35,8 @@ class _UploadPageState extends State<UploadPage2> {
   DateTime dateTime;
   var tagList = new List();
 
+  var artefact;
+
   String text = "Nothing to show";
 
   @override
@@ -58,8 +62,23 @@ class _UploadPageState extends State<UploadPage2> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  new MyButton("using text fields", Icon(Icons.text_fields, size: iconSize,color: iconColor)),
-                  new MyButton("using audio", Icon(Icons.mic, size: iconSize,color: iconColor))
+                  new MyButton("using text fields", 
+                    Icon(
+                      Icons.text_fields, 
+                      size: iconSize,
+                      color: iconColor
+                    ),
+                    ArtefactType.TEXT
+                  ),
+    
+                  new MyButton("using audio",
+                    Icon(
+                      Icons.mic, 
+                      size: iconSize,
+                      color: iconColor
+                    ),
+                    ArtefactType.AUDIO
+                  )
                 ]
               );
     var row2 = Row(
@@ -68,8 +87,24 @@ class _UploadPageState extends State<UploadPage2> {
                 mainAxisSize: MainAxisSize.max,
                 
                 children: [
-                  new MyButton("using camera", Icon(Icons.camera_alt, size: iconSize,color: iconColor)),
-                  new MyButton("using video", Icon(Icons.videocam, size: iconSize,color: iconColor))               
+                  new MyButton(
+                    "accessing camera", 
+                    Icon(
+                      Icons.camera_alt, 
+                      size: iconSize,
+                      color: iconColor
+                    ),
+                    ArtefactType.PICTURE
+                  ),
+                  new MyButton(
+                    "accessing video camera", 
+                    Icon(
+                      Icons.videocam, 
+                      size: iconSize,
+                      color: iconColor
+                    ),
+                    ArtefactType.VIDEO
+                  )               
                 ]
                 );
     var row3 = Container(
@@ -77,12 +112,19 @@ class _UploadPageState extends State<UploadPage2> {
       child: Text('OR'), 
       );
 
-    var row4 = MyButton("redirecting to gallery", RaisedButton.icon(
-      icon: Icon(Icons.file_upload), 
-      label: Text("UPLOAD FROM GALLERY", textAlign: TextAlign.center,), 
-      onPressed: () {},
-      color: Colors.transparent
-      )
+    var row4 = MyButton(
+        "redirecting to gallery", 
+        RaisedButton.icon(
+          icon: Icon(Icons.insert_photo), 
+          label: Text("UPLOAD FROM GALLERY", textAlign: TextAlign.center,), 
+          onPressed: () async {
+            artefact = await ImagePicker.pickImage(
+              source: ImageSource.gallery,
+            );
+            //TODO: send to edit page
+          },
+        ),
+        ArtefactType.PICTURE
     );
 
     return Scaffold(
@@ -96,7 +138,7 @@ class _UploadPageState extends State<UploadPage2> {
               IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.brown,
+                  color: Colors.black,
                   size: 30.0,
                   semanticLabel: 'icon to go back to previous page'
                 ),
