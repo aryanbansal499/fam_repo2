@@ -1,9 +1,9 @@
 // Define a custom Form widget.
 //adapted from https://flutter.dev/docs/cookbook/forms/focus
 import 'package:flutter/material.dart';
-import 'package:my_app/components/artefact_type.dart';
-import 'package:my_app/components/background.dart';
-import 'package:my_app/components/image_banner/image_banner.dart';
+import 'package:fam_repo2/artefact_type.dart';
+import 'package:fam_repo2/background.dart';
+import 'package:fam_repo2/image_banner.dart';
 
 class MyCustomForm extends StatefulWidget {
   @override

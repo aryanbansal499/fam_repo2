@@ -2,11 +2,10 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/components/artefact_type.dart';
-import 'package:my_app/components/background.dart';
-import 'package:my_app/components/icon_button.dart';
-import 'package:my_app/components/image_banner/image_banner.dart';
-import 'package:my_app/screens/upload_page/text_section.dart';
+import 'package:fam_repo2/artefact_type.dart';
+import 'package:fam_repo2/background.dart';
+import 'package:fam_repo2/icon_button.dart';
+import 'package:fam_repo2/image_banner.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadPage2 extends StatefulWidget {

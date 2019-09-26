@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_app/components/artefact_type.dart';
+import 'package:fam_repo2/artefact_type.dart';
 
 
 class MyButton extends StatelessWidget {
