@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fam_repo2/artefact_type.dart';
 import 'package:fam_repo2/background.dart';
 import 'package:fam_repo2/image_banner.dart';
+import 'package:fam_repo2/validation.dart';
 
 class MyCustomForm extends StatefulWidget {
   @override
@@ -37,6 +38,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   // final ArtefactType _artefactType;
   // final var _artefact;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -102,7 +105,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               Text('ADD ARTEFACT', textAlign: TextAlign.center)]
               ),
             centerTitle: true),
-      body: 
+      body:
       //background is first in stack, then the column
       Stack(
         children: <Widget>[
@@ -114,80 +117,114 @@ class _MyCustomFormState extends State<MyCustomForm> {
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               controller: scrollController,
               children: [
-                ImageBanner('assets/images/abaca-gold.jpg'),
-                TextFormField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                  labelText: 'Enter the name of the artefact',
-                  hintText:'Name '
-                  ),
-                  onFieldSubmitted: (nameEntered) {
-                    this.name = nameEntered;
-                    print(this.name);
-                    currentFocusNode = descriptionFocusNode;
-                  }
-                ),
-                TextFormField(
-                  focusNode: descriptionFocusNode,
-                  decoration: InputDecoration(
-                    hintText: 'Enter a description about the artefact',
-                    labelText: 'Description ',
-                  ),
-                  onFieldSubmitted: (descriptionEntered) {
-                    this.description = descriptionEntered;
-                    print(this.description);
-                    currentFocusNode = dateFocusNode;
-                  },
-                  
-                ),
-                // The first text field is focused on as soon as the app starts.
-                TextFormField(
-                  focusNode: dateFocusNode,
-                  decoration: InputDecoration(
-                    hintText: 'Enter the date the artefact originated',
-                    labelText: 'Date (dd/mm/yyyy) ',
-                  ),
-                  validator: (value) {
-                    if(value.isEmpty){
-                      return 'Please enter a date in this format dd/mm/yyyy';
-                    }
-                    //TODO: convert value to date
-                    return null;
-                  },
-                  onFieldSubmitted: (dateEntered) {
-                    stringToDate(dateEntered);
-                    //TODO: dateEntered to datetime type
-                    print(this.dateTime);
-                    currentFocusNode = tagFocusNode;
-                    
-                  },
-                  // onTap: (){
-                  //   scrollController.jumpTo(-400);
-                  // }
-                ),
-                // The second text field is focused on when a user taps the
-                // FloatingActionButton.
-                TextFormField(
-                  controller: _editingController,
-                  focusNode: tagFocusNode,
-                  decoration: InputDecoration(
-                    hintText: 'Enter tags related to the artefact',
-                    labelText: 'Tags: ',
-                  ),
-                  onFieldSubmitted: (tag){
-                    addTagToList(tag);
-                    _editingController.text = "";
-                    _editingController.text = tagList.toString();
+                ImageBanner('images/abaca-gold.jpg'),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                      validator: (value) {
+                        return value.isEmpty ? 'Enter a name for the artefact' : null;
+                      },
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey,
+                        labelText: 'Enter the name of the artefact',
+                        hintText:'Name ',
+                      ),
+                      onFieldSubmitted: (nameEntered) {
+                        this.name = nameEntered;
+                        print(this.name);
+                        currentFocusNode = descriptionFocusNode;
+                      }
+                    ),
+                    TextFormField(
+                      focusNode: descriptionFocusNode,
+                      validator: (value) {
+                        return value.isEmpty ? 'Enter a description for the artefact' : null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Enter a description about the artefact',
+                        labelText: 'Description ',
+                      ),
+                      onFieldSubmitted: (descriptionEntered) {
+                        this.description = descriptionEntered;
+                        print(this.description);
+                        currentFocusNode = dateFocusNode;
+                      },
 
-                    //TODO: displayTag(tag), deleting tags;
-                  },
-                ),
-                
-              ],
-            ),
-          ),
-        ]
-      ),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1500),
+                            lastDate: DateTime.now(),
+                            builder: (BuildContext context, Widget child) {
+                              return Theme(
+                                  data: ThemeData.light(),
+                                  child: child
+                              );
+                            }
+                        );
+                      },
+                      child: Text(
+                          'Date',
+                          style: TextStyle(color: Colors.blue),
+                        )
+                    ),
+
+
+                    // The first text field is focused on as soon as the app starts.
+                    TextFormField(
+                      focusNode: dateFocusNode,
+                      decoration: InputDecoration(
+                        hintText: 'Enter the date the artefact originated',
+                        labelText: 'Date (dd/mm/yyyy) ',
+                      ),
+                      validator: DateValidator.validate,
+                      onFieldSubmitted: (dateEntered) {
+                        stringToDate(dateEntered);
+                        //TODO: dateEntered to datetime type
+                        print(this.dateTime);
+                        currentFocusNode = tagFocusNode;
+
+                      },
+                      // onTap: (){
+                      //   scrollController.jumpTo(-400);
+                      // }
+                    ),
+                    // The second text field is focused on when a user taps the
+                    // FloatingActionButton.
+                    TextFormField(
+                      controller: _editingController,
+                      focusNode: tagFocusNode,
+                      decoration: InputDecoration(
+                        hintText: 'Enter tags related to the artefact',
+                        labelText: 'Tags: ',
+                      ),
+                      onTap: (){
+                        _editingController.text = "";
+                      },
+                      onFieldSubmitted: (tag){
+                        addTagToList(tag);
+                        _editingController.text = "";
+                        _editingController.text = tagList.toString();
+
+                        //TODO: displayTag(tag), deleting tags;
+                      },
+                    )
+                  ]
+                )
+              )
+            ]
+          )
+        )
+      ]
+    ),
+
+
       floatingActionButton: FloatingActionButton(
         // When the button is pressed,
         // give focus to the text field using myFocusNode.
