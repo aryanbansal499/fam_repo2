@@ -12,11 +12,12 @@ class ArtefactItem extends StatelessWidget {
   final String comments; // As its own class
 
   ArtefactItem(this.image, this.name, this.family, this.description,
-      this.date, this.tags, this.comments);
-
+      this.date, this.tags, this.comments,);
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return image;
   }
+
 }

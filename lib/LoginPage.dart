@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'validation.dart';
 import 'provider.dart';
 import 'DialogBox.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 
 
@@ -75,21 +76,28 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Form Page'),
-      ),
       resizeToAvoidBottomPadding: false,
-      body: Center(
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: buildInputs() + buildButtons(),
-          ),
+      body: DecoratedBox
+      (
+        position: DecorationPosition.background,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          image: DecorationImage(
+              image: AssetImage('images/bg.png'),
+              fit: BoxFit.cover),
         ),
-      ),
+        child:Center(
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: buildInputs() + buildButtons(),
+              ),
+            ),
+          ),
+      )
     );
   }
 
@@ -97,39 +105,51 @@ class _LoginPageState extends State<LoginPage> {
     return [
       TextFormField(
         validator: EmailValidator.validate,
-        decoration: InputDecoration(labelText: 'Email'),
+        decoration: InputDecoration(hintText: 'Email',filled: true,fillColor: Colors.black12),
         onSaved: (value) => _email = value,
+        cursorColor: Colors.brown,
       ),
+      Divider(
+          height: 10.0,
+        ),
       TextFormField(
         validator: PasswordValidator.validate,
-        decoration: InputDecoration(labelText: 'Password'),
+        decoration: InputDecoration(hintText: 'Password',filled: true,fillColor: Colors.black12),
         obscureText: true,
         onSaved: (value) => _password = value,
       ),
+      
     ];
+    
   }
 
   List<Widget> buildButtons() {
     if (_formType == FormType.login) {
       return [
+        Divider(
+          height: 20.0,
+        ),
         RaisedButton(
           child: Text('Login'),
-          color: Colors.blueAccent,
+          color: Colors.brown,
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
           onPressed: submit,
         ),
-        FlatButton(
+        
+        RaisedButton(
           child: Text('Register Account'),
-          color: Colors.teal,
+          color: Colors.brown,
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
           onPressed: () {
             switchFormState('register');
           },
         ),
         Divider(
-          height: 50.0,
+          height: 20.0,
         ),
-        FlatButton(
-          child: Text("Sign in with Google"),
-          color: Colors.lightGreen,
+        GoogleSignInButton(
+          darkMode: false,
+          borderRadius: 40,
           onPressed: () async {
             try {
               final _auth = Provider.of(context).auth;
@@ -145,12 +165,14 @@ class _LoginPageState extends State<LoginPage> {
       return [
         RaisedButton(
           child: Text('Create Account'),
-          color: Colors.blueAccent,
+          color: Colors.brown,
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
           onPressed: submit,
         ),
         FlatButton(
           child: Text('Go to Login'),
-          color: Colors.teal,
+          color: Colors.brown,
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
           onPressed: () {
             switchFormState('login');
           },

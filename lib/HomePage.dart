@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: AppBar(
         title: Text('DashBoard'),
+        backgroundColor: Colors.brown,
         centerTitle: true,
         actions: <Widget>[
           FlatButton(
@@ -43,24 +44,35 @@ class _HomePageState extends State<HomePage>
           )
         ],
       ),
-      body: new Container
-        (
-           child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(20.0),
-            children: List.generate(choices.length, (index) {
-                return Center(
-                  child: ChoiceCard(choice: choices[index], item: choices[index]),
-                );
-            }
-          )
+      body: 
+      DecoratedBox
+      (
+        position: DecorationPosition.background,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          image: DecorationImage(
+              image: AssetImage('images/bg.png'),
+              fit: BoxFit.cover),
+      ),
+        child: new Container
+          (
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(20.0),
+              children: List.generate(choices.length, (index) {
+                  return Center(
+                    child: ChoiceCard(choice: choices[index], item: choices[index]),
+                  );
+              }
+            )
 
+          ),
         ),
       ),
        
         bottomNavigationBar : new BottomAppBar
           (
-            color : Colors.deepOrange,
+            color : Colors.brown,
             child: new Container
             (
               margin: const EdgeInsets.only(left: 10.0, right: 10.0),
