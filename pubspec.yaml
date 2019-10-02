@@ -30,10 +30,13 @@ dependencies:
   firebase_database: ^3.0.7
   firebase_storage: ^3.0.6
   toast: ^0.1.5
-  intl: ^0.16.0
+  intl: ^0.15.8
   image_picker: ^0.6.1+4
   flutter_auth_buttons: ^0.5.0
-  
+  validators: ^2.0.0 
+  flutter_datetime_picker: ^1.2.5
+  datetime_picker_formfield: ^0.4.3
+
 
 dev_dependencies:
   flutter_test:
