@@ -8,6 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:fam_repo2/image_banner.dart';
 import 'package:fam_repo2/icon_button.dart';
 import 'package:fam_repo2/background.dart';
 
@@ -134,6 +135,25 @@ class _UploadPageState extends State<UploadPage2> {
     _editingController = new TextEditingController();
     scrollController = new ScrollController();
   }
+  void stringToDate(String dateEntered) {
+    if(dateEntered != null) {
+      var dateTime = DateTime.parse('12-12-2012 0:0');
+      print(dateTime);
+    }
+  }
+
+
+  //add a user-defined tag to the tagList
+  void addTagToList(String tag) {
+    tagList.add(tag);
+
+    print("=======================");
+    for(int i=0; i < tagList.length; i++) {
+      print(tagList[i]);
+
+    }
+    print("=======================");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +251,11 @@ class _UploadPageState extends State<UploadPage2> {
   }
   Widget setUpload()
   {
-    
+    body: 
+    return Stack
+    (
+
+    );
 
   }
 }
