@@ -74,7 +74,7 @@ class _UploadPageState extends State<UploadPage>{
     String time = formatTime.format(dbTimeKey);
 
     DatabaseReference ref = FirebaseDatabase.instance.reference();
-
+// use different modal classes here instead of just image 
     var data = 
     {
       "image": url,
@@ -85,7 +85,7 @@ class _UploadPageState extends State<UploadPage>{
     
     ref.child("Posts").push().set(data);
   }
-
+// used to go back to dashboard once the3 upload is successful
   void goToHomePage()
   {
     Navigator.push
@@ -124,6 +124,7 @@ class _UploadPageState extends State<UploadPage>{
      ),
     );
   }
+  
   
 
 

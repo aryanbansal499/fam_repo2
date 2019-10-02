@@ -3,6 +3,7 @@ import 'provider.dart';
 import 'auth.dart';
 import 'LoginPage.dart';
 import 'HomePage.dart';
+import 'screens/upload_page2.dart';
 
 void main() => runApp(MyApp());
 

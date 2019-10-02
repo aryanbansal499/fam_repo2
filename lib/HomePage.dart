@@ -2,6 +2,7 @@ import 'package:fam_repo2/Upload.dart';
 import 'package:flutter/material.dart';
 import 'auth.dart';
 import 'provider.dart';
+import 'screens/upload_page2.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage>
                         context,
                         MaterialPageRoute(builder: (context)
                         {
-                          return new UploadPage();
+                          return new UploadPage2();
 
                         })
 
