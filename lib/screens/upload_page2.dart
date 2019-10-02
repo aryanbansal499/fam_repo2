@@ -11,6 +11,9 @@ import 'dart:io';
 import 'package:fam_repo2/image_banner.dart';
 import 'package:fam_repo2/icon_button.dart';
 import 'package:fam_repo2/background.dart';
+import 'package:validators/validators.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 
 
 
@@ -92,6 +95,8 @@ class _UploadPageState extends State<UploadPage2> {
 // use different modal classes here instead of just image 
     var data = 
     {
+      "tags": tagList,
+      "name": name,
       "image": url,
       "description": _description,
       "date": date,
@@ -135,13 +140,6 @@ class _UploadPageState extends State<UploadPage2> {
     _editingController = new TextEditingController();
     scrollController = new ScrollController();
   }
-  void stringToDate(String dateEntered) {
-    if(dateEntered != null) {
-      var dateTime = DateTime.parse('12-12-2012 0:0');
-      print(dateTime);
-    }
-  }
-
 
   //add a user-defined tag to the tagList
   void addTagToList(String tag) {
@@ -254,8 +252,91 @@ class _UploadPageState extends State<UploadPage2> {
     body: 
     return Stack
     (
+          children: <Widget>[
+          new Background(),
+          //whole column wrapped in padding
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              controller: scrollController,
+              children: [
+                Image.file(sampleImage,height: 265.0,width: 600.0,),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        validator: (value)
+                        {
+                          if( value.isEmpty)
+                          {
+                            return "Name is required";
+                          }
+                          else if (!isAlpha(value))
+                          {
+                            return "Name is not correct";
+                          }
+                          else return null;
+                        },
+                        focusNode: nameFocusNode,
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey,
+                          labelText: 'Enter the name of the artefact',
+                          hintText:'Name ',
+                        ),
+                        onSaved: (value)
+                        {
+                          return name = value;
+                        },
+                      
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      focusNode: descriptionFocusNode,
+                      validator: (value)
+                      {
+                        return value.isEmpty? 'Description is required' : null;
+                      },
+                      
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        hintText: 'Enter a description about the artefact',
+                        labelText: 'Description ',
+                      ),
+                      onSaved: (value)
+                      {
+                        return _description = value;
+                      },
+//                      
+                    ),
+                    
+                     RaisedButton
+                      (
+                        elevation: 10.0,
+                        child: Text("Add a New Post"),
+                        textColor: Colors.white,
+                        color: Colors.deepOrange,
 
+                        onPressed: uploadStatusImage,
+                      ),
+
+                  ]
+                )
+              )
+            ],
+          )
+        )
+      ]
     );
 
+
+  }
+  _fieldFocusChange(BuildContext context, FocusNode currentFocus,FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+    currentFocusNode = nextFocus;
   }
 }
