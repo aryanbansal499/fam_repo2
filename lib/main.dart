@@ -1,3 +1,4 @@
+import 'package:fam_repo2/pages/searchFamily.dart';
 import 'package:flutter/material.dart';
 import 'provider.dart';
 import 'auth.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark(),
-        home: Home(),
+        home:Home(),
       ),
     );
   }

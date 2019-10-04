@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fam_repo2/models/Profile.dart';
+import 'package:fam_repo2/pages/searchFamily.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:fluttershare/pages/activity_feed.dart';
@@ -12,6 +13,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final usersRef = Firestore.instance.collection('users');
+final familyRef = Firestore.instance.collection('Family');
 final DateTime timestamp = DateTime.now();
 Profile currentUser ;
 class Home extends StatefulWidget {
@@ -120,7 +122,7 @@ class _HomeState extends State<Home> {
           ),
           //ActivityFeed(),
           //Upload(),
-          //Search(),
+          Search(),
           //Profile(),
         ],
         controller: pageController,
@@ -137,7 +139,7 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.photo_camera,
-                size: 35.0,
+                size: 20.0,
               ),
             ),
             BottomNavigationBarItem(icon: Icon(Icons.search)),
