@@ -111,6 +111,7 @@ class _HomeState extends State<Home> {
   Scaffold buildAuthScreen() {
     return Scaffold(
       body: PageView(
+        
         children: <Widget>[
           // Timeline(),
           RaisedButton(
