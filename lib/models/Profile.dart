@@ -10,7 +10,7 @@ class Profile {
   final String email;
   final String profileDesc;
   final bool isPrivate;
-  final List<Family> families;
+  final /*List<Family>*/ String families;
   final String id;
   //final Image dp;
 

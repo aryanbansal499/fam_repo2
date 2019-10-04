@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fam_repo2/widgets/header.dart';
 
@@ -12,11 +14,16 @@ class _CreateAccountState extends State<CreateAccount>
 {
   String username;
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   submit()
   {
-    _formKey.currentState.save();
-    Navigator.pop(context,username);
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      
+      Navigator.pop(context, username);
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -50,6 +57,16 @@ class _CreateAccountState extends State<CreateAccount>
                     key: _formKey,
                     child: TextFormField
                     (
+                      validator: (val) {
+                          if (val.trim().length < 3 || val.isEmpty) {
+                            return "Username too short";
+                          } else if (val.trim().length > 12) {
+                            return "Username too long";
+                          } else {
+                            return null;
+                          }
+                
+                      },
                       onSaved: (val) => username = val,
                       decoration: InputDecoration
                       (
