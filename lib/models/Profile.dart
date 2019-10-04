@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'Family.dart';
@@ -23,14 +24,14 @@ class Profile {
 
   Profile({ this.name, this.username, this.email, this.profileDesc, this.isPrivate, this.families, this.id });
 
-  factory Profile.fromMap(Map data) {
+  factory Profile.fromDocument(DocumentSnapshot doc) {
     return Profile(
-      name: data['name'] ?? '',
-      username: data['username'] ?? '',
-      email: data['email'] ?? '',
-      profileDesc: data['description'] ?? '',
-      isPrivate: data['private'] ?? true,
-      families: data['families'],
+      name: doc['name'] ?? '',
+      username: doc['username'] ?? '',
+      email: doc['email'] ?? '',
+      profileDesc: doc['description'] ?? '',
+      isPrivate: doc['private'] ?? true,
+      families: doc['families'],
     );
   }
 }

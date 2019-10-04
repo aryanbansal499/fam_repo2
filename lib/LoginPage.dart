@@ -1,12 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'validation.dart';
 import 'provider.dart';
 import 'DialogBox.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-
-
-
+import 'services/database_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'pages/CreateAccount.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -15,9 +16,12 @@ class _LoginPageState extends State<LoginPage> {
 
   DialogBox dialogBox = new DialogBox();
   final formKey = GlobalKey<FormState>();
-
+  GoogleSignIn googleSignIn = GoogleSignIn();
   String _email, _password;
   FormType _formType = FormType.login;
+  final userRef = Firestore.instance.collection('users');
+  final DateTime timeStamp = DateTime.now();
+
 
   bool validate() {
     final form = formKey.currentState;
@@ -30,6 +34,30 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+   createUserinFireStore() async
+  {
+    // 1) check if user already exists in the database collection (based on id)
+    final GoogleSignInAccount user = googleSignIn.currentUser;
+    final DocumentSnapshot doc = await userRef.document(user.id).get();
+    // 2) if the user doesnt exist then take them to the create account page.
+    if(!doc.exists)
+    {
+      final username = Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
+    
+    //3) get username from create account , use it to make a new user in the database.
+
+    userRef.document(user.id).setData(
+      {
+        "id": user.id,
+        "username": username,
+        "photoUrl": user.photoUrl,
+        "email": user.email,
+        "bio": "",
+        "timestamp" : timeStamp
+
+      });
+    } 
+  }
   void submit() async {
     if (validate()) {
       try {
@@ -154,6 +182,7 @@ class _LoginPageState extends State<LoginPage> {
             try {
               final _auth = Provider.of(context).auth;
               final id = await _auth.signInWithGoogle();
+              createUserinFireStore();
               print('signed in with google $id');
             } catch (e) {
               print(e);

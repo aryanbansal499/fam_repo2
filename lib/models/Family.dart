@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//import 'ArtefactItem.dart';
-//import 'Profile.dart';
+import 'ArtefactItem.dart';
+import 'Profile.dart';
 
 
 class Family {

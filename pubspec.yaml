@@ -36,7 +36,6 @@ dependencies:
   validators: ^2.0.0 
   flutter_datetime_picker: ^1.2.5
   datetime_picker_formfield: ^0.4.3
-
   cloud_firestore: ^0.12.9+4
   
 
@@ -55,10 +54,15 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  fonts:
+    - family: Signatra
+      fonts:
+        - asset: fonts/Signatra.ttf
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/bg.png
+    - images/google_signin_button.png
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 

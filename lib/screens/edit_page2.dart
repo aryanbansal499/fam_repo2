@@ -1,7 +1,7 @@
 // Define a custom Form widget.
 //adapted from https://flutter.dev/docs/cookbook/forms/focus
 import 'package:flutter/material.dart';
-import 'package:fam_repo2/image_banner.dart';
+import 'package:fam_repo2/widgets/image_banner.dart';
 
 class MyCustomForm extends StatefulWidget {
   @override
@@ -72,7 +72,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-          Color: Colors.transparent,
+          backgroundColor: Colors.transparent,
           bottomOpacity: 1.0,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
