@@ -5,6 +5,8 @@ import 'package:fam_repo2/artefact_type.dart';
 import 'package:fam_repo2/background.dart';
 import 'package:fam_repo2/image_banner.dart';
 import 'package:fam_repo2/validation.dart';
+import 'package:intl/intl.dart';
+import 'package:fam_repo2/drop_down_button.dart';
 
 class MyCustomForm extends StatefulWidget {
   @override
@@ -26,6 +28,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   //controllers
   TextEditingController _editingController;
+  TextEditingController _dateController;
   ScrollController scrollController;
 
   //store artefact details
@@ -40,7 +43,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   // final var _artefact;
 
   final _formKey = GlobalKey<FormState>();
-
+  bool _autoValidate = false;
   @override
   void initState() {
     super.initState();
@@ -63,14 +66,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
     super.dispose();
   }
 
-  //converting string to a date formatted. still no idea how
-  void stringToDate(String dateEntered) {
-    if(dateEntered != null) {
-      var dateTime = DateTime.parse('12-12-2012 0:0');
-      print(dateTime);
-    }
-  }
-
 
   //add a user-defined tag to the tagList
   void addTagToList(String tag) {
@@ -82,6 +77,14 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
     }
     print("=======================");
+  }
+
+  void removeTagFromList(String tag) {
+    int tagIndex;
+
+    if(tagList.contains(tag)) {
+
+    }
   }
 
   @override
@@ -96,11 +99,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
             crossAxisAlignment: CrossAxisAlignment.center,
             //children: arrow + title
             children: const <Widget>[
-              Icon(
-                Icons.arrow_back,
+              IconButton(
+                icon: Icon(Icons.arrow_back,
                 color: Colors.brown,
                 size: 30.0,
                 semanticLabel: 'icon to go back to previous page'
+                ),
               ),
               Text('ADD ARTEFACT', textAlign: TextAlign.center)]
               ),
@@ -109,6 +113,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
       //background is first in stack, then the column
       Stack(
         children: <Widget>[
+          //background, then padding on top
           new Background(),
           //whole column wrapped in padding
           Padding(
@@ -119,6 +124,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 ImageBanner('images/abaca-gold.jpg'),
                 Form(
                   key: _formKey,
+                  autovalidate: _autoValidate,
                   child: Column(
                     children: [
                       TextFormField(
@@ -131,131 +137,105 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           labelText: 'Enter the name of the artefact',
                           hintText:'Name ',
                         ),
+                        onSaved: (String value) {
+                          this.name = value;
+                        },
                         onFieldSubmitted: (nameEntered) {
                           this.name = nameEntered;
                           print(this.name);
 
-                          bool validated = _formKey.currentState.validate() == null ?
-                                            true : false;
-                          print(validated);
-                          if(validated) {
-                            print('validated');
-                            _fieldFocusChange(context, nameFocusNode, descriptionFocusNode);
-                          }
+                          _fieldFocusChange(context, nameFocusNode, descriptionFocusNode);
                         },
-//                        onEditingComplete: () {
-//                          _formKey.currentState.validate();
-//                          currentFocusNode = descriptionFocusNode;
-//                        },
-                    ),
-                    TextFormField(
-                      textInputAction: TextInputAction.next,
-                      focusNode: descriptionFocusNode,
-                      validator: DescriptionValidator.validate,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        hintText: 'Enter a description about the artefact',
-                        labelText: 'Description ',
                       ),
-                      onFieldSubmitted: (descriptionEntered) {
-                        this.description = descriptionEntered;
-                        print(this.description);
-
-                        //validate if description entered is correct
-                        bool validated = _formKey.currentState.validate() == null ?
-                                          true : false;
-                        if(validated) {
-                          print('validated');
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        focusNode: descriptionFocusNode,
+                        validator: DescriptionValidator.validate,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: 'Enter a description about the artefact',
+                          labelText: 'Description ',
+                        ),
+                        onSaved: (String value) {
+                          this.description = value;
+                        },
+                        onFieldSubmitted: (descriptionEntered) {
                           _fieldFocusChange(context, descriptionFocusNode, dateFocusNode);
-                        }
-
-                      },
-//                      onEditingComplete: () {
-//                        _formKey.currentState.validate();
-//                        currentFocusNode = dateFocusNode;
-//                      },
-                    ),
-                    // The first text field is focused on as soon as the app starts.
-                    TextFormField(
-                      textInputAction: TextInputAction.next,
-                      focusNode: dateFocusNode,
-                      keyboardAppearance: Brightness.dark,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        hintText: 'Enter the date the artefact originated',
-                        labelText: 'Date (dd/mm/yyyy) ',
+                        },
                       ),
-                      validator: DateValidator.validate,
-                      onFieldSubmitted: (dateEntered) {
-                        stringToDate(dateEntered);
-                        //TODO: dateEntered to datetime type
-                        print(this.dateTime);
+                      YearList(),
+                        // The first text field is focused on as soon as the app starts.
+                      TextFormField(
+                        controller: _dateController,
+                        textInputAction: TextInputAction.next,
+                        focusNode: dateFocusNode,
+                        keyboardAppearance: Brightness.dark,
+                        keyboardType: TextInputType.datetime,
+                        maxLines: 1,
+                        onTap: _pickDate,
+                        decoration: InputDecoration(
+                          hintText: 'Enter the date the artefact originated',
 
-                        //validate if date entered is correct
-                        bool validated = _formKey.currentState.validate() == null ?
-                                          true : false;
-                        if(validated) {
-                          print('validated');
+                          labelText: 'Date (dd/mm/yyyy) ',
+                        ),
+                        validator: DateValidator.validate,
+
+                        onFieldSubmitted: (dateEntered) {
+//                        stringToDate(dateEntered);
+//                        //TODO: dateEntered to datetime type
+//                        print(this.dateTime);
+//
+//                        //validate if date entered is correct
+//                        bool validated = _formKey.currentState.validate() == null;
+//                        print('date validated: ' + validated.toString());
+//
+//                        if(!validated) {
+//                          print('validated');
                           _fieldFocusChange(context, dateFocusNode, tagFocusNode);
-                        }
+//                        }
 
-                      },
+                        },
 //                      onEditingComplete: () {
 //                        _formKey.currentState.validate();
 //                        currentFocusNode = tagFocusNode;
 //                      },
-                    ),
-                    FlatButton(
-                      onPressed: () async{
-                        var picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1500),
-                          lastDate: DateTime.now(),
-                          builder: (BuildContext context, Widget child) {
-                            return Theme(
-                              data: ThemeData.light(),
-                              child: child
-                            );
-                          }
-                        );
-
-                        if (picked != null && picked != dateTime)
-                          setState(() {
-                            dateTime = picked;
-                          }
-                        );
-                      },
-                      child: Text(
+                      ),
+                      FlatButton(
+                        onPressed: _pickDate,
+                        child: Text(
                         'Date',
                         style: TextStyle(color: Colors.blue),
-                      )
-                    ),
+                        )
+                      ),
                     // The second text field is focused on when a user taps the
                     // FloatingActionButton.
-                    TextFormField(
-                      textInputAction: TextInputAction.done,
-                      controller: _editingController,
-                      focusNode: tagFocusNode,
-                      decoration: InputDecoration(
-                        hintText: 'Enter tags related to the artefact',
-                        labelText: 'Tags: ',
-                      ),
-                      maxLines: 1,
-                      onTap: (){
-                        _editingController.text = "";
-                      },
-                      onFieldSubmitted: (tag){
-                        addTagToList(tag);
-                        _editingController.text = "";
-                        _editingController.text = tagList.toString();
+                      TextFormField(
+                        textInputAction: TextInputAction.done,
+                        controller: _editingController,
+                        focusNode: tagFocusNode,
+                        decoration: InputDecoration(
+                          hintText: 'Enter tags related to the artefact',
+                          labelText: 'Tags: ',
+                        ),
+                        maxLines: 1,
+                        onTap: (){
+                          _editingController.text = "";
+                        },
+                        onFieldSubmitted: (tag){
+                          addTagToList(tag);
+                          _editingController.text = "";
+                          _editingController.text = tagList.toString();
 
-                        //TODO: displayTag(tag), deleting tags;
-                        //validate if description entered is correct
-                      },
-                    )
+                          //TODO: displayTag(tag), deleting tags;
+                          //validate if description entered is correct
+                        },
+                      ),
+                      RaisedButton.icon(
+                          onPressed: _validateInputs,
+                          icon: Icon(Icons.add),
+                          label: Text('Submit'),
+                      )
                   ]
                 )
               )
@@ -264,9 +244,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
         )
       ]
     ),
-
-
-      floatingActionButton: FloatingActionButton(
+    floatingActionButton: FloatingActionButton(
         // When the button is pressed,
         // give focus to the text field using myFocusNode.
         onPressed: () {
@@ -287,6 +265,56 @@ class _MyCustomFormState extends State<MyCustomForm> {
     FocusScope.of(context).requestFocus(nextFocus);
     currentFocusNode = nextFocus;
   }
-   
+
+
+  void
+  _validateInputs() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      // Text forms was validated.
+      form.save();
+    } else {
+      setState(() => _autoValidate = true);
+    }
+  }
+
+  YearList
+  _pickYear() {
+    return new YearList();
+  }
+
+  void
+  _pickDate() async {
+    DateFormat dateFormat = new DateFormat('yyyy-MM-dd');
+    DateTime picked;
+
+
+    picked = await showDatePicker(
+        initialDatePickerMode: DatePickerMode.year,
+        context: context,
+
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1500),
+        lastDate: DateTime.now(),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+              data: ThemeData.light(),
+              child: child
+          );
+        }
+    );
+
+    if (picked != null && picked != dateTime){
+      setState(() {
+        dateTime = picked;
+      }
+      );
+    }
+    dateFormat.format(picked);
+
+    print(" picked: " + picked.toString());
+
+  }
+
 
 }
