@@ -130,14 +130,14 @@ class _LoginPageState extends State<LoginPage> {
           height: 20.0,
         ),
         RaisedButton(
-          child: Text('Login'),
+          child: Text('Sign In'),
           color: Colors.brown,
           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
           onPressed: submit,
         ),
         
         RaisedButton(
-          child: Text('Register Account'),
+          child: Text('Sign up'),
           color: Colors.brown,
           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
           onPressed: () {
@@ -147,19 +147,7 @@ class _LoginPageState extends State<LoginPage> {
         Divider(
           height: 20.0,
         ),
-        GoogleSignInButton(
-          darkMode: false,
-          borderRadius: 40,
-          onPressed: () async {
-            try {
-              final _auth = Provider.of(context).auth;
-              final id = await _auth.signInWithGoogle();
-              print('signed in with google $id');
-            } catch (e) {
-              print(e);
-            }
-          },
-        ),
+        
       ];
     } else {
       return [
