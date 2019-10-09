@@ -13,6 +13,9 @@ class LoginPage extends StatefulWidget {
 }
 class _LoginPageState extends State<LoginPage> {
 
+
+
+
   DialogBox dialogBox = new DialogBox();
   final formKey = GlobalKey<FormState>();
 
@@ -35,8 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         final auth = Provider.of(context).auth;
         if (_formType == FormType.login) {
-        
-          dialogBox.imformation(context, "Registered","You have successfully Signed In");
+
           String userId = await auth.signInWithEmailAndPassword(
             _email,
             _password,
@@ -131,23 +133,23 @@ class _LoginPageState extends State<LoginPage> {
         ),
         RaisedButton(
           child: Text('Sign In'),
-          color: Colors.brown,
-          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
+          color: Colors.grey,
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: submit,
         ),
         
         RaisedButton(
           child: Text('Sign up'),
-          color: Colors.brown,
-          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0)),
+          color: Colors.grey,
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: () {
             switchFormState('register');
           },
         ),
         Divider(
-          height: 20.0,
+          height: 30.0,
         ),
-        
+
       ];
     } else {
       return [
