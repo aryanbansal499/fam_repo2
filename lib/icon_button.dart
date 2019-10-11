@@ -1,13 +1,15 @@
+import 'package:fam_repo2/screens/edit_page2.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fam_repo2/artefact_type.dart';
+import 'dart:io';
 
 
 class MyButton extends StatelessWidget {
   final _snackbarString;
   final _button;
-  final Color iconColor = Colors.brown;
-  final double iconSize = 150.0;
+  static final Color iconColor = Colors.brown;
+  static final double iconSize = 150.0;
   final ArtefactType _artefactType;
 
   MyButton(this._snackbarString, this._button, this._artefactType);
@@ -30,9 +32,11 @@ class MyButton extends StatelessWidget {
           case ArtefactType.VIDEO:
             break;
           case ArtefactType.PICTURE:
-            var picture = await ImagePicker.pickImage(
+            File picture = await ImagePicker.pickImage(
               source: ImageSource.camera,
             );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyCustomForm(artefactFile: picture)));
             //TODO:GO TO EDIT PAGE WITH picture object
             break;
         }

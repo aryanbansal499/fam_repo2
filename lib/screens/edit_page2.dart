@@ -1,5 +1,6 @@
 // Define a custom Form widget.
 //adapted from https://flutter.dev/docs/cookbook/forms/focus
+import 'package:fam_repo2/models/ArtefactItem.dart';
 import 'package:flutter/material.dart';
 import 'package:fam_repo2/artefact_type.dart';
 import 'package:fam_repo2/background.dart';
@@ -9,6 +10,11 @@ import 'package:intl/intl.dart';
 import 'package:fam_repo2/drop_down_button.dart';
 
 class MyCustomForm extends StatefulWidget {
+  final artefactFile;
+
+  MyCustomForm({@required this.artefactFile});
+
+
   @override
   _MyCustomFormState createState() => _MyCustomFormState();
 }
@@ -121,7 +127,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
             child: ListView(
               controller: scrollController,
               children: [
-                ImageBanner('images/abaca-gold.jpg'),
+                ImageBanner(widget.artefactFile),
                 Form(
                   key: _formKey,
                   autovalidate: _autoValidate,
