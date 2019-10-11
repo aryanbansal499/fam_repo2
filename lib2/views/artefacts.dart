@@ -4,13 +4,14 @@
 //TODO artefacts singular view
 /* needs artefact id and family id to be passed*/
 
+import 'package:fam_repo2/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:thebugs_prototype/models/ArtefactItem.dart';
-import 'package:thebugs_prototype/models/artefactViewModel.dart';
-import 'package:thebugs_prototype/services/middleware.dart';
 
+import '../models/ArtefactItem.dart';
+import '../models/artefactViewModel.dart';
+import '../services/middleware.dart';
 import 'SingularArtefactView.dart';
 import 'forms.dart';
 
@@ -26,46 +27,53 @@ class ArtefactsView extends StatelessWidget {
     var artefactId;
 
     return Scaffold(
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            RaisedButton(
-                child: Text('Add artefact'),
-                onPressed: () {
-                  //TODO route to upload page with user and fam id uncomment when form is integrated
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
-                  //TODO move below to form page on submit
-                 /* var artefact = db.addArtefactFirestore(user, {
-                'artefactLink': 'collection/doc', //
-                'type': artefactType.IMG.toString(),
-                //'date': new DateTime.now(), //TODO change to year?
-                'description': 'the beginning of many tests',
-                'name': 'testing',
-                'tags': ['#test'],
-                'uploader': user.uid,
-                'familyId': vm.matchId,
-                }
-                , vm.matchId);*/
+      body: Stack(
+        children: <Widget>[
+          Background(),
+          Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                StreamProvider<List<ArtefactItem>>.value(
+                  stream: db.streamArtefacts(user, vm.matchId),
+                  child: ArtefactsList()
+                ),
+                RaisedButton(
+                    child: Text('Add artefact'),
+                    onPressed: () {
+                      //TODO route to upload page with user and fam id uncomment when form is integrated
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
+                      //TODO move below to form page on submit
+                      /* var artefact = db.addArtefactFirestore(user, {
+                  'artefactLink': 'collection/doc', //
+                  'type': artefactType.IMG.toString(),
+                  //'date': new DateTime.now(), //TODO change to year?
+                  'description': 'the beginning of many tests',
+                  'name': 'testing',
+                  'tags': ['#test'],
+                  'uploader': user.uid,
+                  'familyId': vm.matchId,
+                  }
+                  , vm.matchId);*/
 
-                  //TODO reevaluate where the saving of downloadurl gets saved
-                  // call add to storage with the artefact id
-                  // fetch the document id and add artefact to firebase storage
-                  /*artefact.then((onValue) async {
-                print(onValue.documentID);
-                artefactId = onValue.documentID;
-                db.addArtefactStorage(vm.matchId, onValue.documentID);
-                }
-              );*/
+                      //TODO reevaluate where the saving of downloadurl gets saved
+                      // call add to storage with the artefact id
+                      // fetch the document id and add artefact to firebase storage
+                      /*artefact.then((onValue) async {
+                  print(onValue.documentID);
+                  artefactId = onValue.documentID;
+                  db.addArtefactStorage(vm.matchId, onValue.documentID);
+                  }
+                );*/
 
 
-                }),
+                    }),
 
-            /*StreamProvider<List<ArtefactItem>>.value(
-            stream: db.streamArtefacts(user, vm.matchId),
-            child: new ArtefactsList(),
-          ),*/
-          ]
+              ]
+          ),
+        ],
+
       ),
     );
   }
@@ -90,7 +98,9 @@ class ArtefactsList extends StatelessWidget {
       child: ListView(
         children: artefacts.map((artefact) {
           return Card(
+            color: Colors.black45,
             child: ListTile(
+              leading: Image.network(artefact.downloadUrl),
               title: Text(artefact.name),
               onTap: () {
                 Navigator.push(context,
@@ -103,3 +113,6 @@ class ArtefactsList extends StatelessWidget {
     );
   }
 }
+
+
+

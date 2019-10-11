@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:thebugs_prototype/views/auth.dart';
-import 'package:thebugs_prototype/views/home.dart';
+import 'services/auth.dart';
+
+import 'views/auth.dart';
+import 'views/home.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -16,7 +19,7 @@ class MyApp extends StatelessWidget {
           StreamProvider<FirebaseUser>.value(
               stream: FirebaseAuth.instance.onAuthStateChanged
           ),
-          Provider(builder: (context) => Auth()),
+          //Provider(builder: (context) => Auth()),
           //Provider(builder: (context) => ArtefactsView())
         ],
         child: MaterialApp(
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => Home(),
-            '/auth': (context) => Auth(),
+            //'/auth': (context) => Auth(),
             //'/artefacts': (context) => ArtefactsView(),
             //'/upload': (context) => UploadPage2()
             // TODO add profile, settings, upload, edit routes

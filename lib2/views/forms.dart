@@ -12,8 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:thebugs_prototype/services/middleware.dart';
-import 'package:thebugs_prototype/models/ArtefactItem.dart';
+
+import '../services/middleware.dart';
+import '../models/ArtefactItem.dart';
+
 
 class ArtefactForm extends StatelessWidget{
   @override
@@ -205,7 +207,7 @@ class Uploader extends StatefulWidget {
 
 class _UploaderState extends State<Uploader> {
   final FirebaseStorage _storage =
-  FirebaseStorage(storageBucket: 'gs://thebug-test.appspot.com/');
+  FirebaseStorage(storageBucket: 'gs://baseproject-72dc9.appspot.com');
 
   StorageUploadTask _uploadTask;
 

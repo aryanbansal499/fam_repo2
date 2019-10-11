@@ -1,13 +1,15 @@
 //TODO homepage showing families
 
+import 'package:fam_repo2/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:thebugs_prototype/models/Family.dart';
-import 'package:thebugs_prototype/models/Profile.dart';
-import 'package:thebugs_prototype/models/artefactViewModel.dart';
-import 'package:thebugs_prototype/services/middleware.dart';
 
+
+import '../models/Family.dart';
+import '../models/Profile.dart';
+import '../models/artefactViewModel.dart';
+import '../services/middleware.dart';
 import 'settings.dart';
 import 'artefacts.dart';
 import 'auth.dart';
@@ -28,17 +30,30 @@ class Home extends StatelessWidget {
     return Column(
       children: <Widget>[
         _MyAppBar(),
-        Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(child: _FamiliesList()),
-              RaisedButton(
-                  child: Text('Add family'),
-                  onPressed: () => db.addFamily(user, {'name': 'Testing', 'creator': user.uid})),
-              RaisedButton(
-                  child: Text('Create'),
-                  onPressed: () => db.createUser(user)),
-            ]
+        Stack(
+          children: <Widget>[
+            Background(),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _FamiliesList()
+                    ],
+                  ),
+                  Center(
+                    /*child: RaisedButton(
+                        child: Text('Create'),
+                        onPressed: () => db.createUser(user)),*/
+                  ),
+                  FloatingActionButton(
+                      child: Icon(Icons.add),
+                      onPressed: () => db.addFamily(user, {'name': 'Testing', 'creator': user.uid})),
+                ]
+            ),
+          ],
         ),
       ]
     );
@@ -80,23 +95,25 @@ class FamiliesList extends StatelessWidget {
     var families = Provider.of<List<Family>>(context);
 
     if (families != null) {
-      return Container(
-        height: 300,
-        child: ListView(
-          children: families.map((family) {
-            return Card(
-              child: ListTile(
-                //leading: Text(weapon.img, style: TextStyle(fontSize: 50)),
-                title: Text(family.name),
-                onTap: () => {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Buffer(id: family.id)))
-                },
-              ),
-            );
-          }).toList(),
-        ),
-      );
+      return
+          Container(
+            height: 300,
+            child: ListView(
+              children: families.map((family) {
+                //TODO insert UI here
+                return Card(
+                  child: ListTile(
+                    //leading: TODO if want to add image or crest
+                    title: Text(family.name),
+                    onTap: () => {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Buffer(id: family.id)))
+                    }
+                    ),
+                );
+              }).toList(),
+            ),
+          );
     }
 
 
@@ -135,11 +152,11 @@ class _MyAppBar extends StatelessWidget {
     User userProfile;
 
     db.getProfile(user.uid).then((onValue) async {
-      userProfile = onValue;
+      userProfile = await onValue;
     });
 
     return AppBar(
-      title: Text('user'),
+      title: Text('Families'),
       actions: [
         IconButton(
           icon: Icon(Icons.settings),

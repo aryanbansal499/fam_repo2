@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
 
-class Provider extends InheritedWidget{
+class MyProvider extends InheritedWidget{
 final BaseAuth auth;
 
-Provider(
+MyProvider(
   {
     Key key,
     Widget child,
@@ -20,7 +20,7 @@ Provider(
     return true;
   }
 
-  static Provider of(BuildContext context) => (context.inheritFromWidgetOfExactType(Provider) as Provider );
+  static MyProvider of(BuildContext context) => (context.inheritFromWidgetOfExactType(MyProvider) as MyProvider );
 
   
 }

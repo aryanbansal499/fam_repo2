@@ -4,15 +4,17 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:thebugs_prototype/models/ArtefactItem.dart';
-import 'package:thebugs_prototype/models/Family.dart';
-import 'package:thebugs_prototype/models/Profile.dart';
+
+import '../models/ArtefactItem.dart';
+import '../models/Family.dart';
+import '../models/Profile.dart';
+
 
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
   final FirebaseStorage _storage =
-  FirebaseStorage(storageBucket: 'gs://thebug-test.appspot.com/');
+  FirebaseStorage(storageBucket: 'gs://baseproject-72dc9.appspot.com');
 
   Future<User> getProfile(String id) async {
     var snap = await _db.collection('users').document(id).get();
@@ -45,7 +47,7 @@ class DatabaseService {
 
   }
 
-  Future<void> createUser(FirebaseUser user) {
+  Future<void> createUser(FirebaseUser user, String displayName) {
     return _db
         .collection('users')
         .document(user.uid)
@@ -55,7 +57,7 @@ class DatabaseService {
       , 'email': 'get from form'
       , 'families': ['test1']
       , 'private': true
-      , 'username': 'tester'});
+      , 'username': displayName});
   }
 
   Future<void> signOut(auth) async {

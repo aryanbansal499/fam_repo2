@@ -1,8 +1,12 @@
 //TODO accept and handle firebase user
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:thebugs_prototype/models/Profile.dart';
+import 'package:provider/provider.dart';
+
+import '../models/Profile.dart';
+import '../services/middleware.dart';
 
 
 
@@ -25,6 +29,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   User profile;
   _ProfileSettingsState(this.profile);
 
+  final db = DatabaseService();
+  final auth = FirebaseAuth.instance;
 
   void _handleChange() {
     setState(() {
@@ -39,9 +45,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(profile.name), //Must be fetched
+        title: Text(profile.username), //Must be fetched
       ),
       body: (
           ListView(children: [
@@ -50,7 +57,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 trailing: Icon((FontAwesomeIcons.toggleOff))
 
             ),
-            ListTile(title: Text("Sign out")),
+            ListTile(
+                title: Text("Sign out"),
+                onTap: () {
+                  db.signOut(auth);
+                  Navigator.pushNamed(context, '/');
+                }),
           ])
       ),
     );
