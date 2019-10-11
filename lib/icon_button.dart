@@ -1,4 +1,4 @@
-import 'package:fam_repo2/screens/edit_page2.dart';
+import 'package:fam_repo2/screens/edit_page3.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fam_repo2/artefact_type.dart';
