@@ -10,10 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/ArtefactItem.dart';
+import '../models/Family.dart';
 import '../models/artefactViewModel.dart';
 import '../services/middleware.dart';
 import 'SingularArtefactView.dart';
-import 'forms.dart';
+import 'artefactForm.dart';
 
 class ArtefactsView extends StatelessWidget {
   @override
@@ -24,56 +25,53 @@ class ArtefactsView extends StatelessWidget {
     // TODO: implement build
     var vm = Provider.of<ArtefactViewModel>(context);
     var user = Provider.of<FirebaseUser>(context);
+    var fam = Provider.of<Family>(context);
     var artefactId;
 
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Background(),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                StreamProvider<List<ArtefactItem>>.value(
-                  stream: db.streamArtefacts(user, vm.matchId),
-                  child: ArtefactsList()
-                ),
-                RaisedButton(
-                    child: Text('Add artefact'),
-                    onPressed: () {
-                      //TODO route to upload page with user and fam id uncomment when form is integrated
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
-                      //TODO move below to form page on submit
-                      /* var artefact = db.addArtefactFirestore(user, {
-                  'artefactLink': 'collection/doc', //
-                  'type': artefactType.IMG.toString(),
-                  //'date': new DateTime.now(), //TODO change to year?
-                  'description': 'the beginning of many tests',
-                  'name': 'testing',
-                  'tags': ['#test'],
-                  'uploader': user.uid,
-                  'familyId': vm.matchId,
-                  }
-                  , vm.matchId);*/
+    return MultiProvider(
+      providers: [
+        StreamProvider<Family>.value(
+          stream: db.streamFamily(fam.id),
+          child: ArtefactsHeader(),
+        )
+      ],
+      child: Scaffold(
+        appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
+        body: Stack(
+          children: <Widget>[
+            Background(),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    margin: EdgeInsets.all(0),
+                    child: ArtefactsHeader()),
+                  StreamProvider<List<ArtefactItem>>.value(
+                    stream: db.streamArtefacts(user, vm.matchId),
+                    child: ArtefactsList()
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                          FloatingActionButton(
+                          child: Icon(Icons.add),
+                          onPressed: () {
+                            //TODO route to upload page with user and fam id uncomment when form is integrated
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
+                          }),
+                        ],
+                  ),
 
-                      //TODO reevaluate where the saving of downloadurl gets saved
-                      // call add to storage with the artefact id
-                      // fetch the document id and add artefact to firebase storage
-                      /*artefact.then((onValue) async {
-                  print(onValue.documentID);
-                  artefactId = onValue.documentID;
-                  db.addArtefactStorage(vm.matchId, onValue.documentID);
-                  }
-                );*/
+                ]
+            ),
+          ],
 
-
-                    }),
-
-              ]
-          ),
-        ],
-
+        ),
       ),
     );
   }
@@ -92,11 +90,14 @@ class ArtefactsList extends StatelessWidget {
 
     //TODO display image instead - get downloadurl - add onTap - navigate to SingularArtefactView
     return Container(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.55,
       // arg  below should equal to artefact.downloadUrl
       //child: Image.network('https://firebasestorage.googleapis.com/v0/b/thebug-test.appspot.com/o/2019-10-01%2012%3A57%3A02.154417.png?alt=media&token=10f859ae-e1ce-4a04-9286-a1420294492d')
       child: ListView(
         children: artefacts.map((artefact) {
+          if (artefact == null || artefact.downloadUrl == null){
+            return new Container();
+          }
           return Card(
             color: Colors.black45,
             child: ListTile(
@@ -115,4 +116,56 @@ class ArtefactsList extends StatelessWidget {
 }
 
 
+class ArtefactsHeader extends StatelessWidget {
+  @override
 
+  Widget build(BuildContext context) {
+    var fam = Provider.of<Family>(context);
+    // TODO: implement build
+    if (fam == null){
+      return new Container();
+    }
+    return Container(
+      // family name
+      // family description
+      padding: EdgeInsets.all(40.0),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(fam.name),
+          Text(fam.description)
+        ],
+      )
+    );
+  }
+
+}
+
+class _MyAppBar extends StatelessWidget {
+  final db = DatabaseService();
+
+  Widget build(BuildContext context) {
+    var user = Provider.of<FirebaseUser>(context);
+    //User userProfile;
+
+    db.getProfile(user.uid).then((onValue) async {
+      //userProfile = await onValue;
+    });
+
+    return AppBar(
+      title: Text('Family Artefacts'),
+      actions: [
+        IconButton(
+            icon: Icon(Icons.settings),
+            /*onPressed: () {Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProfileSettings(
+                    profile: userProfile)));
+            }*/
+        ),
+      ],
+    );
+  }
+  
+}

@@ -47,6 +47,15 @@ class DatabaseService {
 
   }
 
+  /// Get a stream of a single document
+  Stream<Family> streamFamily(String id) {
+    return _db
+        .collection('families')
+        .document(id)
+        .snapshots()
+        .map((doc) => Family.fromFirestore(doc));
+  }
+
   Future<void> createUser(FirebaseUser user, String displayName) {
     return _db
         .collection('users')
