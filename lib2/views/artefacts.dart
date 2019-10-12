@@ -4,7 +4,8 @@
 //TODO artefacts singular view
 /* needs artefact id and family id to be passed*/
 
-import 'package:fam_repo2/background.dart';
+import '../models/background.dart';
+import '../views/upload_page3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,8 @@ class ArtefactsView extends StatelessWidget {
                           onPressed: () {
                             //TODO route to upload page with user and fam id uncomment when form is integrated
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
+                                MaterialPageRoute(builder: (context) => UploadPage2(user: user, familyId: vm.matchId)));
+                                //MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
                           }),
                         ],
                   ),
