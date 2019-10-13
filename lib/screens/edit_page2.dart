@@ -72,7 +72,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-          Color: Colors.transparent,
+          backgroundColor: Colors.transparent,
           bottomOpacity: 1.0,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,

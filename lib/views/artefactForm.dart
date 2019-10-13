@@ -13,6 +13,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../background.dart';
+import '../icon_button.dart';
 import '../services/middleware.dart';
 import '../models/ArtefactItem.dart';
 
@@ -30,7 +32,7 @@ class ArtefactForm extends StatelessWidget{
   ArtefactForm({Key key, this.user, this.familyId}) : super(key: key);
 
   String artefactId;
-
+  
 
   //TODO add an onSubmit function
   _onSubmit() {
@@ -70,6 +72,8 @@ class ArtefactForm extends StatelessWidget{
     artefact.then((onValue) => onValue.setData({'downloadUrl': url}));*/
   }
 
+
+   
   Widget build(BuildContext context) {
     // TODO: implement build - form
     print(user.uid);
@@ -78,27 +82,59 @@ class ArtefactForm extends StatelessWidget{
     return new Container();
   }
 
+  
+
 }
 
 // Widget to capture and crop the image
-class ImageCapture extends StatefulWidget {
+class ArtefactUpload extends StatefulWidget {
 
   final FirebaseUser user;
   final String familyId;
 
-  const ImageCapture({Key key, this.user, this.familyId}) : super(key: key);
+  const ArtefactUpload({Key key, this.user, this.familyId}) : super(key: key);
 
-  createState() => _ImageCaptureState(user: user, familyId: familyId);
+  createState() => _ArtefactUploadState(user: user, familyId: familyId);
 }
 
-class _ImageCaptureState extends State<ImageCapture> {
+class _ArtefactUploadState extends State<ArtefactUpload> {
   /// Active image file
   File _imageFile;
-
   final FirebaseUser user;
   final String familyId;
+  FocusNode nameFocusNode;
+  FocusNode descriptionFocusNode;
+  FocusNode dateFocusNode;
+  FocusNode tagFocusNode;
+  FocusNode currentFocusNode;
+  TextEditingController _editingController;
+  ScrollController scrollController;
+  final double iconSize = 150.0;
+  final Color iconColor = Colors.brown;
+  String name;
+  String description;
+  DateTime dateTime;
+  var tagList = new List();
+  String text = "Nothing to show";
 
-  _ImageCaptureState({this.user, this.familyId});
+
+
+
+_ArtefactUploadState({this.user, this.familyId});
+
+ @override
+  void initState() {
+    super.initState();
+
+    nameFocusNode = new FocusNode();
+    descriptionFocusNode = new FocusNode();
+    dateFocusNode = new FocusNode();
+
+    currentFocusNode = nameFocusNode;
+    _editingController = new TextEditingController();
+    scrollController = new ScrollController();
+  }
+  
 
   /// Cropper plugin
   Future<void> _cropImage() async {
@@ -131,33 +167,107 @@ class _ImageCaptureState extends State<ImageCapture> {
     setState(() => _imageFile = null);
   }
 
+//make changes here please add the upload_page2 here and work on the audio and text file system here.
   @override
   Widget build(BuildContext context) {
+
+    var row1 = Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  //addText and  functionality in onPressed below.
+                  new MyButton
+                  (
+                    "using text fields", IconButton(icon: Icon(Icons.text_fields, 
+                    size: 150.0,color:  Colors.brown),
+                    onPressed:(){},)
+                  ),
+                  new MyButton
+                  (
+                    "using audio", IconButton(icon:Icon(Icons.mic,
+                    size: 150.0,color:  Colors.brown),
+                    onPressed: (){},))
+                ]
+              );
+    var row2 = Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                
+                children: [
+                  new MyButton("using camera", IconButton(icon:Icon(Icons.camera_alt, 
+                  size: 150.0,color:  Colors.brown),
+                  onPressed: () => _pickImage(ImageSource.camera),),),
+                  new MyButton("using gallery", IconButton(icon:Icon(Icons.camera_alt, 
+                  size: 150.0,color:  Colors.brown),
+                  onPressed: () => _pickImage(ImageSource.gallery),),)               
+                ]
+                );
+    var row3 = Container(
+      margin: EdgeInsets.fromLTRB(0.0,16.0,16.0,0.0),
+      child: Text('OR'), 
+      );
+
+    var row4 = MyButton("redirecting to gallery", RaisedButton.icon(
+      icon: Icon(Icons.file_upload), 
+      label: Text("UPLOAD FROM GALLERY", textAlign: TextAlign.center,), 
+      onPressed: () {},
+      color: Colors.transparent
+      )
+    );
+
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.photo_camera,
-                size: 30,
+     // appbar
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          bottomOpacity: 1.0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.brown,
+                  size: 30.0,
+                  semanticLabel: 'icon to go back to previous page.'
+                ),
+                onPressed:(){
+                  print('GOING BACK');
+                }
+                ,
+
               ),
-              onPressed: () => _pickImage(ImageSource.camera),
-              color: Colors.blue,
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.photo_library,
-                size: 30,
+              Text('ADD ARTEFACT', textAlign: TextAlign.center)]
               ),
-              onPressed: () => _pickImage(ImageSource.gallery),
-              color: Colors.pink,
+            centerTitle: true
             ),
-          ],
-        ),
-      ),
+
+      
+        body: Stack(
+        children: <Widget>[
+          new Background(),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent
+            ),
+            margin: EdgeInsets.all(5.0),
+            padding: EdgeInsets.all(5.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,          
+              children: [
+                row1,
+                row2,
+                //row3,
+                //row4
+              ]
+              )
+          )  
+        ]
+      )
+     
       body: ListView(
         children: <Widget>[
           if (_imageFile != null) ...[
@@ -227,7 +337,7 @@ class _UploaderState extends State<Uploader> {
     // get the artefact id for naming the artefact on storage
     // call _startUpload from Upload widget? or pass on artefact id to upload widget?
     // on Upload success get downloadUrl from artefact snapshot
-    // add field to the artefact on firestore
+    // add field to the artefact on firestore.
     String url;
 
     String artefactId;

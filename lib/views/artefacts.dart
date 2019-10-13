@@ -62,7 +62,7 @@ class ArtefactsView extends StatelessWidget {
                           onPressed: () {
                             //TODO route to upload page with user and fam id uncomment when form is integrated
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
+                                MaterialPageRoute(builder: (context) => ArtefactUpload(user: user, familyId: vm.matchId)));
                           }),
                         ],
                   ),

@@ -134,7 +134,8 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Background(),
           Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Form(
                 key: formKey,

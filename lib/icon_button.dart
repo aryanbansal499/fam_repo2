@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   final _snackbarString;
-  final _button;
+  final  _button;
   final Color iconColor = Colors.brown;
   final double iconSize = 150.0;
 
