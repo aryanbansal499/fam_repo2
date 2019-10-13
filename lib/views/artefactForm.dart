@@ -172,7 +172,7 @@ _ArtefactUploadState({this.user, this.familyId});
   Widget build(BuildContext context) {
 
     var row1 = Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -191,32 +191,34 @@ _ArtefactUploadState({this.user, this.familyId});
                 ]
               );
     var row2 = Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 
                 children: [
+                  
                   new MyButton("using camera", IconButton(icon:Icon(Icons.camera_alt, 
                   size: 150.0,color:  Colors.brown),
                   onPressed: () => _pickImage(ImageSource.camera),),),
-                  new MyButton("using gallery", IconButton(icon:Icon(Icons.camera_alt, 
+                  new MyButton("using gallery", IconButton(icon:Icon(Icons.photo, 
                   size: 150.0,color:  Colors.brown),
                   onPressed: () => _pickImage(ImageSource.gallery),),)               
-                ]
+                  ]
                 );
-    var row3 = Container(
-      margin: EdgeInsets.fromLTRB(0.0,16.0,16.0,0.0),
-      child: Text('OR'), 
-      );
+    // var row3 = Container(
+    //   margin: EdgeInsets.fromLTRB(0.0,16.0,16.0,0.0),
+    //   child: Text('OR'), 
+    //   );
 
-    var row4 = MyButton("redirecting to gallery", RaisedButton.icon(
-      icon: Icon(Icons.file_upload), 
-      label: Text("UPLOAD FROM GALLERY", textAlign: TextAlign.center,), 
-      onPressed: () {},
-      color: Colors.transparent
-      )
-    );
+    // var row4 = MyButton("redirecting to gallery", RaisedButton.icon(
+    //   icon: Icon(Icons.file_upload), 
+    //   label: Text("UPLOAD FROM GALLERY", textAlign: TextAlign.center,), 
+    //   onPressed: () {},
+    //   color: Colors.transparent
+    //   )
+    //);
 
+  
     return Scaffold(
      // appbar
       appBar: AppBar(
@@ -226,52 +228,28 @@ _ArtefactUploadState({this.user, this.familyId});
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.brown,
-                  size: 30.0,
-                  semanticLabel: 'icon to go back to previous page.'
-                ),
-                onPressed:(){
-                  print('GOING BACK');
-                }
-                ,
-
-              ),
               Text('ADD ARTEFACT', textAlign: TextAlign.center)]
               ),
             centerTitle: true
             ),
 
       
-        body: Stack(
-        children: <Widget>[
-          new Background(),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent
-            ),
-            margin: EdgeInsets.all(5.0),
-            padding: EdgeInsets.all(5.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,          
-              children: [
-                row1,
-                row2,
-                //row3,
-                //row4
-              ]
-              )
-          )  
-        ]
-      )
-     
-      body: ListView(
-        children: <Widget>[
-          if (_imageFile != null) ...[
+        body: _imageFile != null ?   
+        Container
+        ( 
+          decoration: BoxDecoration
+          (
+            image: DecorationImage
+            (
+              image: AssetImage('images/bg.png'),
+              fit: BoxFit.cover
+            )
+          ),
+          child: ListView(
+          children: <Widget>[
+        
             Container(
+                 
                 padding: EdgeInsets.all(32), child: Image.file(_imageFile)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -296,11 +274,42 @@ _ArtefactUploadState({this.user, this.familyId});
                 familyId: familyId,
               ),
             )
-          ]
-        ],
-      ),
+          ],
+      ) 
+    )
+       
+      
+      :
+      
+       Stack(
+        children: <Widget>[
+          new Background(),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent
+            ),
+            margin: EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(5.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,          
+              children: [
+                row1,
+                row2,
+                //row3,
+                //row4
+              ]
+              )
+          )  
+        ]
+      )
+     
     );
+
+  
+
   }
+
 }
 
 /// Widget used to handle the management of

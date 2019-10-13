@@ -1,4 +1,5 @@
 import 'package:fam_repo2/screens/upload_page2.dart';
+import 'package:fam_repo2/views/artefactForm.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             '/': (context) => Home(),
             '/auth': (context) => Auth(),
             '/artefacts': (context) => ArtefactsView(),
-            '/upload': (context) => UploadPage2()
+            '/upload': (context) => ArtefactUpload()
             // TODO add profile, settings, upload, edit routes
           },
         )

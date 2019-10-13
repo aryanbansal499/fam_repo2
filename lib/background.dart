@@ -19,3 +19,44 @@ class Background extends StatelessWidget{
       );
   }
 }
+
+//  Scaffold buildUnAuthScreen() {
+//     return Scaffold(
+//       body: Container(
+//         decoration: BoxDecoration(
+//          image: DecorationImage(
+//               image: AssetImage('images/bg.png'),
+//               fit: BoxFit.cover)
+//         ),
+//         alignment: Alignment.center,
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.spaceAround,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: <Widget>[
+//             Text(
+//               'Family Repository',
+//               style: TextStyle(
+//                 fontFamily: "Signatra",
+//                 fontSize: 70.0,
+//                 color: Colors.white,
+//               ),
+//             ),
+//             GestureDetector(
+//               onTap: login,
+//               child: Container(
+//                 width: 200.0,
+//                 height: 40.0,
+//                 decoration: BoxDecoration(
+//                   image: DecorationImage(
+//                     image: AssetImage(
+//                       'images/google_signin_button.png',
+//                     ),
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
