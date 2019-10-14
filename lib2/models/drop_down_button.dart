@@ -52,7 +52,7 @@ class _YearListState extends State<YearList> {
               child: DropdownButton<String>(
                 isDense: true,
                 value: _dropdownValue,
-                icon: Icon(Icons.arrow_downward, color: Colors.black,),
+                icon: Icon(Icons.arrow_drop_down, color: Colors.brown,),
                 iconSize: 24,
                 elevation: 16,
                 style: TextStyle(color: Colors.black54),

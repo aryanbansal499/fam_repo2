@@ -344,7 +344,8 @@ class _UploaderState extends State<Uploader> {
           color: Colors.blue,
           label: Text('Upload to Firebase'),
           icon: Icon(Icons.cloud_upload),
-          onPressed: _onSubmit);
+          onPressed: _onSubmit
+          );
     }
   }
 }
