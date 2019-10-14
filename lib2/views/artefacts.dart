@@ -155,10 +155,11 @@ class _MyAppBar extends StatelessWidget {
     });
 
     return AppBar(
-      title: Text('Family Artefacts'),
+      title: Text('Artefacts'),
       actions: [
         IconButton(
             icon: Icon(Icons.settings),
+            //TODO change onpressed to go to FamilySettings
             /*onPressed: () {Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ProfileSettings(
                     profile: userProfile)));

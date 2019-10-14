@@ -88,6 +88,7 @@ class _FamiliesList extends StatelessWidget {
 
 class FamiliesList extends StatelessWidget {
   @override
+  final db = DatabaseService();
 
   var tapped;
   redirect(String id) {
@@ -118,7 +119,17 @@ class FamiliesList extends StatelessWidget {
                       onTap: () => {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Buffer(id: family.id)))
-                      }
+                      },
+                      trailing: Container(
+                        child: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: (){
+                            //TODO add a are you sure alert dialog box
+                            //TODO remove from db
+                            db.removeFamily(family.id);
+                          },
+                        )
+                      )
                       ),
                   );
                 }).toList(),
