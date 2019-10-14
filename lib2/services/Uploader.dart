@@ -50,9 +50,9 @@ class _UploaderState extends State<Uploader> {
 
 
 
-    setState(() {
-      _uploadTask = _storage.ref().child('families/${familyId}/test').putFile(widget.file);
-    });
+//    setState(() {
+//      _uploadTask = _storage.ref().child('families/${familyId}/test').putFile(widget.file);
+//    });
 
     var artefact = db.addArtefactFirestore(user, {
       'artefactLink': 'collection/doc', //
