@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
+          theme: ThemeData(cursorColor: Colors.brown,primarySwatch: Colors.brown),
           initialRoute: '/',
           routes: {
             '/': (context) => Home(),
