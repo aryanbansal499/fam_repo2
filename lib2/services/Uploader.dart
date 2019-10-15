@@ -178,7 +178,8 @@ class _UploaderState extends State<Uploader> {
           color: Colors.blue,
           label: Text('Upload'),
           icon: Icon(Icons.navigate_next),
-          onPressed: _onSubmit);
+          onPressed: _onSubmit
+        );
     }
   }
 }

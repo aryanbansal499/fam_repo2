@@ -146,21 +146,16 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.brown,
           bottomOpacity: 1.0,
           title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               //children: arrow + title
               children: const <Widget>[
-                IconButton(
-                  icon: Icon(Icons.arrow_back,
-                      color: Colors.brown,
-                      size: 30.0,
-                      semanticLabel: 'icon to go back to previous page'
-                  ),
-                ),
-                Text('ADD ARTEFACT', textAlign: TextAlign.center)]
+                
+                Text('ADD ARTEFACT', textAlign: TextAlign.center)
+              ]
           ),
           centerTitle: true),
       body:

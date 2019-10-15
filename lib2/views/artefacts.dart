@@ -9,7 +9,6 @@ import '../views/upload_page3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../models/ArtefactItem.dart';
 import '../models/Family.dart';
 import '../models/artefactViewModel.dart';
@@ -29,36 +28,38 @@ class ArtefactsView extends StatelessWidget {
     var fam = Provider.of<Family>(context);
     var artefactId;
 
-    return MultiProvider(
-      providers: [
-        StreamProvider<Family>.value(
-          stream: db.streamFamily(fam.id),
-          child: ArtefactsHeader(),
-        )
-      ],
-      child: Scaffold(
-        appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
-        body: Stack(
-          children: <Widget>[
-            Background(),
-            Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    margin: EdgeInsets.all(0),
-                    child: ArtefactsHeader()),
-                  StreamProvider<List<ArtefactItem>>.value(
-                    stream: db.streamArtefacts(user, vm.matchId),
-                    child: ArtefactsList()
-                  ),
-                  Row(
+
+        return MultiProvider(
+          providers: [
+            StreamProvider<Family>.value(
+              stream: db.streamFamily(fam.id),
+              child: ArtefactsHeader(),
+            )
+          ],
+          child: Scaffold(
+            appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
+            body: Stack(
+              children: <Widget>[
+                Background(),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        margin: EdgeInsets.all(0),
+                        child: ArtefactsHeader()),
+                      StreamProvider<List<ArtefactItem>>.value(
+                        stream: db.streamArtefacts(user, vm.matchId),
+                        child: ArtefactsList()
+                      ),
+                      Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                           FloatingActionButton(
+                          backgroundColor: Color.fromRGBO(125,62,0,10),
                           child: Icon(Icons.add),
                           onPressed: () {
                             //TODO route to upload page with user and fam id uncomment when form is integrated
@@ -102,6 +103,7 @@ class ArtefactsList extends StatelessWidget {
           }
           return Card(
             color: Colors.black45,
+            //Shivam work on CardView and SingularArtefactView.
             child: ListTile(
               leading: Image.network(artefact.downloadUrl),
               title: Text(artefact.name),
