@@ -61,5 +61,5 @@ class ArtefactItem /*extends StatelessWidget*/ {
   }
 }
 
-
 enum artefactType  { AUD, IMG, VID, TXT, GAL}
+

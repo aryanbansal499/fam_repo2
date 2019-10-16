@@ -16,9 +16,16 @@ class Uploader extends StatefulWidget {
   final FirebaseUser user;
   final String familyId;
 
-  Uploader({Key key, this.file, this.user, this.familyId}) : super(key: key);
 
-  createState() => _UploaderState(user: user, familyId:familyId);
+  final String name;
+  final String description;
+  final List<String> tags;
+  final String year;
+
+  Uploader({Key key, this.file, this.user, this.familyId,this.description,this.name,this.tags,this.year}) : super(key: key);
+
+  createState() => _UploaderState(user: user, familyId:familyId, description: description,
+                                  name: name, tags: tags, year: year);
 }
 
 class _UploaderState extends State<Uploader> {
@@ -34,12 +41,15 @@ class _UploaderState extends State<Uploader> {
 
   final FirebaseUser user;
   final String familyId;
+  final String name;
+  final String description;
+  final List<String> tags;
+  final String year;
+
+  _UploaderState({this.user, this.familyId,this.description,this.name,this.year,this.tags});
 
   bool __uploaderVisibility = true;
   bool _goBackVisibility = false;
-
-
-  _UploaderState({this.user, this.familyId});
 
 
   _onSubmit() async {
@@ -59,9 +69,9 @@ class _UploaderState extends State<Uploader> {
       'artefactLink': 'collection/doc', //
       'type': artefactType.IMG.toString(),
       //'date': new DateTime.now(), //TODO change to year?
-      'description': 'the beginning of many tests',
-      'name': 'testing',
-      'tags': ['#test'],
+      'description': description,
+      'name': name,
+      'tags': tags,
       'uploader': user.uid,
       'familyId': familyId,
     }
@@ -186,7 +196,7 @@ class _UploaderState extends State<Uploader> {
     } else {
       return FlatButton.icon(
           color: Colors.blue,
-          label: Text('Done'),
+          label: Text('Upload'),
           icon: Icon(Icons.navigate_next),
           onPressed: _onSubmit);
     }
