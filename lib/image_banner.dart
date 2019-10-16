@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class ImageBanner extends StatelessWidget {
-  final String _assetPath;
+  final File _imageFile;
 
-  ImageBanner(this._assetPath);
+  ImageBanner(this._imageFile);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        constraints: BoxConstraints.expand(height: 250.0),
-        decoration: BoxDecoration(color: Colors.grey),
-        child: Image.asset(
-          _assetPath,
+        decoration: BoxDecoration(color: Colors.transparent),
+        padding: EdgeInsets.all(32.0),
+        child: Image.file(
+          _imageFile,
           fit: BoxFit.fill,
         ));
   }

@@ -1,11 +1,13 @@
 import 'dart:io';
+import '../views/artefacts.dart';
 import '../views/edit_page3.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../models/ArtefactItem.dart';
 import '../services/middleware.dart';
-import 'package:fam_repo2/validation.dart';
+import '../services/validation.dart';
+import '../views/home.dart';
 
 /// Widget used to handle the management of
 class Uploader extends StatefulWidget {
@@ -33,6 +35,10 @@ class _UploaderState extends State<Uploader> {
   final FirebaseUser user;
   final String familyId;
 
+  bool __uploaderVisibility = true;
+  bool _goBackVisibility = false;
+
+
   _UploaderState({this.user, this.familyId});
 
 
@@ -48,11 +54,6 @@ class _UploaderState extends State<Uploader> {
     String artefactId;
     String filePath = 'images/${DateTime.now()}.png';
 
-
-
-//    setState(() {
-//      _uploadTask = _storage.ref().child('families/${familyId}/test').putFile(widget.file);
-//    });
 
     var artefact = db.addArtefactFirestore(user, {
       'artefactLink': 'collection/doc', //
@@ -84,6 +85,10 @@ class _UploaderState extends State<Uploader> {
           artefact.then((onValue) => onValue.updateData({'downloadUrl': url}));
           //.setData({'downloadUrl': url}));
         });
+
+        __uploaderVisibility = false;
+        _goBackVisibility = true;
+
       });
 
     });
@@ -133,6 +138,10 @@ class _UploaderState extends State<Uploader> {
                 : 0;
 
             return Column(
+            children:[
+              Visibility(
+              visible: __uploaderVisibility,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -141,7 +150,8 @@ class _UploaderState extends State<Uploader> {
                         style: TextStyle(
                             color: Colors.greenAccent,
                             height: 2,
-                            fontSize: 30)),
+                            fontSize: 30),
+                        ),
                   if (_uploadTask.isPaused)
                     FlatButton(
                       child: Icon(Icons.play_arrow, size: 50),
@@ -159,7 +169,19 @@ class _UploaderState extends State<Uploader> {
                     '${(progressPercent * 100).toStringAsFixed(2)} % ',
                     style: TextStyle(fontSize: 50),
                   ),
-                ]);
+                ])
+            ),
+            Visibility(
+              visible: _goBackVisibility,
+              child: RaisedButton.icon(
+                label: Text('Artefacts'),
+                icon: Icon(Icons.arrow_forward, size: 50),
+                onPressed: (){
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Buffer(id: familyId)));
+                },
+              ),
+            )]);
           });
     } else {
       return FlatButton.icon(

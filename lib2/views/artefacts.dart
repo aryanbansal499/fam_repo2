@@ -37,6 +37,7 @@ class ArtefactsView extends StatelessWidget {
         )
       ],
       child: Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
         body: Stack(
           children: <Widget>[
@@ -128,19 +129,21 @@ class ArtefactsHeader extends StatelessWidget {
       return new Container();
     }
     return Container(
+
       // family name
       // family description
       padding: EdgeInsets.all(40.0),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(fam.name),
-          Text(fam.description)
-        ],
+      child: SingleChildScrollView(
+        child:Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(fam.name),
+            Text(fam.description)
+          ],
       )
-    );
+    ));
   }
 
 }
