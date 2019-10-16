@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/auth.dart';
 
+import 'style.dart';
 import 'views/auth.dart';
 import 'views/home.dart';
 
@@ -25,6 +26,15 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Flutter Demo',
           initialRoute: '/',
+
+          theme: ThemeData(
+              appBarTheme: AppBarTheme(
+                textTheme: TextTheme(title: AppBarTextStyle)
+              ),
+              textTheme: TextTheme(
+                title: SubtitleTextStyle
+              ),
+              fontFamily: "Adobe Song Std"),
           routes: {
             '/': (context) => Home(),
             //'/auth': (context) => Auth(),

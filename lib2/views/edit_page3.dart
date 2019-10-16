@@ -3,12 +3,10 @@
 import 'package:flutter/material.dart';
 import '../models/background.dart';
 import '../models/image_banner.dart';
-import 'file:///C:/Flutter%20Project/fam_repo2_latest5/lib2/services/validation.dart';
+import '../services/validation.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
-import '../services/validation.dart';
 import 'package:image_cropper/image_cropper.dart';
-
 import '../models/drop_down_button.dart';
 import '../models/ArtefactItem.dart';
 import '../services/Uploader.dart';
@@ -84,16 +82,29 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
     print("------------------------------------");
 
+    ImageCropper imageCropper = new ImageCropper();
     File cropped = await ImageCropper.cropImage(
         sourcePath: artefactFile.path,
         // ratioX: 1.0,
         // ratioY: 1.0,
         // maxWidth: 512,
         // maxHeight: 512,
-        toolbarColor: Colors.brown,
-        toolbarWidgetColor: Colors.amberAccent,
-        toolbarTitle: 'Crop It',
-        statusBarColor: Colors.white);
+        androidUiSettings: AndroidUiSettings(
+            toolbarColor: Colors.brown,
+            toolbarWidgetColor: Colors.amberAccent,
+            toolbarTitle: 'Crop It',
+            statusBarColor: Colors.white,
+            backgroundColor: Colors.brown,
+            cropGridColor: Colors.amberAccent,
+            activeControlsWidgetColor: Colors.amberAccent,
+            activeWidgetColor: Colors.brown,
+            cropFrameColor: Colors.amberAccent,
+            dimmedLayerColor: Colors.black12
+
+        )
+
+        );
+
 
     setState(() {
       artefactFile = cropped ?? artefactFile;
@@ -144,20 +155,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
       appBar: AppBar(
           backgroundColor: Colors.transparent,
           bottomOpacity: 1.0,
-          title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              //children: arrow + title
-              children: const <Widget>[
-                IconButton(
-                  icon: Icon(Icons.arrow_back,
-                      color: Colors.brown,
-                      size: 30.0,
-                      semanticLabel: 'icon to go back to previous page'
-                  ),
-                ),
-                Text('ADD ARTEFACT', textAlign: TextAlign.center)]
-          ),
+          title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
           centerTitle: true),
       body:
       //background is first in stack, then the column

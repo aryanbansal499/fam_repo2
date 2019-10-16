@@ -108,9 +108,11 @@ class _ImageCaptureState extends State<ImageCapture> {
         // ratioY: 1.0,
         // maxWidth: 512,
         // maxHeight: 512,
+        androidUiSettings: AndroidUiSettings(
+
         toolbarColor: Colors.purple,
         toolbarWidgetColor: Colors.white,
-        toolbarTitle: 'Crop It');
+        toolbarTitle: 'Crop It'));
 
     setState(() {
       _imageFile = cropped ?? _imageFile;

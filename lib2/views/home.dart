@@ -169,6 +169,7 @@ class _MyAppBar extends StatelessWidget {
 
     return AppBar(
       title: Text('Families'),
+      centerTitle: true,
       actions: [
         IconButton(
           icon: Icon(Icons.settings),

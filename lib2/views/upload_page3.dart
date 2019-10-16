@@ -136,7 +136,11 @@ class _UploadPageState extends State<UploadPage2> {
         "redirecting to gallery",
         RaisedButton.icon(
           icon: Icon(Icons.insert_photo),
-          label: Text("UPLOAD FROM GALLERY", textAlign: TextAlign.center,)
+          label: Text("UPLOAD FROM GALLERY",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                  fontSize: 20.0))
         ),
         artefactType.GAL,
         user,
@@ -147,26 +151,8 @@ class _UploadPageState extends State<UploadPage2> {
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
-            bottomOpacity: 1.0,
-            title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                        size: 30.0,
-                        semanticLabel: 'icon to go back to previous page'
-                    ),
-                    onPressed:(){
-                      print('GOING BACK');
-                    }
-                    ,
-
-                  ),
-                  Text('ADD ARTEFACT', textAlign: TextAlign.center)]
-            ),
+            toolbarOpacity: 0.5,
+            title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
             centerTitle: true),
 
         body: Stack(
