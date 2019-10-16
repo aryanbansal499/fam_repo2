@@ -30,6 +30,7 @@ class Home extends StatelessWidget {
     // TODO: implement build
     return
         Scaffold(
+          resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
           body: Stack(
             children: <Widget>[
