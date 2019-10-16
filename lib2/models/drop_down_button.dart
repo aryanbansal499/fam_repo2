@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../views/edit_page3.dart';
+
 class YearList extends StatefulWidget {
+  final Function function;
+  const YearList({Key key, this.function}): super(key: key);
+
   @override
-  _YearListState createState() => _YearListState();
+  _YearListState createState() => _YearListState(function);
 }
 
 class _YearListState extends State<YearList> {
 
-  String _dropdownValue;
-  static const int START_YEAR = 2019;
+
+  Function setYear;
+  static String _dropdownValue;
+
+  _YearListState(this.setYear);
+
+  static const int START_YEAR = 2020;
   static const int LAST_YEAR = 1500;
   List<String> decades = [];
   List<DropdownMenuItem> listDrop = [];
@@ -27,7 +37,7 @@ class _YearListState extends State<YearList> {
     //decades = [];
     decades = new List();
 
-    for(int i = START_YEAR; i >= LAST_YEAR; i--) {
+    for(int i = START_YEAR; i >= LAST_YEAR; i-=10) {
       decades.add(i.toString());
     }
   }
@@ -61,7 +71,9 @@ class _YearListState extends State<YearList> {
                   color: Colors.deepPurpleAccent,
                 ),
                 onChanged: (String newValue) {
+
                   setState(() {
+                    setYear(_dropdownValue);
                     _dropdownValue = newValue;
                   });
                 },
@@ -77,5 +89,13 @@ class _YearListState extends State<YearList> {
           );
       },
     );
+
+
   }
+
+  String getDropDownValue() {
+    return _dropdownValue;
+  }
+
+
 }

@@ -13,6 +13,7 @@ class UploadPage2 extends StatefulWidget {
   final FirebaseUser user;
   final String familyId;
 
+
   const UploadPage2({Key key, this.user, this.familyId}) : super(key: key);
 
   @override
