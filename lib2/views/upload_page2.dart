@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fam_repo2/artefact_type.dart';
+import '../models/ArtefactItem.dart';
 import 'package:fam_repo2/background.dart';
 import 'package:fam_repo2/icon_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -66,7 +66,7 @@ class _UploadPageState extends State<UploadPage2> {
                       size: iconSize,
                       color: iconColor
                     ),
-                    ArtefactType.TEXT
+                    //ArtefactType.TXT
                   ),
     
                   new MyButton("using audio",
@@ -75,7 +75,7 @@ class _UploadPageState extends State<UploadPage2> {
                       size: iconSize,
                       color: iconColor
                     ),
-                    ArtefactType.AUDIO
+                    //ArtefactType.AUD
                   )
                 ]
               );
@@ -92,7 +92,7 @@ class _UploadPageState extends State<UploadPage2> {
                       size: iconSize,
                       color: iconColor
                     ),
-                    ArtefactType.PICTURE
+                    //ArtefactType.IMG
                   ),
                   new MyButton(
                     "accessing video camera", 
@@ -101,7 +101,7 @@ class _UploadPageState extends State<UploadPage2> {
                       size: iconSize,
                       color: iconColor
                     ),
-                    ArtefactType.VIDEO
+                    //ArtefactType.VID
                   )               
                 ]
                 );
@@ -122,7 +122,7 @@ class _UploadPageState extends State<UploadPage2> {
             //TODO: send to edit page
           },
         ),
-        ArtefactType.PICTURE
+        //ArtefactType.PICTURE
     );
 
     return Scaffold(
@@ -133,19 +133,6 @@ class _UploadPageState extends State<UploadPage2> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                  size: 30.0,
-                  semanticLabel: 'icon to go back to previous page'
-                ),
-                onPressed:(){
-                  print('GOING BACK');
-                }
-                ,
-
-              ),
               Text('ADD ARTEFACT', textAlign: TextAlign.center)]
               ),
             centerTitle: true),

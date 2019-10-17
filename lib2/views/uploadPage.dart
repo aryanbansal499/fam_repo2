@@ -57,19 +57,6 @@ class _ImageCaptureState extends State<ImageCapture> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 30.0,
-                      semanticLabel: 'icon to go back to previous page'
-                  ),
-                  onPressed:(){
-                    print('GOING BACK');
-                  }
-                  ,
-
-                ),
                 Text('ADD ARTEFACT', textAlign: TextAlign.center)]
           ),
           centerTitle: true),
