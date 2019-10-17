@@ -9,12 +9,14 @@ const String FontNameDefault = 'Adobe Song Std';
 const String FontNameAppBarTitle = 'Letter Gothic Std';
 const String FontNameSubtitle = 'Ming Liu';
 
+const Color IconOnCardColour = Color.fromRGBO(78, 48, 44, 1);
+const Color IconOnAppBarColour = Color.fromRGBO(78, 48, 44, 1);
 
 const AppBarTextStyle = TextStyle(
   fontFamily: FontNameAppBarTitle,
   fontWeight: FontWeight.w600,
   fontSize: AppBarTextSize,
-  color: Colors.brown,
+  color: Color.fromRGBO(78, 48, 44, 1),
 );
 
 const SubtitleTextStyle = TextStyle(
@@ -35,5 +37,5 @@ const Body1TextStyle = TextStyle(
   fontFamily: FontNameDefault,
   fontWeight: FontWeight.w300,
   fontSize: BodyTextSize,
-  color: Colors.brown,
+  color: Color.fromRGBO(78, 48, 44, 1),
 );
