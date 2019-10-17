@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:fam_repo2/validation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-
+import '../services/middleware.dart';
+import '../services/Uploader.dart';
 import '../views/auth.dart';
 import '../views/edit_page3.dart';
 import 'background.dart';
+import 'ArtefactItem.dart';
 
 class TextArtefactForm extends StatefulWidget{
 
@@ -23,13 +26,22 @@ class TextArtefactForm extends StatefulWidget{
  
   class _TextArtefactForm extends State<TextArtefactForm> with SingleTickerProviderStateMixin{
 
+  final FirebaseStorage _storage =
+  FirebaseStorage(storageBucket: 'gs://baseproject-72dc9.appspot.com');
+
+  StorageUploadTask _uploadTask;
   TabController _controller;
   TextEditingController _textEditingController;
+  TextEditingController _textEditingController2;
   String text = "";
   String title ="";
   File artefactFile;
+  final DatabaseService db = DatabaseService();
   final FirebaseUser user;
   final String familyId;
+  bool _fireStoreButtonVisibility = false;
+  bool _submitVisibility = true;
+  bool _autoValidate = false;
   static final _formKey = GlobalKey<FormState>();
 
   _TextArtefactForm({this.user, this.familyId});
@@ -38,6 +50,7 @@ class TextArtefactForm extends StatefulWidget{
   {
     _controller = TabController(length: 2,vsync: this);
     _textEditingController = TextEditingController();
+    _textEditingController2 = TextEditingController();
     super.initState();
     
   }
@@ -75,6 +88,7 @@ class TextArtefactForm extends StatefulWidget{
                             children: [
                               TextFormField(
                                 textCapitalization: TextCapitalization.words,
+                                controller: _textEditingController,
                                 textAlign: TextAlign.center,
                                 textInputAction: TextInputAction.next,
                                 maxLength: 30,
@@ -91,15 +105,10 @@ class TextArtefactForm extends StatefulWidget{
                                 onSaved: (String value) {
                                   this.title = value;
                                 },
-                                onFieldSubmitted: (nameEntered) {
-                                  this.title = nameEntered;
-                                  print(this.title);
-
-                                  //_fieldFocusChange(context, nameFocusNode, descriptionFocusNode);
-                                },
+                                
                               ),
                               TextFormField(
-                                controller: _textEditingController,
+                                controller: _textEditingController2,
                                 textInputAction: TextInputAction.next,
                                 //focusNode: descriptionFocusNode,
                                 //validator: DescriptionValidator.validate,
@@ -111,11 +120,39 @@ class TextArtefactForm extends StatefulWidget{
                                 ),
                                 onSaved: (String value) {
                                   this.text = value;
+                                  createFile(this.title, this.text,artefactFile);
                                 },
                                 // onFieldSubmitted: (descriptionEntered) {
                                 //   //_fieldFocusChange(context, descriptionFocusNode, dateFocusNode);
                                 // },
                               ),
+
+                              Visibility(
+                                visible: _fireStoreButtonVisibility,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(32),
+                                  child: Uploader(
+                                    user: user,
+                                    familyId: familyId,
+                                    file:artefactFile,
+                                    name:title,
+                                    description: text,
+                                    tags: null,
+                                    year: "null",
+                                  ),
+                                  
+                                ),
+                              ),
+                              Visibility(
+                                visible: _submitVisibility,
+                                child: RaisedButton.icon(
+                                  onPressed: _validateInputs, //(){_formKey.currentState.save();
+                                  // _fireStoreButtonVisibility = true;
+                                  // _submitVisibility = false;},
+                                  icon: Icon(Icons.add),
+                                  label: Text('Submit'),
+                                ),
+                              )
                             ],
                             ),
           ),
@@ -152,17 +189,11 @@ class TextArtefactForm extends StatefulWidget{
           ),
           Column
           (
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children:
             [
               
-              FloatingActionButton
-              (
-                backgroundColor: Colors.brown,
-                child: Icon(Icons.arrow_forward, color: Colors.white30),
-                onPressed: (){saveArtefact(text,title);},
-              ),
             ]
          ),
           
@@ -174,11 +205,53 @@ class TextArtefactForm extends StatefulWidget{
     );
   }
 
-  Future saveArtefact (String text, String title) async
+  // void saveArtefact (String text, String title) //async
+  // {
+  //   //var file = await File('dorm.txt').writeAsString(text);
+  //   Navigator.push(context,
+  //               MaterialPageRoute(builder: (context) => 
+  //   Uploader(
+  //                                   user: user,
+  //                                   familyId: familyId,
+  //                                   file:null,//file,//File('textFile as File'),
+  //                                   name:title,
+  //                                   description: text,
+  //                                   tags: ["null"],
+  //                                   year: "null",)
+  //                                   ,)
+  //                                   );
+  // }
+
+  void createFile(String title,String text, File artefactFile)
   {
-    var textFile = File(title+'.txt').writeAsStringSync(text);
-    Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user: user, familyId: familyId, artefactFile: (textFile) as File )));
+
+      print(text);
+      print(title);
+      final filename = title+'.txt';
+      new File(filename).writeAsString(text)
+      .then((File file) {
+      // Do something with the file.
+      artefactFile = file;
+    });
+  } 
+
+   void
+  _validateInputs() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      // Text forms was validated.
+      form.save();
+
+      setState(() {
+        _fireStoreButtonVisibility = true;
+        _submitVisibility = false;
+      });
+
+    } else {
+      setState(() => _autoValidate = true);
+    }
   }
 
 }
+
+   
