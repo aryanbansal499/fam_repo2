@@ -13,6 +13,7 @@ class UploadPage2 extends StatefulWidget {
   final FirebaseUser user;
   final String familyId;
 
+
   const UploadPage2({Key key, this.user, this.familyId}) : super(key: key);
 
   @override
@@ -79,7 +80,9 @@ class _UploadPageState extends State<UploadPage2> {
                   size: iconSize,
                   color: iconColor
               ),
-              artefactType.TXT
+              artefactType.TXT,
+            user,
+            familyId
           ),
 
           new MyButton("using audio",
@@ -88,7 +91,9 @@ class _UploadPageState extends State<UploadPage2> {
                   size: iconSize,
                   color: iconColor
               ),
-              artefactType.AUD
+              artefactType.AUD,
+            user,
+            familyId
           )
         ]
     );
@@ -105,7 +110,9 @@ class _UploadPageState extends State<UploadPage2> {
                   size: iconSize,
                   color: iconColor
               ),
-              artefactType.IMG
+              artefactType.IMG,
+              user,
+              familyId
           ),
           new MyButton(
               "accessing video camera",
@@ -114,7 +121,9 @@ class _UploadPageState extends State<UploadPage2> {
                   size: iconSize,
                   color: iconColor
               ),
-              artefactType.VID
+              artefactType.VID,
+            user,
+            familyId
           )
         ]
     );
@@ -127,27 +136,23 @@ class _UploadPageState extends State<UploadPage2> {
         "redirecting to gallery",
         RaisedButton.icon(
           icon: Icon(Icons.insert_photo),
-          label: Text("UPLOAD FROM GALLERY", textAlign: TextAlign.center,),
-          onPressed: () async {
-            artefact = await ImagePicker.pickImage(
-              source: ImageSource.gallery,
-            );
-            //TODO: send to edit page
-          },
+          label: Text("UPLOAD FROM GALLERY",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                  fontSize: 20.0))
         ),
-        artefactType.IMG
+        artefactType.GAL,
+        user,
+        familyId
     );
 
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
-            bottomOpacity: 1.0,
-            title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text('ADD ARTEFACT', textAlign: TextAlign.center)]
-            ),
+            toolbarOpacity: 0.5,
+            title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
             centerTitle: true),
 
         body: Stack(

@@ -30,6 +30,7 @@ class Home extends StatelessWidget {
     // TODO: implement build
     return
         Scaffold(
+          resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
           body: Stack(
             children: <Widget>[
@@ -179,6 +180,7 @@ class _MyAppBar extends StatelessWidget {
 
     return AppBar(
       title: Text('Families'),
+      centerTitle: true,
       actions: [
         IconButton(
           icon: Icon(Icons.settings),

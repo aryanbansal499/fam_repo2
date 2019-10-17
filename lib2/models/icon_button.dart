@@ -11,8 +11,10 @@ class MyButton extends StatelessWidget {
   static final Color iconColor = Colors.brown;
   static final double iconSize = 150.0;
   final artefactType _artefactType;
+  final user;
+  final family;
 
-  MyButton(this._snackbarString, this._button, this._artefactType);
+  MyButton(this._snackbarString, this._button, this._artefactType, this.user, this.family);
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +28,33 @@ class MyButton extends StatelessWidget {
 
         switch (_artefactType) { 
           case artefactType.AUD:
+
             break;
           case artefactType.TXT:
+//            Navigator.push(context,
+//                MaterialPageRoute(builder: (context) => TextArtefactForm()));
             break;
           case artefactType.VID:
+            File video  = await ImagePicker.pickVideo(
+              source: ImageSource.camera,
+            );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyCustomForm(user: user, familyId: family, artefactFile: video)));
             break;
           case artefactType.IMG:
             File picture = await ImagePicker.pickImage(
               source: ImageSource.camera,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(artefactFile: picture)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user: user,familyId:family,artefactFile: picture)));
+            //TODO:GO TO EDIT PAGE WITH picture object
+            break;
+          case artefactType.GAL:
+            File picture = await ImagePicker.pickImage(
+              source: ImageSource.gallery,
+            );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyCustomForm(user:user,familyId:family,artefactFile: picture)));
             //TODO:GO TO EDIT PAGE WITH picture object
             break;
         }

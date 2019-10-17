@@ -3,12 +3,10 @@
 import 'package:flutter/material.dart';
 import '../models/background.dart';
 import '../models/image_banner.dart';
-import 'package:fam_repo2/validation.dart';
+import '../services/validation.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
-import 'package:fam_repo2/validation.dart';
 import 'package:image_cropper/image_cropper.dart';
-
 import '../models/drop_down_button.dart';
 import '../models/ArtefactItem.dart';
 import '../services/Uploader.dart';
@@ -35,6 +33,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
   File artefactFile;
   final FirebaseUser user;
   final String familyId;
+  String name;
+  String description;
+  List<String> tags = new List<String>();
+  String year;
 
 
   _MyCustomFormState({this.artefactFile, this.user, this.familyId});
@@ -51,17 +53,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   TextEditingController _dateController;
   ScrollController scrollController;
 
-  //store artefact details
-  String name;
-  String description;
-  DateTime dateTime;
-  var tagList = new List<String>();
-
-  // String text = "Nothing to show";
-
-  // final ArtefactType _artefactType;
-  // final var _artefact;
-
+  final GlobalKey<_MyCustomFormState> _mainKey = GlobalKey();
   static final _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool _fireStoreButtonVisibility = false;
@@ -79,6 +71,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     _editingController = new TextEditingController();
     scrollController = new ScrollController();
 
+    year = "2019";
   }
 
   /// Cropper plugin
@@ -89,15 +82,29 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
     print("------------------------------------");
 
+    ImageCropper imageCropper = new ImageCropper();
     File cropped = await ImageCropper.cropImage(
         sourcePath: artefactFile.path,
         // ratioX: 1.0,
         // ratioY: 1.0,
         // maxWidth: 512,
         // maxHeight: 512,
-        toolbarColor: Colors.purple,
-        toolbarWidgetColor: Colors.white,
-        toolbarTitle: 'Crop It');
+        androidUiSettings: AndroidUiSettings(
+            toolbarColor: Colors.brown,
+            toolbarWidgetColor: Colors.amberAccent,
+            toolbarTitle: 'Crop It',
+            statusBarColor: Colors.white,
+            backgroundColor: Colors.brown,
+            cropGridColor: Colors.amberAccent,
+            activeControlsWidgetColor: Colors.amberAccent,
+            activeWidgetColor: Colors.brown,
+            cropFrameColor: Colors.amberAccent,
+            dimmedLayerColor: Colors.black12
+
+        )
+
+        );
+
 
     setState(() {
       artefactFile = cropped ?? artefactFile;
@@ -121,11 +128,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   //add a user-defined tag to the tagList
   void addTagToList(String tag) {
-    tagList.add(tag);
+    tags.add(tag);
 
     print("=======================");
-    for(int i=0; i < tagList.length; i++) {
-      print(tagList[i]);
+    for(int i=0; i < tags.length; i++) {
+      print(tags[i]);
 
     }
     print("=======================");
@@ -134,7 +141,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   void removeTagFromList(String tag) {
     int tagIndex;
 
-    if(tagList.contains(tag)) {
+    if(tags.contains(tag)) {
 
     }
   }
@@ -148,20 +155,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
       appBar: AppBar(
           backgroundColor: Colors.transparent,
           bottomOpacity: 1.0,
-          title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              //children: arrow + title
-              children: const <Widget>[
-                IconButton(
-                  icon: Icon(Icons.arrow_back,
-                      color: Colors.brown,
-                      size: 30.0,
-                      semanticLabel: 'icon to go back to previous page'
-                  ),
-                ),
-                Text('ADD ARTEFACT', textAlign: TextAlign.center)]
-          ),
+          title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
           centerTitle: true),
       body:
       //background is first in stack, then the column
@@ -235,7 +229,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                   _fieldFocusChange(context, descriptionFocusNode, dateFocusNode);
                                 },
                               ),
-                              YearList(),
+                              YearList(key: _mainKey,function: _setYear),
 //                              // The first text field is focused on as soon as the app starts.
 //                              TextFormField(
 //                                controller: _dateController,
@@ -296,7 +290,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                 onFieldSubmitted: (tag){
                                   addTagToList(tag);
                                   _editingController.text = "";
-                                  _editingController.text = tagList.toString();
+                                  _editingController.text = tags.toString();
 
                                   //TODO: displayTag(tag), deleting tags;
                                   //validate if description entered is correct
@@ -310,6 +304,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                     user: user,
                                     familyId: familyId,
                                     file: widget.artefactFile,
+                                    name:name,
+                                    description: description,
+                                    tags: tags,
+                                    year: year,
                                   ),
                                 ),
                               ),
@@ -363,6 +361,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
       // Text forms was validated.
       form.save();
 
+      print(this.name);
+      print(this.description);
+      print(this.year);
+      print(this.tags.toString());
+
       setState(() {
         _fireStoreButtonVisibility = true;
         _submitVisibility = false;
@@ -373,43 +376,48 @@ class _MyCustomFormState extends State<MyCustomForm> {
     }
   }
 
-  YearList
-  _pickYear() {
-    return new YearList();
-  }
-
   void
-  _pickDate() async {
-    DateFormat dateFormat = new DateFormat('yyyy-MM-dd');
-    DateTime picked;
-
-
-    picked = await showDatePicker(
-        initialDatePickerMode: DatePickerMode.year,
-        context: context,
-
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1500),
-        lastDate: DateTime.now(),
-        builder: (BuildContext context, Widget child) {
-          return Theme(
-              data: ThemeData.light(),
-              child: child
-          );
-        }
-    );
-
-    if (picked != null && picked != dateTime){
-      setState(() {
-        dateTime = picked;
-      }
-      );
-    }
-    dateFormat.format(picked);
-
-    print(" picked: " + picked.toString());
-
+  _setYear(String newYear) {
+    this.year = newYear;
   }
+
+//  YearList
+//  _pickYear() {
+//    return new YearList();
+//  }
+
+//  void
+//  _pickDate() async {
+//    DateFormat dateFormat = new DateFormat('yyyy-MM-dd');
+//    DateTime picked;
+//
+//
+//    picked = await showDatePicker(
+//        initialDatePickerMode: DatePickerMode.year,
+//        context: context,
+//
+//        initialDate: DateTime.now(),
+//        firstDate: DateTime(1500),
+//        lastDate: DateTime.now(),
+//        builder: (BuildContext context, Widget child) {
+//          return Theme(
+//              data: ThemeData.light(),
+//              child: child
+//          );
+//        }
+//    );
+//
+//    if (picked != null && picked != year){
+//      setState(() {
+//        dateTime = picked;
+//      }
+//      );
+//    }
+//    dateFormat.format(picked);
+//
+//    print(" picked: " + picked.toString());
+//
+//  }
 
 
 }
