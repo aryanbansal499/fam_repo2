@@ -39,14 +39,18 @@ class MyButton extends StatelessWidget {
               source: ImageSource.camera,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user: user, familyId: family, artefactFile: video)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user: user, familyId: family, artefactFile: video, editMode: false,)));
             break;
           case artefactType.IMG:
             File picture = await ImagePicker.pickImage(
               source: ImageSource.camera,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user: user,familyId:family,artefactFile: picture)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user: user,
+                                                          familyId:family,
+                                                          artefactFile: picture,
+                                                          editMode: false,)
+                ));
             //TODO:GO TO EDIT PAGE WITH picture object
             break;
           case artefactType.GAL:
@@ -54,7 +58,12 @@ class MyButton extends StatelessWidget {
               source: ImageSource.gallery,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user:user,familyId:family,artefactFile: picture)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user:user,
+                                                          familyId:family,
+                                                          artefactFile: picture,
+                                                          editMode: false,)
+                )
+            );
             //TODO:GO TO EDIT PAGE WITH picture object
             break;
         }

@@ -5,6 +5,7 @@ import '../models/background.dart';
 import '../models/image_banner.dart';
 import '../services/validation.dart';
 import 'package:intl/intl.dart';
+import '../services/middleware.dart';
 import 'dart:io';
 import 'package:image_cropper/image_cropper.dart';
 import '../models/drop_down_button.dart';
@@ -17,11 +18,15 @@ class MyCustomForm extends StatefulWidget {
   final File artefactFile;
   final FirebaseUser user;
   final String familyId;
+  final bool editMode;
 
-  const MyCustomForm({this.artefactFile, this.user, this.familyId});
+  const MyCustomForm({this.artefactFile, this.user, this.familyId, this.editMode});
 
   @override
-  _MyCustomFormState createState() => _MyCustomFormState(artefactFile: this.artefactFile, user: user, familyId: familyId);
+  _MyCustomFormState createState() => _MyCustomFormState(artefactFile: artefactFile,
+                                                          user: user,
+                                                          familyId: familyId,
+                                                          editMode: editMode);
 
 }
 
@@ -33,13 +38,14 @@ class _MyCustomFormState extends State<MyCustomForm> {
   File artefactFile;
   final FirebaseUser user;
   final String familyId;
+  final bool editMode;
   String name;
   String description;
   List<String> tags = new List<String>();
   String year;
 
 
-  _MyCustomFormState({this.artefactFile, this.user, this.familyId});
+  _MyCustomFormState({this.artefactFile, this.user, this.familyId, this.editMode});
 
   //Each field has a different focus node, will focus on field when tapped
   FocusNode nameFocusNode;
@@ -58,6 +64,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
   bool _autoValidate = false;
   bool _fireStoreButtonVisibility = false;
   bool _submitVisibility = true;
+  bool _deleteButtonVisibility = false;
+
+
   @override
   void initState() {
     super.initState();
@@ -71,7 +80,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
     _editingController = new TextEditingController();
     scrollController = new ScrollController();
 
-    year = "2019";
+    year = "2020";
+
+    if(editMode) {
+      _deleteButtonVisibility = true;
+    }
   }
 
   /// Cropper plugin
@@ -94,7 +107,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
             toolbarWidgetColor: Colors.amberAccent,
             toolbarTitle: 'Crop It',
             statusBarColor: Colors.white,
-            backgroundColor: Colors.brown,
+            backgroundColor: Colors.black54,
             cropGridColor: Colors.amberAccent,
             activeControlsWidgetColor: Colors.amberAccent,
             activeWidgetColor: Colors.brown,
@@ -229,52 +242,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                   _fieldFocusChange(context, descriptionFocusNode, dateFocusNode);
                                 },
                               ),
-                              YearList(key: _mainKey,function: _setYear),
-//                              // The first text field is focused on as soon as the app starts.
-//                              TextFormField(
-//                                controller: _dateController,
-//                                textInputAction: TextInputAction.next,
-//                                focusNode: dateFocusNode,
-//                                keyboardAppearance: Brightness.dark,
-//                                keyboardType: TextInputType.datetime,
-//                                maxLines: 1,
-//                                onTap: _pickDate,
-//                                decoration: InputDecoration(
-//                                  hintText: 'Enter the date the artefact originated',
-//
-//                                  labelText: 'Date (dd/mm/yyyy) ',
-//                                ),
-//                                validator: DateValidator.validate,
-//
-//                                onFieldSubmitted: (dateEntered) {
-////                        stringToDate(dateEntered);
-////                        //TODO: dateEntered to datetime type
-////                        print(this.dateTime);
-////
-////                        //validate if date entered is correct
-////                        bool validated = _formKey.currentState.validate() == null;
-////                        print('date validated: ' + validated.toString());
-////
-////                        if(!validated) {
-////                          print('validated');
-//                                  _fieldFocusChange(context, dateFocusNode, tagFocusNode);
-////                        }
-
-//                                },
-//                      onEditingComplete: () {
-//                        _formKey.currentState.validate();
-//                        currentFocusNode = tagFocusNode;
-//                      },
-//                              ),
-//                              FlatButton(
-//                                  onPressed: _pickDate,
-//                                  child: Text(
-//                                    'Date',
-//                                    style: TextStyle(color: Colors.blue),
-//                                  )
-//                              ),
-                              // The second text field is focused on when a user taps the
-                              // FloatingActionButton.
+                              YearList(key: _mainKey, function: _setYear),
                               TextFormField(
                                 textInputAction: TextInputAction.done,
                                 controller: _editingController,
@@ -318,20 +286,28 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                   icon: Icon(Icons.add),
                                   label: Text('Submit'),
                                 ),
+                              ),
+                              Visibility(
+                                visible: _deleteButtonVisibility,
+                                child: FlatButton(
+                                  child: Text('Delete Artefact'),
+                                  onPressed: () {
+                                    DatabaseService db = new DatabaseService();
+//                                    db.removeArtefact(user, , familyId)
+
+                                  }
+                                ),
                               )
-
-
                             ]
                           )
-                        ),
-
+                        )
                   ]
                 )
             )
           ]
-      ),
+        ),
 
-      floatingActionButton: FloatingActionButton(
+       floatingActionButton: FloatingActionButton(
         // When the button is pressed,
         // give focus to the text field using myFocusNode.
         onPressed: () {
@@ -378,8 +354,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   void
   _setYear(String newYear) {
-    this.year = newYear;
+    setState(() {
+      this.year = newYear;
+    }
+    );
   }
+
 
 //  YearList
 //  _pickYear() {

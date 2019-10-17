@@ -73,7 +73,7 @@ class _YearListState extends State<YearList> {
                 onChanged: (String newValue) {
 
                   setState(() {
-                    setYear(_dropdownValue);
+                    setYear(newValue);
                     _dropdownValue = newValue;
                   });
                 },
