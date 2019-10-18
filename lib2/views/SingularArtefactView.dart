@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../models/ArtefactItem.dart';
+import '../models/background.dart';
 
 
 
@@ -41,13 +42,21 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
+        new Background(),
         Scaffold(
+            resizeToAvoidBottomPadding: false,
+            backgroundColor: Colors.transparent,
+          //
+
           appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
             title: Text(artefact.name + " - " + family), //Must be fetched
           ),
           body: Stack(
+
             children: <Widget>[
-              //new Background(),
               Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +109,7 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
                 artefact.name,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
               ),
               /*Text(
                 artefact.family + " Family",
@@ -112,13 +121,13 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
                 artefact.description,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
               ),
               Text(
                 artefact.date.toString(),
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
               ),
               /*Text(
                 artefact.tags,
