@@ -132,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
+          //TODO create hero page
           Background(),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,

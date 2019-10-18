@@ -140,7 +140,7 @@ class DatabaseService {
         .map((snap) => ArtefactItem.fromFirestore(snap));
   }
 
-  Future<void> removeArtefact(FirebaseUser user, String id, dynamic family) {
+  Future<void> removeArtefact(String id, String family) {
     //TODO implement delete on firebase storage, useful code below, modify as needed:
     /* StorageReference storageReferance = FirebaseStorage.instance.ref();
     storageReference.child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));

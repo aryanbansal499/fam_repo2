@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../models/Family.dart';
 import '../models/Profile.dart';
 import '../models/background.dart';
 import '../services/middleware.dart';
@@ -100,6 +101,80 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   ),
                 ],
               ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FamilySettings extends StatelessWidget {
+  final db = DatabaseService();
+  final auth = FirebaseAuth.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    //get provider for family
+    var family = Provider.of<Family>(context);
+
+    return Stack(
+      children: <Widget>[
+        new Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration:new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("images/bg.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomPadding: false,
+          appBar: PreferredSize(
+              child:  AppBar(
+                title: Center(
+                    child: Text(family.name.toUpperCase())
+                ),
+                backgroundColor: Colors.transparent,
+                iconTheme: IconThemeData(
+                  color: IconOnCardColour, //change your color here
+                ),
+              ),
+              preferredSize: Size.fromHeight(60.0)),
+          //backgroundColor: Colors,
+          body: Scaffold(
+            //backgroundColor:
+            body:
+            Stack(
+              children: <Widget>[
+                (
+                ListView(
+                    children: [
+                      ListTile(
+                          title: Text("Edit Family Description"),
+                          onTap: () {
+                            db.signOut(auth);
+                            Navigator.pushNamed(context, '/');
+                          }
+                      ),
+                      ListTile(
+                          title: Text("Private Account"),
+                          trailing: Icon((FontAwesomeIcons.toggleOff))
+
+                      ),
+                      ListTile(
+                          title: Text("Sign out"),
+                          onTap: () {
+                            db.signOut(auth);
+                            Navigator.pushNamed(context, '/');
+                          }),
+                    ])
+                ),
+              ],
+            ),
           ),
         ),
       ],
