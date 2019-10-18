@@ -16,7 +16,7 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
 
   bool validate() {
     final form = formKey.currentState;
-    form.save();
+    //form.save();
     if (form.validate()) {
       form.save();
       return true;
@@ -25,13 +25,10 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
     }
   }
 
-  void submit() async {
+  void submit(BuildContext context) async {
     if (validate()) {
-      try {
-
-      } catch (e) {
-        print(e);
-      }
+      db.addFamily(user, {'name': _familyName, 'creator': user.uid, 'description': _description});
+      Navigator.of(context).pop();
     }
   }
 
@@ -48,12 +45,22 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextFormField(
-                    validator: StringValidator.validate,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(hintText: "Family name"),
                     onSaved: (value) => _familyName = value,
                   ),
                   TextFormField(
-                    validator: StringValidator.validate,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(hintText: 'Family description'),
                     onSaved: (value) => _description = value,
                   ),
@@ -71,10 +78,8 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
                 child: new Text('SUBMIT'),
                 onPressed: () {
                   //TODO validate submission
-                  submit();
+                  submit(context);
                   //TODO call db
-                  db.addFamily(user, {'name': _familyName, 'creator': user.uid, 'description': _description});
-                  Navigator.of(context).pop();
                 },
               )
             ],
