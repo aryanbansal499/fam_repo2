@@ -147,44 +147,51 @@ class _UploadPageState extends State<UploadPage2> {
         familyId
     );
 
-    return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-            backgroundColor: Colors.brown,
-            bottomOpacity: 1.0,
-            title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  
-                
-                  Text('Artefact Type', textAlign: TextAlign.center,style: TextStyle(color: Colors.black87, fontSize: 20,),
-                  )]
+    return Stack(
+      children: <Widget>[
+        new Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration:new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("images/bg.png"),
+              fit: BoxFit.cover,
             ),
-            centerTitle: true),
+          ),
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+            resizeToAvoidBottomPadding: false,
+            appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
+                centerTitle: true),
 
-        body: Stack(
-            children: <Widget>[
-              new Background(),
-              Container(
-                  decoration: BoxDecoration(
-                      color: Colors.transparent
-                  ),
-                  margin: EdgeInsets.all(5.0),
-                  padding: EdgeInsets.all(5.0),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        row1,
-                        row2,
-                        row3,
-                        row4
-                      ]
+            body: Stack(
+                children: <Widget>[
+                  //new Background(),
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.transparent
+                      ),
+                      margin: EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(5.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            row1,
+                            row2,
+                            row3,
+                            row4
+                          ]
+                      )
                   )
-              )
-            ]
-        )
+                ]
+            )
+        ),
+      ],
     );
   }
 }

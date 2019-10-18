@@ -7,6 +7,8 @@ import 'package:fam_repo2/background.dart';
 import 'package:fam_repo2/icon_button.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../style.dart';
+
 class UploadPage2 extends StatefulWidget {
   @override
   _UploadPageState createState() => _UploadPageState();
@@ -26,7 +28,7 @@ class _UploadPageState extends State<UploadPage2> {
   ScrollController scrollController;
 
   final double iconSize = 150.0;
-  final Color iconColor = Colors.brown;
+  final Color iconColor = IconOnAppBarColour;
 
   String name;
   String description;
@@ -90,7 +92,7 @@ class _UploadPageState extends State<UploadPage2> {
                     Icon(
                       Icons.camera_alt, 
                       size: iconSize,
-                      color: iconColor
+                      color: IconOnAppBarColour
                     ),
                     //ArtefactType.IMG
                   ),
@@ -129,6 +131,9 @@ class _UploadPageState extends State<UploadPage2> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           bottomOpacity: 1.0,
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(78, 48, 44, 1), //change your color here
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -136,7 +141,7 @@ class _UploadPageState extends State<UploadPage2> {
               Text('ADD ARTEFACT', textAlign: TextAlign.center)]
               ),
             centerTitle: true),
-        
+
         body: Stack(
         children: <Widget>[
           new Background(),
@@ -148,7 +153,7 @@ class _UploadPageState extends State<UploadPage2> {
             padding: EdgeInsets.all(5.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,          
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 row1,
                 row2,
@@ -156,7 +161,7 @@ class _UploadPageState extends State<UploadPage2> {
                 row4
               ]
               )
-          )  
+          )
         ]
       )
     ); 
