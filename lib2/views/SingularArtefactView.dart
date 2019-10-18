@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../models/ArtefactItem.dart';
+import '../models/background.dart';
 
 
 
@@ -41,19 +42,45 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
+        new Background(),
         Scaffold(
+            resizeToAvoidBottomPadding: false,
+            backgroundColor: Colors.transparent,
+          //
+
           appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
             title: Text(artefact.name + " - " + family), //Must be fetched
           ),
           body: Stack(
+
             children: <Widget>[
-              //new Background(),
               Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // if Image TODO modify as appropriate if audio/text/video
-              Image.network(artefact.downloadUrl),
+              Column (
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    new Container(
+
+                      height: 400.0,
+                      width: 410.0,
+                      decoration: new BoxDecoration(
+                        image: DecorationImage(
+                          image: new NetworkImage(
+                              artefact.downloadUrl),
+                          fit: BoxFit.fill,
+                        ),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ]
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -82,7 +109,7 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
                 artefact.name,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
               ),
               /*Text(
                 artefact.family + " Family",
@@ -94,13 +121,13 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
                 artefact.description,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
               ),
               Text(
                 artefact.date.toString(),
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
               ),
               /*Text(
                 artefact.tags,

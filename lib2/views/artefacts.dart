@@ -9,7 +9,6 @@ import '../views/upload_page3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../models/ArtefactItem.dart';
 import '../models/Family.dart';
 import '../models/artefactViewModel.dart';
@@ -125,13 +124,15 @@ class ArtefactsList extends StatelessWidget {
       // arg  below should equal to artefact.downloadUrl
       //child: Image.network('https://firebasestorage.googleapis.com/v0/b/thebug-test.appspot.com/o/2019-10-01%2012%3A57%3A02.154417.png?alt=media&token=10f859ae-e1ce-4a04-9286-a1420294492d')
       child: ListView(
+        scrollDirection: Axis.vertical,
         children: artefacts.map((artefact) {
           if (artefact == null || artefact.downloadUrl == null){
             return new Container();
           }
           return Card(
             color: Colors.transparent,
-            elevation: 5,
+            //shape: ShapeBorder.lerp(a, b, t),
+            //Shivam work on CardView and SingularArtefactView.
             child: ListTile(
               leading: Image.network(artefact.downloadUrl),
               title: Text(artefact.name),
