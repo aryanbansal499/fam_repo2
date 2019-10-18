@@ -23,16 +23,14 @@ class ArtefactBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(_artefactFile != null) {
-      if (_type == artefactType.IMG) {
+      if (_type == artefactType.IMG ||
+          _type == artefactType.GAL) {
         return ImageBanner(_artefactFile);
       }
       else if (_type == artefactType.VID) {
         return VideoBanner(_artefactFile);
       }
-      else if (_type == artefactType.GAL) {
-        //or determine if video or image
-        return ImageBanner(_artefactFile);
-      } else if(_type == artefactType.TXT) {
+      else if(_type == artefactType.TXT) {
         //TODO: ADD ARYAN'S CODE HERE
         return Container();
       } else if(_type == artefactType.AUD) {

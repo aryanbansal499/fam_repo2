@@ -64,7 +64,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   TextEditingController _dateController;
   ScrollController scrollController;
 
-  final GlobalKey<_MyCustomFormState> _mainKey = GlobalKey();
+  final GlobalKey<_MyCustomFormState> _mainKey = GlobalKey<_MyCustomFormState>();
   static final _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool _fireStoreButtonVisibility = false;
@@ -197,23 +197,24 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   children: [
                     new ArtefactBanner(artefactFile, type, user, familyId),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        FlatButton(
-                          color: Colors.white,
-                          child: Icon(
-                              Icons.crop,
-                              color: Colors.brown),
-                          onPressed: _cropImage,
-                        ),
-                        FlatButton(
-                          color: Colors.white,
-                          child: Icon(Icons.refresh, color: Colors.brown,),
-                          onPressed: _clear,
-                        ),
-                      ],
-                    ),
+                    if(type == artefactType.GAL || type == artefactType.IMG)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          FlatButton(
+                            color: Colors.white,
+                            child: Icon(
+                                Icons.crop,
+                                color: Colors.brown),
+                            onPressed: _cropImage,
+                          ),
+                          FlatButton(
+                            color: Colors.white,
+                            child: Icon(Icons.refresh, color: Colors.brown,),
+                            onPressed: _clear,
+                          ),
+                        ],
+                      ),
                     Form(
                         key: _formKey,
                         autovalidate: _autoValidate,
