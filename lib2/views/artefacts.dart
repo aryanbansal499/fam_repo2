@@ -1,8 +1,7 @@
-//TODO artefacts list page
-/* needs StreamProvider of artefact list */
-
 //TODO artefacts singular view
 /* needs artefact id and family id to be passed*/
+
+//TODO make artefacts view into a grid
 
 import '../models/background.dart';
 import '../style.dart';
@@ -17,6 +16,7 @@ import '../models/artefactViewModel.dart';
 import '../services/middleware.dart';
 import 'SingularArtefactView.dart';
 import 'artefactForm.dart';
+import 'settings.dart';
 
 class ArtefactsView extends StatelessWidget {
   @override
@@ -56,7 +56,7 @@ class ArtefactsView extends StatelessWidget {
           Scaffold(
             backgroundColor: Colors.transparent,
             resizeToAvoidBottomPadding: false,
-            appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
+            appBar: PreferredSize(child: _MyAppBar(fam.id), preferredSize: Size.fromHeight(60.0)),
             body: Stack(
               children: <Widget>[
                 //Background(),
@@ -108,6 +108,8 @@ class ArtefactsView extends StatelessWidget {
 
 class ArtefactsList extends StatelessWidget {
   @override
+  final db = DatabaseService();
+
   Widget build(BuildContext context) {
     var artefacts = Provider.of<List<ArtefactItem>>(context);
     var user = Provider.of<FirebaseUser>(context);
@@ -136,7 +138,18 @@ class ArtefactsList extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family: fam.name)));
-              }
+              },
+              trailing: Container(
+                child: IconButton(
+                  icon: Icon(Icons.delete),
+                  color: IconOnCardColour,
+                  onPressed: (){
+                    //TODO add a are you sure alert dialog box
+                    //TODO remove from db
+                    db.removeArtefact(artefact.id, fam.id);
+                  },
+                )
+              )
             ),
           );
         }).toList(),
@@ -182,6 +195,9 @@ class ArtefactsHeader extends StatelessWidget {
 
 class _MyAppBar extends StatelessWidget {
   final db = DatabaseService();
+  final String family;
+
+  _MyAppBar(this.family);
 
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
@@ -202,10 +218,13 @@ class _MyAppBar extends StatelessWidget {
         IconButton(
             icon: Icon(Icons.settings, color: IconOnAppBarColour,),
             //TODO change onpressed to go to FamilySettings
-            /*onPressed: () {Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProfileSettings(
-                    profile: userProfile)));
-            }*/
+            onPressed: () {Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>
+                StreamProvider<Family>.value(
+                  stream: db.streamFamily(family),
+                  child: FamilySettings(),
+                )));
+            }
         ),
       ],
     );
