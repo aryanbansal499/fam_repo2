@@ -93,7 +93,7 @@ class ArtefactsList extends StatelessWidget {
 
     //TODO display image instead - get downloadurl - add onTap - navigate to SingularArtefactView
     return Container(
-      height: MediaQuery.of(context).size.height * 0.55,
+      height: MediaQuery.of(context).size.height*0.55,
       // arg  below should equal to artefact.downloadUrl
       //child: Image.network('https://firebasestorage.googleapis.com/v0/b/thebug-test.appspot.com/o/2019-10-01%2012%3A57%3A02.154417.png?alt=media&token=10f859ae-e1ce-4a04-9286-a1420294492d')
       child: ListView(
@@ -104,13 +104,19 @@ class ArtefactsList extends StatelessWidget {
           return Card(
             color: Colors.black45,
             //Shivam work on CardView and SingularArtefactView.
-            child: ListTile(
-              leading: Image.network(artefact.downloadUrl),
-              title: Text(artefact.name),
-              onTap: () {
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              children: <Widget>[
+              Image.network(artefact.downloadUrl),
+              ListTile
+              (
+                title: Text(artefact.name),
+                onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact)));
               }
+              )
+              ]
             ),
           );
         }).toList(),
@@ -119,7 +125,17 @@ class ArtefactsList extends StatelessWidget {
   }
 }
 
+class ViewTypeBar extends StatelessWidget
+{
+  
 
+  @override
+  Widget build(BuildContext context) {
+    
+    return null;
+  }
+
+}
 class ArtefactsHeader extends StatelessWidget {
   @override
 
@@ -132,17 +148,24 @@ class ArtefactsHeader extends StatelessWidget {
     return Container(
       // family name
       // family description
-      padding: EdgeInsets.all(40.0),
+      padding: EdgeInsets.all(20.0),
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(fam.name),
-          Text(fam.description)
-        ],
+      height: MediaQuery.of(context).size.height*0.1,
+      child: SingleChildScrollView(
+        child:Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(fam.name + ': ', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+            Row
+            (
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+              Text(fam.description, style: TextStyle(fontSize: 12,fontWeight: FontWeight.normal),),
+              ],
+            )
+          ],
       )
-    );
+    ));
   }
 
 }
