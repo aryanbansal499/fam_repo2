@@ -153,9 +153,17 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.brown,
           bottomOpacity: 1.0,
-          title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
+          title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              //children: arrow + title
+              children: const <Widget>[
+                
+                Text('ADD ARTEFACT', textAlign: TextAlign.center)
+              ]
+          ),
           centerTitle: true),
       body:
       //background is first in stack, then the column

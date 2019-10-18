@@ -3,6 +3,9 @@ import '../models/ArtefactItem.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'TextArtefact.dart';
+
 
 
 class MyButton extends StatelessWidget {
@@ -31,8 +34,8 @@ class MyButton extends StatelessWidget {
 
             break;
           case artefactType.TXT:
-//            Navigator.push(context,
-//                MaterialPageRoute(builder: (context) => TextArtefactForm()));
+            Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => TextArtefactForm(user: user, familyId: family)));
             break;
           case artefactType.VID:
             File video  = await ImagePicker.pickVideo(
@@ -73,4 +76,6 @@ class MyButton extends StatelessWidget {
     );
   }
 }
+
+
 

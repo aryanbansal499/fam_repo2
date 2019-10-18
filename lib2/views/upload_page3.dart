@@ -150,9 +150,17 @@ class _UploadPageState extends State<UploadPage2> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            toolbarOpacity: 0.5,
-            title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
+            backgroundColor: Colors.brown,
+            bottomOpacity: 1.0,
+            title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  
+                
+                  Text('Artefact Type', textAlign: TextAlign.center,style: TextStyle(color: Colors.black87, fontSize: 20,),
+                  )]
+            ),
             centerTitle: true),
 
         body: Stack(
