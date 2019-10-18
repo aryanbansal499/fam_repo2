@@ -12,6 +12,7 @@ import '../models/drop_down_button.dart';
 import '../models/ArtefactItem.dart';
 import '../services/Uploader.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../models/video_banner.dart';
 
 
 class MyCustomForm extends StatefulWidget {
@@ -19,14 +20,16 @@ class MyCustomForm extends StatefulWidget {
   final FirebaseUser user;
   final String familyId;
   final bool editMode;
+  final artefactType type;
 
-  const MyCustomForm({this.artefactFile, this.user, this.familyId, this.editMode});
+  const MyCustomForm({this.artefactFile, this.user, this.familyId, this.editMode, this.type});
 
   @override
   _MyCustomFormState createState() => _MyCustomFormState(artefactFile: artefactFile,
                                                           user: user,
                                                           familyId: familyId,
-                                                          editMode: editMode);
+                                                          editMode: editMode,
+                                                          type: type);
 
 }
 
@@ -43,9 +46,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
   String description;
   List<String> tags = new List<String>();
   String year;
+  artefactType type;
 
 
-  _MyCustomFormState({this.artefactFile, this.user, this.familyId, this.editMode});
+  _MyCustomFormState({this.artefactFile, this.user, this.familyId, this.editMode, this.type});
 
   //Each field has a different focus node, will focus on field when tapped
   FocusNode nameFocusNode;
@@ -166,9 +170,17 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.brown,
           bottomOpacity: 1.0,
-          title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
+          title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              //children: arrow + title
+              children: const <Widget>[
+                
+                Text('ADD ARTEFACT', textAlign: TextAlign.center)
+              ]
+          ),
           centerTitle: true),
       body:
       //background is first in stack, then the column
@@ -182,7 +194,13 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 child: ListView(
                   controller: scrollController,
                   children: [
-                    ImageBanner(artefactFile),
+//                    if(type == artefactType.TXT)
+//                      Text(string),
+                    if(type == artefactType.IMG)
+                      ImageBanner(artefactFile),
+                    if(type == artefactType.VID)
+                      VideoBanner(artefactFile),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[

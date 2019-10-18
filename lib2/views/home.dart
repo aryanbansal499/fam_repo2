@@ -10,6 +10,7 @@ import '../models/Family.dart';
 import '../models/Profile.dart';
 import '../models/artefactViewModel.dart';
 import '../services/middleware.dart';
+import '../style.dart';
 import 'familyForm.dart';
 import 'settings.dart';
 import 'artefacts.dart';
@@ -29,45 +30,62 @@ class Home extends StatelessWidget {
     }
     // TODO: implement build
     return
-        Scaffold(
-          resizeToAvoidBottomPadding: false,
-          appBar: PreferredSize(child: _MyAppBar(), preferredSize: Size.fromHeight(60.0)),
-          body: Stack(
-            children: <Widget>[
-              Background(),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
+        Stack(
+          children: <Widget>[
+            new Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration:new BoxDecoration(
+                image: new DecorationImage(
+                  image: new AssetImage("images/bg.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Scaffold(
+              resizeToAvoidBottomPadding: false,
+              appBar: PreferredSize(
+                  child: _MyAppBar(),
+                  preferredSize: Size.fromHeight(60.0)),
+                backgroundColor: Colors.transparent,
+              body: Stack(
+                children: <Widget>[
+                  //Background(),
+                  Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        _FamiliesList()
-                      ],
-                    ),
-                    Center(
-                      /*child: RaisedButton(
-                          child: Text('Create'),
-                          onPressed: () => db.createUser(user)),*/
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        FamilyTextFieldAlertDialog(user),
-                            /*FloatingActionButton(
-                            child: Icon(Icons.add),
-                            //TODO redirect to family form
-                            onPressed: () {
-                              return TextFieldAlertDialog();
-                              //db.addFamily(user, {'name': 'Testing', 'creator': user.uid});
-                            })*/
-
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            _FamiliesList()
                           ],
-                    ),
-                  ]
+                        ),
+                        Center(
+                          /*child: RaisedButton(
+                              child: Text('Create'),
+                              onPressed: () => db.createUser(user)),*/
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            FamilyTextFieldAlertDialog(user),
+                                /*FloatingActionButton(
+                                child: Icon(Icons.add),
+                                //TODO redirect to family form
+                                onPressed: () {
+                                  return TextFieldAlertDialog();
+                                  //db.addFamily(user, {'name': 'Testing', 'creator': user.uid});
+                                })*/
+
+                              ],
+                        ),
+                      ]
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         );
   }
 }
@@ -89,6 +107,7 @@ class _FamiliesList extends StatelessWidget {
 
 class FamiliesList extends StatelessWidget {
   @override
+  final db = DatabaseService();
 
   var tapped;
   redirect(String id) {
@@ -113,13 +132,25 @@ class FamiliesList extends StatelessWidget {
                 children: families.map((family) {
                   //TODO insert UI here
                   return Card(
+                    color: Colors.transparent,
                     child: ListTile(
                       //leading: TODO if want to add image or crest
                       title: Text(family.name),
                       onTap: () => {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Buffer(id: family.id)))
-                      }
+                      },
+                      trailing: Container(
+                        child: IconButton(
+                          icon: Icon(Icons.delete),
+                          color: IconOnCardColour,
+                          onPressed: (){
+                            //TODO add a are you sure alert dialog box
+                            //TODO remove from db
+                            db.removeFamily(family.id);
+                          },
+                        )
+                      )
                       ),
                   );
                 }).toList(),
@@ -168,11 +199,14 @@ class _MyAppBar extends StatelessWidget {
     });
 
     return AppBar(
-      title: Text('Families'),
+      title: Text('FAMILIES'),
       centerTitle: true,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       actions: [
         IconButton(
           icon: Icon(Icons.settings),
+          color: IconOnAppBarColour,
           onPressed: () {Navigator.push(context,
               MaterialPageRoute(builder: (context) => ProfileSettings(
               profile: userProfile)));

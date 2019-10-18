@@ -154,6 +154,17 @@ class DatabaseService {
         .delete();
   }
 
+  Future<void> removeFamily(dynamic family) {
+    //TODO implement delete on firebase storage, useful code below, modify as needed:
+    /* StorageReference storageReferance = FirebaseStorage.instance.ref();
+    storageReference.child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
+*/
+    return _db
+        .collection('families')
+        .document(family)
+        .delete();
+  }
+
 
   /// Query a subcollection
   Stream<List<Family>> streamFamilies(FirebaseUser user) {

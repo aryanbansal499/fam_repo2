@@ -25,11 +25,15 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
+          //theme: ThemeData(cursorColor: Colors.brown,primarySwatch: Colors.brown),
           initialRoute: '/',
 
           theme: ThemeData(
+              cursorColor: Colors.brown,
+              primarySwatch: Colors.brown,
               appBarTheme: AppBarTheme(
-                textTheme: TextTheme(title: AppBarTextStyle)
+                textTheme: TextTheme(title: AppBarTextStyle),
+                color: Colors.transparent
               ),
               textTheme: TextTheme(
                 title: SubtitleTextStyle

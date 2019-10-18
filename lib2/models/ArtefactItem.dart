@@ -26,7 +26,7 @@ class ArtefactItem /*extends StatelessWidget*/ {
 
   final String artefactLink;
   final artefactType type;
-  final Timestamp date;
+  final String date;
   final String description;
   final String name;
   final List<dynamic> tags;

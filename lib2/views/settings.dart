@@ -1,4 +1,8 @@
 //TODO accept and handle firebase user
+//TODO add change password
+//TODO add delete account
+//TODO add a familySettings class
+//TODO remove make account private - since the app is private
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +10,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../models/Profile.dart';
+import '../models/background.dart';
 import '../services/middleware.dart';
+import '../style.dart';
 
 
 
@@ -46,25 +52,57 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(profile.username), //Must be fetched
-      ),
-      body: (
-          ListView(children: [
-            ListTile(title: Text("Edit Profile Description")),
-            ListTile( title: Text("Private Account"),
-                trailing: Icon((FontAwesomeIcons.toggleOff))
-
+    return Stack(
+      children: <Widget>[
+        new Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration:new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("images/bg.png"),
+              fit: BoxFit.cover,
             ),
-            ListTile(
-                title: Text("Sign out"),
-                onTap: () {
-                  db.signOut(auth);
-                  Navigator.pushNamed(context, '/');
-                }),
-          ])
-      ),
+          ),
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomPadding: false,
+          appBar: PreferredSize(
+              child:  AppBar(
+                title: Text(profile.username.toUpperCase()),
+                backgroundColor: Colors.transparent,
+                iconTheme: IconThemeData(
+                  color: IconOnCardColour, //change your color here
+                ),
+        ),
+              preferredSize: Size.fromHeight(60.0)),
+          //backgroundColor: Colors,
+          body: Scaffold(
+            //backgroundColor:
+            body:
+              Stack(
+                children: <Widget>[
+                  (
+                      ListView(
+                          children: [
+                        ListTile(title: Text("Edit Profile Description")),
+                        ListTile( title: Text("Private Account"),
+                            trailing: Icon((FontAwesomeIcons.toggleOff))
+
+                        ),
+                        ListTile(
+                            title: Text("Sign out"),
+                            onTap: () {
+                              db.signOut(auth);
+                              Navigator.pushNamed(context, '/');
+                            }),
+                      ])
+                  ),
+                ],
+              ),
+          ),
+        ),
+      ],
     );
   }
 }

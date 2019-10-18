@@ -3,6 +3,9 @@ import '../models/ArtefactItem.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'TextArtefact.dart';
+
 
 
 class MyButton extends StatelessWidget {
@@ -10,11 +13,11 @@ class MyButton extends StatelessWidget {
   final _button;
   static final Color iconColor = Colors.brown;
   static final double iconSize = 150.0;
-  final artefactType _artefactType;
+  final artefactType _type;
   final user;
   final family;
 
-  MyButton(this._snackbarString, this._button, this._artefactType, this.user, this.family);
+  MyButton(this._snackbarString, this._button, this._type, this.user, this.family);
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +29,24 @@ class MyButton extends StatelessWidget {
 
         Scaffold.of(context).showSnackBar(snackBar);
 
-        switch (_artefactType) { 
+        switch (_type) {
           case artefactType.AUD:
 
             break;
           case artefactType.TXT:
-//            Navigator.push(context,
-//                MaterialPageRoute(builder: (context) => TextArtefactForm()));
+            Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => TextArtefactForm(user: user, familyId: family)));
             break;
           case artefactType.VID:
             File video  = await ImagePicker.pickVideo(
               source: ImageSource.camera,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user: user, familyId: family, artefactFile: video, editMode: false,)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user: user,
+                                                            familyId: family,
+                                                            artefactFile: video,
+                                                            editMode: false,
+                                                            type: _type,)));
             break;
           case artefactType.IMG:
             File picture = await ImagePicker.pickImage(
@@ -49,7 +56,8 @@ class MyButton extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => MyCustomForm(user: user,
                                                           familyId:family,
                                                           artefactFile: picture,
-                                                          editMode: false,)
+                                                          editMode: false,
+                                                          type: _type,)
                 ));
             //TODO:GO TO EDIT PAGE WITH picture object
             break;
@@ -61,7 +69,8 @@ class MyButton extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => MyCustomForm(user:user,
                                                           familyId:family,
                                                           artefactFile: picture,
-                                                          editMode: false,)
+                                                          editMode: false,
+                                                          type: _type,)
                 )
             );
             //TODO:GO TO EDIT PAGE WITH picture object
@@ -82,4 +91,6 @@ class MyButton extends StatelessWidget {
     );
   }
 }
+
+
 
