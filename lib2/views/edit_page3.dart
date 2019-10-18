@@ -13,6 +13,7 @@ import '../models/ArtefactItem.dart';
 import '../services/Uploader.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/video_banner.dart';
+import '../models/ArtefactFile.dart';
 
 
 class MyCustomForm extends StatefulWidget {
@@ -194,12 +195,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 child: ListView(
                   controller: scrollController,
                   children: [
-//                    if(type == artefactType.TXT)
-//                      Text(string),
-                    if(type == artefactType.IMG)
-                      ImageBanner(artefactFile),
-                    if(type == artefactType.VID)
-                      VideoBanner(artefactFile),
+                    new ArtefactBanner(artefactFile, type, user, familyId),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

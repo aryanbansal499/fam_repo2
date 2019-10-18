@@ -38,6 +38,7 @@ dependencies:
   intl: ^0.16.0
   image_picker: ^0.6.0+17
   image_cropper: ^1.1.0
+  chewie: ^0.9.7
   video_player:
 #  camera:
 #  path_provider:
