@@ -53,7 +53,25 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // if Image TODO modify as appropriate if audio/text/video
-              Image.network(artefact.downloadUrl),
+              Column (
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    new Container(
+
+                      height: 400.0,
+                      width: 410.0,
+                      decoration: new BoxDecoration(
+                        image: DecorationImage(
+                          image: new NetworkImage(
+                              artefact.downloadUrl),
+                          fit: BoxFit.fill,
+                        ),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ]
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
