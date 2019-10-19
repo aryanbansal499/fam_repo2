@@ -21,6 +21,29 @@ class ArtefactsView extends StatelessWidget {
   @override
 
   final db = DatabaseService();
+   bool gridView = false;
+   bool listView = true;
+   bool getGridViewState()
+    {
+      return gridView;
+    }
+
+    void setGridViewState(bool view)
+    {
+      gridView = view;
+
+    }
+
+    bool getListViewState()
+    {
+      return listView;
+    }
+
+    void setListViewState(bool view)
+    {
+      listView = view;
+
+    }
 
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -28,7 +51,9 @@ class ArtefactsView extends StatelessWidget {
     var user = Provider.of<FirebaseUser>(context);
     var fam = Provider.of<Family>(context);
     var artefactId;
+   
 
+   
     return MultiProvider(
       providers: [
         StreamProvider<Family>.value(
@@ -37,7 +62,7 @@ class ArtefactsView extends StatelessWidget {
         ),
           StreamProvider<Family>.value(
           stream: db.streamFamily(fam.id),
-          child: ArtefactsList(),
+          child: ArtefactsList(gridView,listView),
           )
     ],
       child: Stack(
@@ -57,23 +82,38 @@ class ArtefactsView extends StatelessWidget {
             resizeToAvoidBottomPadding: false,
             appBar: PreferredSize(child: _MyAppBar(fam.id), preferredSize: Size.fromHeight(60.0)),
             body: Stack(
+
+              
               children: <Widget>[
                 //Background(),
+      
                 Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.1,
                         margin: EdgeInsets.all(0),
                         child: ArtefactsHeader()),
+                      ButtonBar
+                      (
+                        mainAxisSize: MainAxisSize.min,
+                        alignment: MainAxisAlignment.start,
+                        children: <Widget>
+                        [
+                          IconButton(icon: Icon(Icons.list),alignment: Alignment.topLeft, onPressed:(){setGridViewState(false); setListViewState(true);} ),
+                          FlatButton(),
+                          FlatButton(),
+                          IconButton(icon: Icon(Icons.grid_on), onPressed:(){setGridViewState(true); setListViewState(false);} )
+                        ],
+                      ),
                       StreamProvider<List<ArtefactItem>>.value(
                         stream: db.streamArtefacts(user, vm.matchId),
                         child: Container(
                           decoration: BoxDecoration(
-                            //color: Colors.black45,
+                            //color: Colors.brown,
                           ),
-                          child: ArtefactsList(),
+                          child: ArtefactsList(getGridViewState(),getListViewState()),
                         )
                       ),
                       Row(
@@ -108,7 +148,10 @@ class ArtefactsView extends StatelessWidget {
 class ArtefactsList extends StatelessWidget {
   @override
   final db = DatabaseService();
-
+  ArtefactsView av = ArtefactsView(); 
+  bool listView;
+  bool gridView;
+  ArtefactsList(this.gridView, this.listView); 
   Widget build(BuildContext context) {
     var artefacts = Provider.of<List<ArtefactItem>>(context);
     var user = Provider.of<FirebaseUser>(context);
@@ -118,44 +161,104 @@ class ArtefactsList extends StatelessWidget {
       return new Container();
     }
 
-    //TODO display image instead - get downloadurl - add onTap - navigate to SingularArtefactView
-    return Container(
+    else {
+      if(av.getListViewState())
+      {
+           print(listView);
+           print(gridView);
+      return Container(
       height: MediaQuery.of(context).size.height * 0.55,
       // arg  below should equal to artefact.downloadUrl
       //child: Image.network('https://firebasestorage.googleapis.com/v0/b/thebug-test.appspot.com/o/2019-10-01%2012%3A57%3A02.154417.png?alt=media&token=10f859ae-e1ce-4a04-9286-a1420294492d')
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: artefacts.map((artefact) {
-          if (artefact == null || artefact.downloadUrl == null){
+        
+        child:ListView(
+          shrinkWrap: true,
+          children: artefacts.map((artefact) {
+            if (artefact == null || artefact.downloadUrl == null){
             return new Container();
           }
           return Card(
+            margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
             color: Colors.transparent,
-            //shape: ShapeBorder.lerp(a, b, t),
             //Shivam work on CardView and SingularArtefactView.
-            child: ListTile(
-              leading: Image.network(artefact.downloadUrl),
-              title: Text(artefact.name),
-              onTap: () {
+            child: Column(
+              //alignment: WrapAlignment.start,
+              children: <Widget>[
+              Container
+              (
+                padding: const EdgeInsets.all(8.0),
+                child:Image.network(artefact.downloadUrl,),
+              ),
+
+               ListTile
+                (
+                title: Text(artefact.name),
+                onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family: fam.name)));
-              },
-              trailing: Container(
-                child: IconButton(
-                  icon: Icon(Icons.delete),
-                  color: IconOnCardColour,
-                  onPressed: (){
-                    //TODO add a are you sure alert dialog box
-                    //TODO remove from db
-                    db.removeArtefact(artefact.id, fam.id);
-                  },
-                )
+                    MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family:fam.name)));
+              }
               )
+              
+              ]
             ),
           );
         }).toList(),
       ),
     );
+    }
+
+    else if( av.getGridViewState())
+    {
+    
+      print("gridView is working");
+      return new Container
+      (
+        child: GridView.count
+        (
+            shrinkWrap: true,
+            children: artefacts.map((artefact) {
+            if (artefact == null || artefact.downloadUrl == null){
+            return new Container();
+          }
+          return Card(
+            margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+            color: Colors.transparent,
+            //Shivam work on CardView and SingularArtefactView.
+            child: Column(
+              //alignment: WrapAlignment.start,
+              children: <Widget>[
+              Container
+              (
+                padding: const EdgeInsets.all(8.0),
+                child:Image.network(artefact.downloadUrl,),
+              ),
+
+               ListTile
+                (
+                title: Text(artefact.name),
+                onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family:fam.name)));
+              }
+              )
+              
+              ]
+            ),
+          );
+        }).toList(), crossAxisCount: 2, 
+          
+
+
+        )
+
+
+          
+
+      );
+    }
+  }
+    //TODO display image instead - get downloadurl - add onTap - navigate to SingularArtefactView
+   
   }
 }
 
@@ -169,30 +272,26 @@ class ArtefactsHeader extends StatelessWidget {
     if (fam == null){
       return new Container();
     }
-    return Container(
-      /*decoration: new BoxDecoration(border:
-        Border(
-          bottom: BorderSide( //                   <--- left side
-          color: Colors.black45,
-          width: 3.0,)
-        ),
-      ),*/
-      // family name
-      // family description
-      padding: EdgeInsets.all(40.0),
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(fam.name),
-            Text(fam.description)
-          ],
-      )
-    ));
+    return ListView(
+        children:
+        [
+         
+              Column
+              (
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>
+                [
+                  Text(fam.name + ': ' + fam.description),
+                  //Text(fam.description)
+                ],
+              ),
+        ]
+    );
   }
 
 }
+
+
 
 class _MyAppBar extends StatelessWidget {
   final db = DatabaseService();
