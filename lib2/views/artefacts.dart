@@ -172,22 +172,33 @@ class ArtefactsList extends StatelessWidget {
       //child: Image.network('https://firebasestorage.googleapis.com/v0/b/thebug-test.appspot.com/o/2019-10-01%2012%3A57%3A02.154417.png?alt=media&token=10f859ae-e1ce-4a04-9286-a1420294492d')
         
         child:ListView(
+          
           shrinkWrap: true,
           children: artefacts.map((artefact) {
             if (artefact == null || artefact.downloadUrl == null){
             return new Container();
           }
-          return Card(
-            margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+          return 
+          Container(
+            margin:EdgeInsets.all(8.0),
+            child: Card(
+
             color: Colors.transparent,
-            //Shivam work on CardView and SingularArtefactView.
-            child: Column(
-              //alignment: WrapAlignment.start,
+            margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+  
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: Column(
+              
+               
               children: <Widget>[
-              Container
+               Container
               (
+                
+                width: 500,
+                height: 300,
                 padding: const EdgeInsets.all(8.0),
-                child:Image.network(artefact.downloadUrl,),
+                child: Image.network(artefact.downloadUrl,fit: BoxFit.fill,),
               ),
 
                ListTile
@@ -201,7 +212,14 @@ class ArtefactsList extends StatelessWidget {
               
               ]
             ),
+            ),
+            
+            //color: Colors.transparent,
+            //Shivam work on CardView and SingularArtefactView.
+            
+          ),
           );
+          
         }).toList(),
       ),
     );
@@ -238,7 +256,7 @@ class ArtefactsList extends StatelessWidget {
                 title: Text(artefact.name),
                 onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family:fam.name)));
+                    MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family:fam.name,familyId: fam.id)));
               }
               )
               
@@ -281,7 +299,7 @@ class ArtefactsHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>
                 [
-                  Text(fam.name + ': ' + fam.description),
+                  Text(' ` ' +fam.name + ' - ' + fam.description,style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                   //Text(fam.description)
                 ],
               ),

@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../models/ArtefactItem.dart';
+import '../models/Family.dart';
 import '../models/background.dart';
+import '../services/middleware.dart';
+import '../style.dart';
+import 'settings.dart';
 
 
 
@@ -14,18 +20,20 @@ class SingularArtefactView extends StatefulWidget {
   // instead of creating a new State object.
   final ArtefactItem artefact;
   final String family;
+  final String familyId;
 
-  SingularArtefactView({Key key, @required this.artefact, this.family}) : super(key: key);
+  SingularArtefactView({Key key, @required this.artefact, this.family,this.familyId}) : super(key: key);
 
   @override
-  _SingularArtefactViewState createState() => _SingularArtefactViewState(artefact, family);
+  _SingularArtefactViewState createState() => _SingularArtefactViewState(artefact, family,familyId);
 }
 
 class _SingularArtefactViewState extends State<SingularArtefactView> {
 
   ArtefactItem artefact;
   final String family;
-  _SingularArtefactViewState(this.artefact, this.family);
+  final String familyId;
+  _SingularArtefactViewState(this.artefact, this.family,this.familyId);
 
 
   void _handleChange() {
@@ -48,12 +56,7 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
             backgroundColor: Colors.transparent,
           //
 
-          appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: Text(artefact.name + " - " + family), //Must be fetched
-          ),
+          appBar: PreferredSize(child: _MyAppBar(artefact.name+' : '+family,familyId), preferredSize: Size.fromHeight(60.0)),
           body: Stack(
 
             children: <Widget>[
@@ -147,6 +150,46 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
           ),
           ]
           )
+        ),
+      ],
+    );
+  }
+  
+}
+
+class _MyAppBar extends StatelessWidget {
+  final db = DatabaseService();
+  final String family;
+  final String familyId;
+
+  _MyAppBar(this.family,this.familyId);
+
+  Widget build(BuildContext context) {
+    var user = Provider.of<FirebaseUser>(context);
+    //User userProfile;
+
+    db.getProfile(user.uid).then((onValue) async {
+      //userProfile = await onValue;
+    });
+
+    return AppBar(
+      title: Center( child: Text(family)),
+      backgroundColor: Colors.transparent,
+      iconTheme: IconThemeData(
+        color: IconOnAppBarColour, //change your color here
+      ),
+      elevation: 0,
+      actions: [
+        IconButton(
+            icon: Icon(Icons.settings, color: IconOnAppBarColour,),
+            //TODO change onpressed to go to FamilySettings
+            onPressed: () {Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>
+                StreamProvider<Family>.value(
+                  stream: db.streamFamily(familyId),
+                  child: FamilySettings(),
+                )));
+            }
         ),
       ],
     );
