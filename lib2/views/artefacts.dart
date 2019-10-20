@@ -82,6 +82,7 @@ class ArtefactsView extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                               FloatingActionButton(
+                                backgroundColor: IconOnAppBarColour,
                               child: Icon(Icons.add),
                               onPressed: () {
                                 //TODO route to upload page with user and fam id uncomment when form is integrated

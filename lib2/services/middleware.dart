@@ -86,6 +86,20 @@ class DatabaseService {
         .add(family); // uncomment when not prototyping
   }
 
+  // update family data
+  Future<void> editFamilyDescription(dynamic family, String desc) {
+    //get family uid and link to collection into families array
+    //_db.collection('users').document(user.uid).setData(data)
+    //List<String> fams =  _getFamilies(user);
+    //fams.add('test');
+
+    // should also call firebase storage and add a new folder dynamically
+    return _db
+        .collection('families')
+        .document(family.id)
+        .updateData({'description': desc}); // uncomment when not prototyping
+  }
+
   // Call addArtefact upon submission of upload artefact page
   Future<DocumentReference> addArtefactFirestore(FirebaseUser user, dynamic artefact, dynamic family) {
     //TODO implement file upload when adding artefact
@@ -153,6 +167,22 @@ class DatabaseService {
         .document(id)
         .delete();
   }
+
+  Future<void> editArtefactDescription(FirebaseUser user, String family, String id, String desc) {
+    //get family uid and link to collection into families array
+    //_db.collection('users').document(user.uid).setData(data)
+    //List<String> fams =  _getFamilies(user);
+    //fams.add('test');
+
+    // should also call firebase storage and add a new folder dynamically
+    return _db
+        .collection('families')
+        .document(family)
+        .collection('artefacts')
+        .document(id)
+        .updateData({'description': desc}); // uncomment when not prototyping
+  }
+
 
   Future<void> removeFamily(dynamic family) {
     //TODO implement delete on firebase storage, useful code below, modify as needed:

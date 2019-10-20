@@ -199,6 +199,9 @@ class _MyAppBar extends StatelessWidget {
     });
 
     return AppBar(
+      iconTheme: IconThemeData(
+        color: IconOnCardColour, //change your color here
+      ),
       title: Text('FAMILIES'),
       centerTitle: true,
       backgroundColor: Colors.transparent,

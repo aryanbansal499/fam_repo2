@@ -13,6 +13,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../models/drop_down_button.dart';
 import '../services/middleware.dart';
 import '../models/ArtefactItem.dart';
 
@@ -358,5 +359,110 @@ class _UploaderState extends State<Uploader> {
           onPressed: _onSubmit
           );
     }
+  }
+}
+
+class StringValidator {
+  static String validate(String value)
+  {
+    return value.isEmpty ? "Text field can't be empty " : null;
+  }
+}
+
+class ArtefactEditAlertDialog extends StatelessWidget {
+  TextEditingController _textFieldController = TextEditingController();
+
+  //TODO refactor for editing the family name and description
+
+  String _description;
+  String _familyName;
+  final _formKey = GlobalKey<FormState>();
+  String year;
+
+  final db = DatabaseService();
+  final family;
+
+  ArtefactEditAlertDialog(this.family);
+
+  void
+  _setYear(String newYear) {
+    this.year = newYear;
+  }
+
+  bool validate() {
+    final form = _formKey.currentState;
+    form.save();
+    if (form.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void submit() async {
+    if (validate()) {
+      try {
+
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+
+  _displayDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Udate family description'),
+            content: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextFormField(
+                    validator: StringValidator.validate,
+
+                    decoration: InputDecoration(
+                        hintText: family.description),
+                    onSaved: (value) => _description = value,
+                  ),
+                  YearList(key: _formKey,function: _setYear),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('SUBMIT'),
+                onPressed: () {
+                  //TODO validate submission
+                  submit();
+                  //TODO call db
+                  db.editFamilyDescription(family, _description);
+
+                  //TODO edit family, update data
+                  //db.addFamily(user, {'name': _familyName, 'creator': user.uid, 'description': _description});
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text("Edit Family Description"),
+      onTap: () => _displayDialog(context),
+    );
   }
 }

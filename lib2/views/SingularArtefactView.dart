@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../models/ArtefactItem.dart';
 import '../models/background.dart';
+import '../style.dart';
+import 'settings.dart';
 
 
 
@@ -51,8 +53,22 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
           appBar: AppBar(
             centerTitle: true,
             backgroundColor: Colors.transparent,
+            iconTheme: IconThemeData(
+              color: IconOnCardColour, //change your color here
+            ),
             elevation: 0,
-            title: Text(artefact.name + " - " + family), //Must be fetched
+            title: Text(artefact.name.toUpperCase() + " - " + family.toUpperCase()),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.edit, color: IconOnAppBarColour,),
+                  onPressed: (){
+                    // TODO go to artefact settings
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ArtefactSettings(artefact: artefact))
+                        );
+                  },
+              ),
+            ],//Must be fetched
           ),
           body: Stack(
 
