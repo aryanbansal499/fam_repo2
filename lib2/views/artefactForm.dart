@@ -465,7 +465,7 @@ class ArtefactEditAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("Edit Family Description"),
+      title: Text("Edit Artefact Details"),
       onTap: () => _displayDialog(context),
     );
   }

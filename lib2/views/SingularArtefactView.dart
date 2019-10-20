@@ -35,6 +35,10 @@ class SingularArtefactView extends StatelessWidget {
   Widget build(BuildContext context) {
     var artefact = Provider.of<ArtefactItem>(context);
 
+    if (artefact == null){
+      return new Container();
+    }
+
     return Stack(
       children: <Widget>[
         new Background(),

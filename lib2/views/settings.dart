@@ -212,7 +212,7 @@ class ArtefactSettings extends StatelessWidget {
           resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(
               child:  AppBar(
-                title: (artefact.name.toUpperCase()),
+                title: Text(artefact.name.toUpperCase()),
                 centerTitle: true,
                 backgroundColor: Colors.transparent,
                 iconTheme: IconThemeData(
