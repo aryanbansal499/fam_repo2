@@ -13,11 +13,11 @@ class MyButton extends StatelessWidget {
   final _button;
   static final Color iconColor = Colors.brown;
   static final double iconSize = 150.0;
-  final artefactType _artefactType;
+  final artefactType _type;
   final user;
   final family;
 
-  MyButton(this._snackbarString, this._button, this._artefactType, this.user, this.family);
+  MyButton(this._snackbarString, this._button, this._type, this.user, this.family);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class MyButton extends StatelessWidget {
 
         Scaffold.of(context).showSnackBar(snackBar);
 
-        switch (_artefactType) { 
+        switch (_type) {
           case artefactType.AUD:
 
             break;
@@ -42,14 +42,23 @@ class MyButton extends StatelessWidget {
               source: ImageSource.camera,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user: user, familyId: family, artefactFile: video)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user: user,
+                                                            familyId: family,
+                                                            artefactFile: video,
+                                                            editMode: false,
+                                                            type: _type,)));
             break;
           case artefactType.IMG:
             File picture = await ImagePicker.pickImage(
               source: ImageSource.camera,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user: user,familyId:family,artefactFile: picture)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user: user,
+                                                          familyId:family,
+                                                          artefactFile: picture,
+                                                          editMode: false,
+                                                          type: _type,)
+                ));
             //TODO:GO TO EDIT PAGE WITH picture object
             break;
           case artefactType.GAL:
@@ -57,7 +66,13 @@ class MyButton extends StatelessWidget {
               source: ImageSource.gallery,
             );
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyCustomForm(user:user,familyId:family,artefactFile: picture)));
+                MaterialPageRoute(builder: (context) => MyCustomForm(user:user,
+                                                          familyId:family,
+                                                          artefactFile: picture,
+                                                          editMode: false,
+                                                          type: _type,)
+                )
+            );
             //TODO:GO TO EDIT PAGE WITH picture object
             break;
         }

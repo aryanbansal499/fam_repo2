@@ -10,7 +10,8 @@ class Background extends StatelessWidget{
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
 
-    return new Center(
+    return new Positioned(
+      top: 0.0,
       child: new Image.asset(
               'images/bg.png',
               width: screenSize.width,

@@ -9,6 +9,8 @@ import '../models/icon_button.dart';
 import '../models/ArtefactItem.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../style.dart';
+
 class UploadPage2 extends StatefulWidget {
   final FirebaseUser user;
   final String familyId;
@@ -139,8 +141,7 @@ class _UploadPageState extends State<UploadPage2> {
           label: Text("UPLOAD FROM GALLERY",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: 20.0))
+                  fontWeight: FontWeight.w900))
         ),
         artefactType.GAL,
         user,
