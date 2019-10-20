@@ -1,15 +1,20 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:image_picker_saver/image_picker_saver.dart';
 import '../models/ArtefactItem.dart';
 import '../models/Family.dart';
 import '../models/background.dart';
 import '../services/middleware.dart';
 import '../style.dart';
 import 'settings.dart';
-
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:http/http.dart' as http;
 
 
 class SingularArtefactView extends StatefulWidget {
@@ -43,6 +48,22 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
       // The framework then calls build, below,
       // which updates the visual appearance of the app.
     });
+
+  }
+
+  shareFile(ArtefactItem artefact) async
+  {
+    var response = await http.get(artefact.downloadUrl);
+    var filePath = await ImagePickerSaver.saveFile(fileData: response.bodyBytes); 
+    print(filePath);
+    String BASE64_IMAGE = filePath;
+
+    final ByteData bytes = await rootBundle.load(BASE64_IMAGE);
+    await Share.file(artefact.id,artefact.name+'.jpg',bytes.buffer.asUint8List(),'image/png');
+    //  var request = await HttpClient().getUrl(Uri.parse(artefact.downloadUrl));
+    //  var response = await request.close();
+    //  Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+    //  await Share.file('ESYS AMLOG', 'amlog.jpg', bytes, 'image/jpg');
 
   }
 
@@ -102,7 +123,7 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
                       new SizedBox(
                         width: 16.0,
                       ),
-                      new Icon(FontAwesomeIcons.paperPlane),
+                      new IconButton(icon: Icon(FontAwesomeIcons.paperPlane),onPressed: (){shareFile(artefact);},)
                     ],
                   ),
                   new Icon(FontAwesomeIcons.bookmark)
