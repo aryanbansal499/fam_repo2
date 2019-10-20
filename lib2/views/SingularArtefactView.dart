@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../models/ArtefactItem.dart';
 import '../models/background.dart';
@@ -8,7 +9,7 @@ import 'settings.dart';
 
 
 
-class SingularArtefactView extends StatefulWidget {
+/*class SingularArtefactView extends StatefulWidget {
 
   // The framework calls createState the first time a widget appears at a given
   // location in the tree. If the parent rebuilds and uses the same type of
@@ -20,28 +21,20 @@ class SingularArtefactView extends StatefulWidget {
   SingularArtefactView({Key key, @required this.artefact, this.family}) : super(key: key);
 
   @override
-  _SingularArtefactViewState createState() => _SingularArtefactViewState(artefact, family);
-}
+  _SingularArtefactViewState createState() => _SingularArtefactViewState(family);
+}*/
 
-class _SingularArtefactViewState extends State<SingularArtefactView> {
+class SingularArtefactView extends StatelessWidget {
 
-  ArtefactItem artefact;
-  final String family;
-  _SingularArtefactViewState(this.artefact, this.family);
+  //ArtefactItem artefact;
+  final family;
+  SingularArtefactView(this.family);
 
-
-  void _handleChange() {
-    setState(() {
-      // When a user changes what's in the cart, you need to change
-      // _shoppingCart inside a setState call to trigger a rebuild.
-      // The framework then calls build, below,
-      // which updates the visual appearance of the app.
-    });
-
-  }
 
   @override
   Widget build(BuildContext context) {
+    var artefact = Provider.of<ArtefactItem>(context);
+
     return Stack(
       children: <Widget>[
         new Background(),
@@ -57,14 +50,14 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
               color: IconOnCardColour, //change your color here
             ),
             elevation: 0,
-            title: Text(artefact.name.toUpperCase() + " - " + family.toUpperCase()),
+            title: Text(family.name.toUpperCase()),
             actions: [
               IconButton(
                   icon: Icon(Icons.edit, color: IconOnAppBarColour,),
                   onPressed: (){
                     // TODO go to artefact settings
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ArtefactSettings(artefact: artefact))
+                        MaterialPageRoute(builder: (context) => ArtefactSettings(artefact: artefact, famId: family.id))
                         );
                   },
               ),
@@ -105,27 +98,44 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
                     children: <Widget>[
                       new Icon(
                         FontAwesomeIcons.heart,
+                        color: IconOnAppBarColour,
                       ),
                       new SizedBox(
                         width: 16.0,
                       ),
-                      new Icon(
+                      /*new Icon(
                         FontAwesomeIcons.comment,
-                      ),
+                        color: IconOnAppBarColour,
+                      ),*/
                       new SizedBox(
                         width: 16.0,
                       ),
-                      new Icon(FontAwesomeIcons.paperPlane),
+                      new Icon(FontAwesomeIcons.share,
+                        color: IconOnAppBarColour,),
                     ],
                   ),
                   new Icon(FontAwesomeIcons.bookmark)
                 ],
               ),
+              Container(
+                child: Column(
+                  children: <Widget>[],
+                ),
+              ),
+              Divider(
+                height: 10.0,
+                color: Colors.transparent,
+              ),
               Text(
                 artefact.name,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,
+                  fontFamily: FontNameSubtitle,),
+              ),
+              Divider(
+                height: 10.0,
+                color: Colors.transparent,
               ),
               /*Text(
                 artefact.family + " Family",
@@ -137,13 +147,22 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
                 artefact.description,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,
+                    fontFamily: FontNameSubtitle),
+              ),
+              Divider(
+                height: 10.0,
+                color: Colors.transparent,
               ),
               Text(
-                artefact.date.toString(),
+                artefact.date,
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,
+                    fontFamily: FontNameSubtitle),
+              ),
+              Divider(
+                height: 10.0,
               ),
               /*Text(
                 artefact.tags,

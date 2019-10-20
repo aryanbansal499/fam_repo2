@@ -75,6 +75,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           appBar: PreferredSize(
               child:  AppBar(
                 title: Text(profile.username.toUpperCase()),
+                centerTitle: true,
                 backgroundColor: Colors.transparent,
                 iconTheme: IconThemeData(
                   color: IconOnCardColour, //change your color here
@@ -83,25 +84,29 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               preferredSize: Size.fromHeight(60.0)),
           //backgroundColor: Colors,
           body: Scaffold(
-            //backgroundColor:
+            backgroundColor: Colors.white70,
             body:
               Stack(
                 children: <Widget>[
-                  (
-                      ListView(
-                          children: [
-                        ListTile(title: Text("Edit Profile Description")),
-                        ListTile( title: Text("Private Account"),
+                  ListView(
+                      children: [
+                        ListTile(
+                            title: Text("Edit Profile Description",
+                            style: TextStyle(fontFamily: FontNameSubtitle,
+                            fontWeight: FontWeight.bold,))),
+                        /*ListTile( title: Text("Private Account"),
                             trailing: Icon((FontAwesomeIcons.toggleOff))
 
-                        ),
+                        ),*/
                         ListTile(
-                            title: Text("Sign out"),
+                            title: Text("Sign out",
+                            style: TextStyle(fontFamily: FontNameSubtitle,
+                            fontWeight: FontWeight.bold,),),
                             onTap: () {
                               db.signOut(auth);
                               Navigator.pushNamed(context, '/');
                             }),
-                      ])
+                      ]
                   ),
                 ],
               ),
@@ -139,9 +144,8 @@ class FamilySettings extends StatelessWidget {
           resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(
               child:  AppBar(
-                title: Center(
-                    child: Text(family.name.toUpperCase())
-                ),
+                title: Text(family.name.toUpperCase()),
+                centerTitle: true,
                 backgroundColor: Colors.transparent,
                 iconTheme: IconThemeData(
                   color: IconOnCardColour, //change your color here
@@ -150,7 +154,7 @@ class FamilySettings extends StatelessWidget {
               preferredSize: Size.fromHeight(60.0)),
           //backgroundColor: Colors,
           body: Scaffold(
-            //backgroundColor:
+            backgroundColor:Colors.white70,
             body:
             Stack(
               children: <Widget>[
@@ -159,7 +163,9 @@ class FamilySettings extends StatelessWidget {
                     children: [
                       FamilyEditAlertDialog(family), //TODO return Future user
                       ListTile(
-                          title: Text("Sign out"),
+                          title: Text("Sign out",
+                            style: TextStyle(fontFamily: FontNameSubtitle,
+                            fontWeight: FontWeight.bold,)),
                           onTap: () {
                             db.signOut(auth);
                             Navigator.pushNamed(context, '/');
@@ -178,8 +184,9 @@ class FamilySettings extends StatelessWidget {
 class ArtefactSettings extends StatelessWidget {
 
   final artefact;
+  final famId;
 
-  ArtefactSettings({Key key, this.artefact}) : super(key: key);
+  ArtefactSettings({Key key, this.artefact, this.famId}) : super(key: key);
 
   final db = DatabaseService();
   final auth = FirebaseAuth.instance;
@@ -205,9 +212,8 @@ class ArtefactSettings extends StatelessWidget {
           resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(
               child:  AppBar(
-                title: Center(
-                    child: Text(artefact.name.toUpperCase())
-                ),
+                title: (artefact.name.toUpperCase()),
+                centerTitle: true,
                 backgroundColor: Colors.transparent,
                 iconTheme: IconThemeData(
                   color: IconOnCardColour, //change your color here
@@ -224,7 +230,7 @@ class ArtefactSettings extends StatelessWidget {
                     ListView(
                         children: [
                           //FamilyEditAlertDialog(family), //TODO return Future user
-                          ArtefactEditAlertDialog(artefact),
+                          ArtefactEditAlertDialog(artefact, famId),
                           ListTile(
                               title: Text("Sign out"),
                               onTap: () {

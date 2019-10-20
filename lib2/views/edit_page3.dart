@@ -14,7 +14,7 @@ import '../services/Uploader.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/video_banner.dart';
 import '../models/ArtefactFile.dart';
-
+import '../style.dart';
 
 class MyCustomForm extends StatefulWidget {
   final File artefactFile;
@@ -108,15 +108,15 @@ class _MyCustomFormState extends State<MyCustomForm> {
         // maxWidth: 512,
         // maxHeight: 512,
         androidUiSettings: AndroidUiSettings(
-            toolbarColor: Colors.brown,
-            toolbarWidgetColor: Colors.amberAccent,
+            toolbarColor: CreamAccentColour,
+            toolbarWidgetColor: GoldAccentColour,
             toolbarTitle: 'Crop It',
-            statusBarColor: Colors.white,
+            statusBarColor: CreamAccentColour,
             backgroundColor: Colors.black54,
-            cropGridColor: Colors.amberAccent,
-            activeControlsWidgetColor: Colors.amberAccent,
-            activeWidgetColor: Colors.brown,
-            cropFrameColor: Colors.amberAccent,
+            cropGridColor: GoldAccentColour,
+            activeControlsWidgetColor: GoldAccentColour,
+            activeWidgetColor: CreamAccentColour,
+            cropFrameColor: GoldAccentColour,
             dimmedLayerColor: Colors.black12
 
         )
@@ -168,172 +168,183 @@ class _MyCustomFormState extends State<MyCustomForm> {
   Widget build(BuildContext context) {
 
 
-    return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      appBar: AppBar(
-          backgroundColor: Colors.brown,
-          bottomOpacity: 1.0,
-          title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              //children: arrow + title
-              children: const <Widget>[
-                
-                Text('ADD ARTEFACT', textAlign: TextAlign.center)
-              ]
+    return Stack(
+      children: <Widget>[
+        new Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration:new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("images/bg.png"),
+              fit: BoxFit.cover,
+            ),
           ),
-          centerTitle: true),
-      body:
-      //background is first in stack, then the column
-      Stack(
-          children: <Widget>[
-            //background, then padding on top
-            new Background(),
-            //whole column wrapped in padding
-            Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView(
-                  controller: scrollController,
-                  children: [
-                    new ArtefactBanner(artefactFile, type, user, familyId),
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomPadding: true,
+          appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              bottomOpacity: 1.0,
+              title: Text('ADD ARTEFACT', textAlign: TextAlign.center),
+              iconTheme: IconThemeData(
+                color: IconOnCardColour, //change your color here
+              ),
+              centerTitle: true),
+          body:
+          //background is first in stack, then the column
+          Stack(
+              children: <Widget>[
+                //background, then padding on top
+                //new Background(),
+                //whole column wrapped in padding
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView(
+                        controller: scrollController,
+                        children: [
+                          new ArtefactBanner(artefactFile, type, user, familyId),
 
-                    if(type == artefactType.GAL || type == artefactType.IMG)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          FlatButton(
-                            color: Colors.white,
-                            child: Icon(
-                                Icons.crop,
-                                color: Colors.brown),
-                            onPressed: _cropImage,
-                          ),
-                          FlatButton(
-                            color: Colors.white,
-                            child: Icon(Icons.refresh, color: Colors.brown,),
-                            onPressed: _clear,
-                          ),
-                        ],
-                      ),
-                    Form(
-                        key: _formKey,
-                        autovalidate: _autoValidate,
-                        child: Column(
-                            children: [
-                              TextFormField(
-                                textInputAction: TextInputAction.next,
-                                validator: NameValidator.validate,
-                                focusNode: nameFocusNode,
-                                autofocus: true,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.grey,
-                                  labelText: 'Enter the name of the artefact',
-                                  hintText:'Name ',
+                          if(type == artefactType.GAL || type == artefactType.IMG)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                FlatButton(
+                                  color: Colors.white,
+                                  child: Icon(
+                                      Icons.crop,
+                                      color: Colors.brown),
+                                  onPressed: _cropImage,
                                 ),
-                                onSaved: (String value) {
-                                  this.name = value;
-                                },
-                                onFieldSubmitted: (nameEntered) {
-                                  this.name = nameEntered;
-                                  print(this.name);
+                                FlatButton(
+                                  color: Colors.white,
+                                  child: Icon(Icons.refresh, color: Colors.brown,),
+                                  onPressed: _clear,
+                                ),
+                              ],
+                            ),
+                          Form(
+                              key: _formKey,
+                              autovalidate: _autoValidate,
+                              child: Column(
+                                  children: [
+                                    TextFormField(
+                                      textInputAction: TextInputAction.next,
+                                      validator: NameValidator.validate,
+                                      focusNode: nameFocusNode,
+                                      autofocus: true,
+                                      decoration: InputDecoration(
+                                        fillColor: Colors.grey,
+                                        labelText: 'Enter the name of the artefact',
+                                        hintText:'Name ',
+                                      ),
+                                      onSaved: (String value) {
+                                        this.name = value;
+                                      },
+                                      onFieldSubmitted: (nameEntered) {
+                                        this.name = nameEntered;
+                                        print(this.name);
 
-                                  _fieldFocusChange(context, nameFocusNode, descriptionFocusNode);
-                                },
-                              ),
-                              TextFormField(
-                                textInputAction: TextInputAction.next,
-                                focusNode: descriptionFocusNode,
-                                validator: DescriptionValidator.validate,
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                decoration: InputDecoration(
-                                  hintText: 'Enter a description about the artefact',
-                                  labelText: 'Description ',
-                                ),
-                                onSaved: (String value) {
-                                  this.description = value;
-                                },
-                                onFieldSubmitted: (descriptionEntered) {
-                                  _fieldFocusChange(context, descriptionFocusNode, dateFocusNode);
-                                },
-                              ),
-                              YearList(key: _mainKey, function: _setYear),
-                              TextFormField(
-                                textInputAction: TextInputAction.done,
-                                controller: _editingController,
-                                focusNode: tagFocusNode,
-                                decoration: InputDecoration(
-                                  hintText: 'Enter tags related to the artefact',
-                                  labelText: 'Tags: ',
-                                ),
-                                maxLines: 1,
-                                onTap: (){
-                                  _editingController.text = "";
-                                },
-                                onFieldSubmitted: (tag){
-                                  addTagToList(tag);
-                                  _editingController.text = "";
-                                  _editingController.text = tags.toString();
+                                        _fieldFocusChange(context, nameFocusNode, descriptionFocusNode);
+                                      },
+                                    ),
+                                    TextFormField(
+                                      textInputAction: TextInputAction.next,
+                                      focusNode: descriptionFocusNode,
+                                      validator: DescriptionValidator.validate,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter a description about the artefact',
+                                        labelText: 'Description ',
+                                      ),
+                                      onSaved: (String value) {
+                                        this.description = value;
+                                      },
+                                      onFieldSubmitted: (descriptionEntered) {
+                                        _fieldFocusChange(context, descriptionFocusNode, dateFocusNode);
+                                      },
+                                    ),
+                                    YearList(key: _mainKey, function: _setYear),
+                                    TextFormField(
+                                      textInputAction: TextInputAction.done,
+                                      controller: _editingController,
+                                      focusNode: tagFocusNode,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter tags related to the artefact',
+                                        labelText: 'Tags: ',
+                                      ),
+                                      maxLines: 1,
+                                      onTap: (){
+                                        _editingController.text = "";
+                                      },
+                                      onFieldSubmitted: (tag){
+                                        addTagToList(tag);
+                                        _editingController.text = "";
+                                        _editingController.text = tags.toString();
 
-                                  //TODO: displayTag(tag), deleting tags;
-                                  //validate if description entered is correct
-                                },
-                              ),
-                              Visibility(
-                                visible: _fireStoreButtonVisibility,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(32),
-                                  child: Uploader(
-                                    user: user,
-                                    familyId: familyId,
-                                    file: widget.artefactFile,
-                                    name:name,
-                                    description: description,
-                                    tags: tags,
-                                    year: year,
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: _submitVisibility,
-                                child: RaisedButton.icon(
-                                  onPressed: _validateInputs,
-                                  icon: Icon(Icons.add),
-                                  label: Text('Submit'),
-                                ),
-                              ),
-                              Visibility(
-                                visible: _deleteButtonVisibility,
-                                child: FlatButton(
-                                  child: Text('Delete Artefact'),
-                                  onPressed: () {
-                                    DatabaseService db = new DatabaseService();
+                                        //TODO: displayTag(tag), deleting tags;
+                                        //validate if description entered is correct
+                                      },
+                                    ),
+                                    Visibility(
+                                      visible: _fireStoreButtonVisibility,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(32),
+                                        child: Uploader(
+                                          user: user,
+                                          familyId: familyId,
+                                          file: widget.artefactFile,
+                                          name:name,
+                                          description: description,
+                                          tags: tags,
+                                          year: year,
+                                        ),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: _submitVisibility,
+                                      child: RaisedButton.icon(
+                                        onPressed: _validateInputs,
+                                        icon: Icon(Icons.add),
+                                        label: Text('Submit'),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: _deleteButtonVisibility,
+                                      child: FlatButton(
+                                          child: Text('Delete Artefact'),
+                                          onPressed: () {
+                                            DatabaseService db = new DatabaseService();
 //                                    db.removeArtefact(user, , familyId)
 
-                                  }
-                                ),
+                                          }
+                                      ),
+                                    )
+                                  ]
                               )
-                            ]
                           )
-                        )
-                  ]
+                        ]
+                    )
                 )
-            )
-          ]
+              ]
+          ),
+
+          floatingActionButton: FloatingActionButton(
+            // When the button is pressed,
+            // give focus to the text field using myFocusNode.
+            onPressed: () {
+              FocusScope.of(context).requestFocus(currentFocusNode);
+            },
+            tooltip: 'Focus Second Text Field',
+            child: Icon(Icons.edit),
+            backgroundColor: Colors.white70,
+            hoverColor: Colors.black,
+
+          ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
+      ],
 
-       floatingActionButton: FloatingActionButton(
-        // When the button is pressed,
-        // give focus to the text field using myFocusNode.
-        onPressed: () {
-          FocusScope.of(context).requestFocus(currentFocusNode);
-        },
-        tooltip: 'Focus Second Text Field',
-        child: Icon(Icons.edit),
-        backgroundColor: Colors.white70,
-        hoverColor: Colors.black,
-
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 

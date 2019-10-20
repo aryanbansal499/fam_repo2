@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/middleware.dart';
 import '../style.dart';
+import '../views/auth.dart';
 
 class FamilyTextFieldAlertDialog extends StatelessWidget {
   TextEditingController _textFieldController = TextEditingController();
@@ -9,6 +10,7 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
   String _description;
   String _familyName;
   final _formKey = GlobalKey<FormState>();
+  DialogBox dialogBox = new DialogBox();
 
   final db = DatabaseService();
   final user;
@@ -31,6 +33,8 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
 
       } catch (e) {
         print(e);
+        // TODO validation needs implementation
+        //dialogBox.imformation(context, "Error ",e.toString());
       }
     }
   }
@@ -41,7 +45,9 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Add a family collection'),
+            title: Text('Add a family collection',
+              style: TextStyle(fontFamily: FontNameSubtitle,
+              fontWeight: FontWeight.bold,)),
             content: Form(
               key: _formKey,
               child: Column(
@@ -62,13 +68,17 @@ class FamilyTextFieldAlertDialog extends StatelessWidget {
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('CANCEL'),
+                child: new Text('CANCEL',
+                  style: TextStyle(fontFamily: FontNameSubtitle,
+                    fontWeight: FontWeight.bold,)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('SUBMIT'),
+                child: new Text('SUBMIT',
+                style: TextStyle(fontFamily: FontNameSubtitle,
+                fontWeight: FontWeight.bold,)),
                 onPressed: () {
                   //TODO validate submission
                   submit();
@@ -141,7 +151,9 @@ class FamilyEditAlertDialog extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Udate family description'),
+            title: Text('Udate family description',
+              style: TextStyle(fontFamily: FontNameSubtitle,
+              fontWeight: FontWeight.bold,)),
             content: Form(
               key: _formKey,
               child: Column(
@@ -149,7 +161,6 @@ class FamilyEditAlertDialog extends StatelessWidget {
                 children: <Widget>[
                   TextFormField(
                     validator: StringValidator.validate,
-
                     decoration: InputDecoration(
                       hintText: family.description),
                     onSaved: (value) => _description = value,
@@ -159,13 +170,17 @@ class FamilyEditAlertDialog extends StatelessWidget {
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('CANCEL'),
+                child: new Text('CANCEL',
+            style: TextStyle(fontFamily: FontNameSubtitle,
+              fontWeight: FontWeight.bold,)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('SUBMIT'),
+                child: new Text('SUBMIT',
+                style: TextStyle(fontFamily: FontNameSubtitle,
+                fontWeight: FontWeight.bold,)),
                 onPressed: () {
                   //TODO validate submission
                   submit();
@@ -185,7 +200,9 @@ class FamilyEditAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("Edit Family Description"),
+      title: Text("Edit Family Description",
+        style: TextStyle(fontFamily: FontNameSubtitle,
+        fontWeight: FontWeight.bold,)),
       onTap: () => _displayDialog(context),
     );
   }

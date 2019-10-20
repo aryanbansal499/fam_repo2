@@ -247,7 +247,7 @@ class _UploaderState extends State<Uploader> {
     var artefact = db.addArtefactFirestore(user, {
       'artefactLink': 'collection/doc', //
       'type': artefactType.IMG.toString(),
-      //'date': new DateTime.now(), //TODO change to year?
+      'date': year,
       'description': description,
       'name': name,
       'tags': tags,
@@ -375,14 +375,15 @@ class ArtefactEditAlertDialog extends StatelessWidget {
   //TODO refactor for editing the family name and description
 
   String _description;
-  String _familyName;
   final _formKey = GlobalKey<FormState>();
+  final _yearFormKey = GlobalKey<FormState>();
   String year;
 
   final db = DatabaseService();
-  final family;
+  final artefact;
+  final famId;
 
-  ArtefactEditAlertDialog(this.family);
+  ArtefactEditAlertDialog(this.artefact, this.famId);
 
   void
   _setYear(String newYear) {
@@ -426,10 +427,10 @@ class ArtefactEditAlertDialog extends StatelessWidget {
                     validator: StringValidator.validate,
 
                     decoration: InputDecoration(
-                        hintText: family.description),
+                        hintText: artefact.description),
                     onSaved: (value) => _description = value,
                   ),
-                  YearList(key: _formKey,function: _setYear),
+                  YearList(key: _yearFormKey,function: _setYear),
                 ],
               ),
             ),
@@ -446,7 +447,10 @@ class ArtefactEditAlertDialog extends StatelessWidget {
                   //TODO validate submission
                   submit();
                   //TODO call db
-                  db.editFamilyDescription(family, _description);
+                  if (_description == null){
+                    _description = artefact.description;
+                  }
+                  db.editArtefactDescription(famId, artefact.id, _description, year);
 
                   //TODO edit family, update data
                   //db.addFamily(user, {'name': _familyName, 'creator': user.uid, 'description': _description});

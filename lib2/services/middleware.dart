@@ -168,7 +168,7 @@ class DatabaseService {
         .delete();
   }
 
-  Future<void> editArtefactDescription(FirebaseUser user, String family, String id, String desc) {
+  Future<void> editArtefactDescription(String family, String id, String desc, String year) {
     //get family uid and link to collection into families array
     //_db.collection('users').document(user.uid).setData(data)
     //List<String> fams =  _getFamilies(user);
@@ -180,7 +180,7 @@ class DatabaseService {
         .document(family)
         .collection('artefacts')
         .document(id)
-        .updateData({'description': desc}); // uncomment when not prototyping
+        .updateData({'description': desc, 'date': year}); // uncomment when not prototyping
   }
 
 

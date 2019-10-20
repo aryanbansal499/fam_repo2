@@ -11,6 +11,12 @@ const String FontNameSubtitle = 'Ming Liu';
 
 const Color IconOnCardColour = Color.fromRGBO(78, 48, 44, 1);
 const Color IconOnAppBarColour = Color.fromRGBO(78, 48, 44, 1);
+const Color accentColour = Color.fromRGBO(100, 3, 47, 1);
+
+const Color CreamAccentColour = Color.fromRGBO(210, 203, 182, 1);
+const Color GoldAccentColour = Color.fromRGBO(175, 143, 70, 1);
+const Color GoldAccentColourDark = Color.fromRGBO(145, 100, 30, 1);
+const Color MaroonAccentColourT = Color.fromRGBO(78, 48, 44, 0.65);
 
 const AppBarTextStyle = TextStyle(
   fontFamily: FontNameAppBarTitle,
