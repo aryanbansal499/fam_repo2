@@ -405,7 +405,7 @@ class ArtefactsHeader extends StatelessWidget {
                     // family description
                     padding: EdgeInsets.fromLTRB(15, 0, 30, 20),
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width * 0.50,
+                    //height: MediaQuery.of(context).size.width * 0.50,
                     child: SingleChildScrollView(
                       child:Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
