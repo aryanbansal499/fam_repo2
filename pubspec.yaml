@@ -43,7 +43,9 @@ dependencies:
 #  camera:
 #  path_provider:
 #  path:
-
+  esys_flutter_share: ^1.0.2
+  http:
+  image_picker_saver: ^0.3.0
   
 
 dev_dependencies:
