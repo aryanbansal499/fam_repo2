@@ -91,7 +91,7 @@ class ArtefactsView extends StatelessWidget {
               children: <Widget>[
                 //Background(),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(10.0),
                 child: ListView(
                   controller: scrollController,
                   children: [
@@ -100,7 +100,7 @@ class ArtefactsView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.15,
                         margin: EdgeInsets.all(0),
                         child: ArtefactsHeader()),
                       Container(
@@ -115,7 +115,9 @@ class ArtefactsView extends StatelessWidget {
                             IconButton(icon: Icon(Icons.list),alignment: Alignment.topLeft, onPressed:(){setGridViewState(false); setListViewState(true);} ),
                             FlatButton(),
                             FlatButton(),
-                            IconButton(icon: Icon(Icons.grid_on), onPressed:(){setGridViewState(true); setListViewState(false);} )
+                            IconButton(icon: Icon(Icons.grid_on), onPressed:(){
+                              setGridViewState(true);
+                              setListViewState(false);} )
                           ],
                         ),
                       ),
@@ -403,7 +405,7 @@ class ArtefactsHeader extends StatelessWidget {
                     // family description
                     padding: EdgeInsets.fromLTRB(15, 0, 30, 20),
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width * 0.55,
+                    height: MediaQuery.of(context).size.width * 0.50,
                     child: SingleChildScrollView(
                       child:Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
