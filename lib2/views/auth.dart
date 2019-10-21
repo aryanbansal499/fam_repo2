@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import '../services/middleware.dart';
-
+import '../style.dart';
 
 class Auth extends StatelessWidget {
   @override
@@ -129,26 +129,58 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          //TODO create hero page
-          Background(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: buildInputs() + buildButtons(),
-                ),
+    return Stack(
+      children: <Widget>[
+        new Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration:new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("images/bg.png"),
+              fit: BoxFit.cover,
             ),
-          ]
-      ),
-      ]
-    )
+          ),
+        ),
+        Scaffold(
+            resizeToAvoidBottomPadding: false,
+            body: Stack(
+                children: <Widget>[
+                  //TODO create hero page
+                  Background(),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('परिवार',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: IconOnAppBarColour,
+                              fontWeight: FontWeight.w700
+                          ),),
+                        Text('ᜉᜋᜒᜎ᜔ᜌ',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: IconOnAppBarColour,
+                              fontWeight: FontWeight.w700
+                          ),),
+                        Text('家庭', style: TextStyle(
+                            fontSize: 30,
+                            color: IconOnAppBarColour,
+                            fontWeight: FontWeight.w700
+                        ),),
+                        Form(
+                          key: formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: buildInputs() + buildButtons(),
+                          ),
+                        ),
+                      ]
+                  ),
+                ]
+            )
+        ),
+      ],
     );
     /*Scaffold(
         resizeToAvoidBottomPadding: false,
@@ -242,14 +274,22 @@ class _LoginPageState extends State<LoginPage> {
           height: 20.0,
         ),
         RaisedButton(
-          child: Text('Sign In'),
+          child: Text('Sign In',
+        style: TextStyle(fontFamily: FontNameSubtitle,
+            fontWeight: FontWeight.bold,
+        fontSize: 18,
+        letterSpacing: 2)),
           color: Colors.grey,
           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: submit,
         ),
 
         RaisedButton(
-          child: Text('Sign up'),
+          child: Text('Sign up',
+          style: TextStyle(fontFamily: FontNameSubtitle,
+          fontWeight: FontWeight.bold,
+              fontSize: 18,
+          letterSpacing: 2)),
           color: Colors.grey,
           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
           onPressed: () {

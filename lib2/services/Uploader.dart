@@ -68,7 +68,7 @@ class _UploaderState extends State<Uploader> {
     var artefact = db.addArtefactFirestore(user, {
       'artefactLink': 'collection/doc', //
       'type': artefactType.IMG.toString(),
-      //'date': new DateTime.now(), //TODO change to year?
+      'date': year, //TODO change to year?
       'description': description,
       'name': name,
       'tags': tags,
@@ -195,7 +195,7 @@ class _UploaderState extends State<Uploader> {
           });
     } else {
       return FlatButton.icon(
-          color: Colors.blue,
+          color: Colors.white,
           label: Text('Upload'),
           icon: Icon(Icons.navigate_next),
           onPressed: _onSubmit);

@@ -45,25 +45,33 @@ class Home extends StatelessWidget {
             Scaffold(
               resizeToAvoidBottomPadding: false,
               appBar: PreferredSize(
-                  child: _MyAppBar(),
-                  preferredSize: Size.fromHeight(60.0)),
+                child: _MyAppBar(),
+                preferredSize: Size.fromHeight(60.0)),
                 backgroundColor: Colors.transparent,
               body: Stack(
                 children: <Widget>[
                   //Background(),
                   Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
+                            Text('~',
+                            style: TextStyle(
+                              fontSize: 50,
+                              color: accentColour
+                            ),),
+                            /*Row(children: <Widget>[
+                              Text('Your families',
+                                style: TextStyle(
+                                  fontSize: LargeTextSize,
+                                ),
+                              textAlign: TextAlign.left,
+                              ),
+                            ],),*/
                             _FamiliesList()
                           ],
-                        ),
-                        Center(
-                          /*child: RaisedButton(
-                              child: Text('Create'),
-                              onPressed: () => db.createUser(user)),*/
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -118,7 +126,6 @@ class FamiliesList extends StatelessWidget {
               child: ArtefactsView()
           ),
         ],
-        child: Auth()
     );
   }
 
@@ -127,7 +134,7 @@ class FamiliesList extends StatelessWidget {
 
     if (families != null) {
       return Container(
-              height: MediaQuery.of(context).size.height * 0.55,
+              height: MediaQuery.of(context).size.height * 0.61,
               child: ListView(
                 children: families.map((family) {
                   //TODO insert UI here
@@ -135,12 +142,18 @@ class FamiliesList extends StatelessWidget {
                     color: Colors.transparent,
                     child: ListTile(
                       //leading: TODO if want to add image or crest
-                      title: Text(family.name),
+                      title: Text(family.name,
+                      textAlign: TextAlign.right,
+                      style: TextStyle(fontFamily: FontNameSubtitle,
+                      fontWeight: FontWeight.bold,
+                      color: IconOnCardColour,
+                      fontSize: BodyTextSize+2,
+                      letterSpacing: 3),),
                       onTap: () => {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Buffer(id: family.id)))
                       },
-                      trailing: Container(
+                      leading : Container(
                         child: IconButton(
                           icon: Icon(Icons.delete),
                           color: IconOnCardColour,
@@ -157,8 +170,6 @@ class FamiliesList extends StatelessWidget {
               ),
           );
     }
-
-
     return new Container();
   }
 }
@@ -199,6 +210,9 @@ class _MyAppBar extends StatelessWidget {
     });
 
     return AppBar(
+      iconTheme: IconThemeData(
+        color: IconOnCardColour, //change your color here
+      ),
       title: Text('FAMILIES'),
       centerTitle: true,
       backgroundColor: Colors.transparent,

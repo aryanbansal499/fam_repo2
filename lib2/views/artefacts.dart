@@ -3,6 +3,8 @@
 
 //TODO make artefacts view into a grid
 
+import 'package:flutter/material.dart';
+
 import '../models/background.dart';
 import '../style.dart';
 import '../views/upload_page3.dart';
@@ -21,6 +23,8 @@ class ArtefactsView extends StatelessWidget {
   @override
 
   final db = DatabaseService();
+
+  var scrollController = new ScrollController();
    bool gridView = false;
    bool listView = true;
    bool getGridViewState()
@@ -86,7 +90,11 @@ class ArtefactsView extends StatelessWidget {
               
               children: <Widget>[
                 //Background(),
-      
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView(
+                  controller: scrollController,
+                  children: [
                 Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,19 +129,39 @@ class ArtefactsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
+                          /*Column(
+                            //height: MediaQuery.of(context).size.height * 0.2,
+                            //margin: EdgeInsets.all(0),
+                              children: <Widget>[ArtefactsHeader()]),
+                          StreamProvider<List<ArtefactItem>>.value(
+                              stream: db.streamArtefacts(user, vm.matchId),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  //color: Colors.black45,
+                                ),
+                                child: ArtefactsList(),
+                              )
+                          ),*/
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
                               FloatingActionButton(
-                              child: Icon(Icons.add),
-                              onPressed: () {
-                                //TODO route to upload page with user and fam id uncomment when form is integrated
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => UploadPage2(user: user, familyId: vm.matchId)));
+                                  backgroundColor: IconOnAppBarColour,
+                                  child: Icon(Icons.add),
+                                  onPressed: () {
+                                    //TODO route to upload page with user and fam id uncomment when form is integrated
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => UploadPage2(user: user, familyId: vm.matchId)));
                                     //MaterialPageRoute(builder: (context) => ImageCapture(user: user, familyId: vm.matchId)));
-                              }),
+                                  }),
                             ],
-                      ),
-
-                    ]
-                ),
+                          ),
+                        ]
+                    ),
+                  ]
+                )
+              ),
               ],
 
             ),
@@ -157,10 +185,22 @@ class ArtefactsList extends StatelessWidget {
     var user = Provider.of<FirebaseUser>(context);
     var fam = Provider.of<Family>(context);
 
-    if (artefacts == null){
+    if (artefacts == null) {
       return new Container();
     }
 
+    //TODO display image instead - get downloadurl - add onTap - navigate to SingularArtefactView
+   /* return Container(
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.55,
+        // arg  below should equal to artefact.downloadUrl
+        //child: Image.network('https://firebasestorage.googleapis.com/v0/b/thebug-test.appspot.com/o/2019-10-01%2012%3A57%3A02.154417.png?alt=media&token=10f859ae-e1ce-4a04-9286-a1420294492d')
+        child: ListView(
+        scrollDirection: Axis.vertical,
+        children: artefacts.map((artefact) {
+          if (artefact == null || artefact.downloadUrl == null || artefact.downloadUrl==""){*/
     else {
       if(av.getListViewState())
       {
@@ -206,8 +246,22 @@ class ArtefactsList extends StatelessWidget {
                 title: Text(artefact.name),
                 onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family:fam.name)));
-              }
+                    MaterialPageRoute(
+                        builder: (context) => StreamProvider<ArtefactItem>.value(
+                          stream: db.streamArtefact(fam.id, artefact.id),
+                          child: SingularArtefactView(fam),
+                        )));
+              },
+              trailing: Container(
+                child: IconButton(
+                  icon: Icon(Icons.delete),
+                  color: IconOnCardColour,
+                  onPressed: (){
+                    //TODO add a are you sure alert dialog box
+                    //TODO remove from db
+                    db.removeArtefact(artefact.id, fam.id);
+                  },
+                )
               )
               
               ]
@@ -290,6 +344,36 @@ class ArtefactsHeader extends StatelessWidget {
     if (fam == null){
       return new Container();
     }
+    /*return Container(
+      /*decoration: new BoxDecoration(border:
+        Border(
+          bottom: BorderSide( //                   <--- left side
+          color: Colors.black45,
+          width: 3.0,)
+        ),
+      ),*/
+      // family name
+      // family description
+      padding: EdgeInsets.fromLTRB(30, 10, 30, 20),
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        child:Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(fam.name,
+            style: TextStyle(fontSize: 30,
+                letterSpacing: 3,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(100, 3, 47, 1)),),
+            Text(fam.description, style: TextStyle(
+                fontSize: 18,
+                fontFamily: FontNameSubtitle,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: IconOnAppBarColour),)
+          ],
+      )
+    ));*/
     return ListView(
         children:
         [
