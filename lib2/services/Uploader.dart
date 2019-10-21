@@ -187,8 +187,17 @@ class _UploaderState extends State<Uploader> {
                 label: Text('Artefacts'),
                 icon: Icon(Icons.arrow_forward, size: 50),
                 onPressed: (){
-                  Navigator.push(context,
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Buffer(id: familyId)
+                      ),
+                      ModalRoute.withName("/")
+                  );
+
+                  /*Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Buffer(id: familyId)));
+                    */
                 },
               ),
             )]);

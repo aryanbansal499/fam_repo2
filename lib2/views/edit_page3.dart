@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/video_banner.dart';
 import '../models/ArtefactFile.dart';
 import '../style.dart';
+import '../views/bottomAppBar.dart';
 
 class MyCustomForm extends StatefulWidget {
   final File artefactFile;
@@ -323,7 +324,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                                     )
                                   ]
                               )
-                          )
+                          ),
+                          //BottomNav(),
                         ]
                     )
                 )
