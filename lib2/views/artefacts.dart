@@ -207,7 +207,7 @@ class ArtefactsList extends StatelessWidget {
            print(listView);
            print(gridView);
       return Container(
-      height: MediaQuery.of(context).size.height * 0.55,
+      height: MediaQuery.of(context).size.height * 0.50,
       // arg  below should equal to artefact.downloadUrl
       //child: Image.network('https://firebasestorage.googleapis.com/v0/b/thebug-test.appspot.com/o/2019-10-01%2012%3A57%3A02.154417.png?alt=media&token=10f859ae-e1ce-4a04-9286-a1420294492d')
         

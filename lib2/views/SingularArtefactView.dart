@@ -201,7 +201,7 @@ class SingularArtefactView extends StatelessWidget {
 
 class _MyAppBar extends StatelessWidget {
   final db = DatabaseService();
-  final String family;
+  final family;
 
   _MyAppBar(this.family);
 
@@ -214,7 +214,7 @@ class _MyAppBar extends StatelessWidget {
     });
 
     return AppBar(
-      title: Center( child: Text(family)),
+      title: Center( child: Text(family.name)),
       backgroundColor: Colors.transparent,
       iconTheme: IconThemeData(
         color: IconOnAppBarColour, //change your color here
