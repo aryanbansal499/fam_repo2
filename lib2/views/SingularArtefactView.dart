@@ -73,7 +73,7 @@ class SingularArtefactView extends StatelessWidget {
             resizeToAvoidBottomPadding: false,
             backgroundColor: Colors.transparent,
           //
-          appBar: PreferredSize(child: _MyAppBar(artefact.name+' : '+family,familyId), preferredSize: Size.fromHeight(60.0)),
+          appBar: PreferredSize(child: _MyAppBar(family), preferredSize: Size.fromHeight(60.0)),
           body: Stack(
 
             children: <Widget>[
@@ -202,9 +202,8 @@ class SingularArtefactView extends StatelessWidget {
 class _MyAppBar extends StatelessWidget {
   final db = DatabaseService();
   final String family;
-  final String familyId;
 
-  _MyAppBar(this.family,this.familyId);
+  _MyAppBar(this.family);
 
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
@@ -225,13 +224,13 @@ class _MyAppBar extends StatelessWidget {
         IconButton(
             icon: Icon(Icons.settings, color: IconOnAppBarColour,),
             //TODO change onpressed to go to FamilySettings
-            onPressed: () {Navigator.push(context,
+            /*onPressed: () {Navigator.push(context,
                 MaterialPageRoute(builder: (context) =>
                 StreamProvider<Family>.value(
-                  stream: db.streamFamily(familyId),
+                  stream: db.streamFamily(family.id),
                   child: FamilySettings(),
                 )));
-            }
+            }*/
         ),
       ],
     );

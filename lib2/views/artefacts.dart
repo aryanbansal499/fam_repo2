@@ -124,11 +124,11 @@ class ArtefactsView extends StatelessWidget {
                           child: ArtefactsList(getGridViewState(),getListViewState()),
                         )
                       ),
-                      Row(
+                      /*Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
+                        children: <Widget>[*/
                           /*Column(
                             //height: MediaQuery.of(context).size.height * 0.2,
                             //margin: EdgeInsets.all(0),
@@ -157,8 +157,8 @@ class ArtefactsView extends StatelessWidget {
                                   }),
                             ],
                           ),
-                        ]
-                    ),
+                        //]
+                    ]),
                   ]
                 )
               ),
@@ -264,7 +264,7 @@ class ArtefactsList extends StatelessWidget {
                 )
               )
               
-              ]
+               )]
             ),
             ),
             
@@ -309,8 +309,12 @@ class ArtefactsList extends StatelessWidget {
                 (
                 title: Text(artefact.name),
                 onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SingularArtefactView(artefact: artefact, family:fam.name,familyId: fam.id)));
+                  Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (context) => StreamProvider<ArtefactItem>.value(
+                            stream: db.streamArtefact(fam.id, artefact.id),
+                            child: SingularArtefactView(fam),
+                          )));
               }
               )
               
@@ -383,7 +387,37 @@ class ArtefactsHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>
                 [
-                  Text(' ` ' +fam.name + ' - ' + fam.description,style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                  Container(
+                    /*decoration: new BoxDecoration(border:
+        Border(
+          bottom: BorderSide( //                   <--- left side
+          color: Colors.black45,
+          width: 3.0,)
+        ),
+      ),*/
+                    // family name
+                    // family description
+                    padding: EdgeInsets.fromLTRB(15, 0, 30, 20),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width * 0.55,
+                    child: SingleChildScrollView(
+                      child:Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(fam.name,
+                            style: TextStyle(fontSize: 30,
+                                letterSpacing: 3,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(100, 3, 47, 1)),),
+                          Text(fam.description, style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: FontNameSubtitle,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: IconOnAppBarColour),)
+                        ],
+                      ),
+                    )),
                   //Text(fam.description)
                 ],
               ),
