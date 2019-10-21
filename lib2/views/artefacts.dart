@@ -100,20 +100,24 @@ class ArtefactsView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.1,
+                        height: MediaQuery.of(context).size.height * 0.2,
                         margin: EdgeInsets.all(0),
                         child: ArtefactsHeader()),
-                      ButtonBar
-                      (
-                        mainAxisSize: MainAxisSize.min,
-                        alignment: MainAxisAlignment.start,
-                        children: <Widget>
-                        [
-                          IconButton(icon: Icon(Icons.list),alignment: Alignment.topLeft, onPressed:(){setGridViewState(false); setListViewState(true);} ),
-                          FlatButton(),
-                          FlatButton(),
-                          IconButton(icon: Icon(Icons.grid_on), onPressed:(){setGridViewState(true); setListViewState(false);} )
-                        ],
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        margin: EdgeInsets.all(0),
+                        child: ButtonBar
+                        (
+                          mainAxisSize: MainAxisSize.min,
+                          alignment: MainAxisAlignment.start,
+                          children: <Widget>
+                          [
+                            IconButton(icon: Icon(Icons.list),alignment: Alignment.topLeft, onPressed:(){setGridViewState(false); setListViewState(true);} ),
+                            FlatButton(),
+                            FlatButton(),
+                            IconButton(icon: Icon(Icons.grid_on), onPressed:(){setGridViewState(true); setListViewState(false);} )
+                          ],
+                        ),
                       ),
                       StreamProvider<List<ArtefactItem>>.value(
                         stream: db.streamArtefacts(user, vm.matchId),
