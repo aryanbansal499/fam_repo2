@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: IconOnAppBarColour,
                               fontWeight: FontWeight.w700
                           ),),
-                        Text('家庭', style: TextStyle(
+                        Text('gia đình', style: TextStyle(
                             fontSize: 30,
                             color: IconOnAppBarColour,
                             fontWeight: FontWeight.w700
@@ -220,6 +220,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Divider(
           height: 10.0,
+          color: Colors.transparent,
         ),
         TextFormField(
           validator: PasswordValidator.validate,
@@ -241,6 +242,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Divider(
           height: 10.0,
+          color: Colors.transparent,
         ),
         TextFormField(
           validator: PasswordValidator.validate,
@@ -251,6 +253,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Divider(
           height: 10.0,
+          color: Colors.transparent,
         ),
         TextFormField(
           validator: NameValidator.validate,
@@ -261,6 +264,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Divider(
           height: 10.0,
+          color: Colors.transparent,
         ),
       ];
     }
@@ -298,6 +302,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Divider(
           height: 30.0,
+          color: Colors.transparent,
         ),
 
       ];

@@ -218,14 +218,14 @@ class _MyAppBar extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       actions: [
-        /*IconButton(
+        IconButton(
           icon: Icon(Icons.settings),
           color: IconOnAppBarColour,
           onPressed: () {Navigator.push(context,
               MaterialPageRoute(builder: (context) => ProfileSettings(
               profile: userProfile)));
           }
-        ),*/
+        ),
       ],
     );
   }

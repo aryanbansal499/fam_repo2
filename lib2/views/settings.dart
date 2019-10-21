@@ -90,10 +90,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 children: <Widget>[
                   ListView(
                       children: [
-                        ListTile(
+                        /*ListTile(
                             title: Text("Edit Profile Description",
                             style: TextStyle(fontFamily: FontNameSubtitle,
-                            fontWeight: FontWeight.bold,))),
+                            fontWeight: FontWeight.bold,))),*/
                         /*ListTile( title: Text("Private Account"),
                             trailing: Icon((FontAwesomeIcons.toggleOff))
 

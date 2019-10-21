@@ -136,6 +136,7 @@ class SingularArtefactView extends StatelessWidget {
                 height: 10.0,
                 color: Colors.transparent,
               ),
+
               Text(
                 artefact.name,
                 textAlign: TextAlign.start,

@@ -179,6 +179,69 @@ class ArtefactsView extends StatelessWidget {
 //print(artefact);
 }
 
+class ArtefactsListGrid extends StatelessWidget {
+  final db = DatabaseService();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    var artefacts = Provider.of<List<ArtefactItem>>(context);
+    var user = Provider.of<FirebaseUser>(context);
+    var fam = Provider.of<Family>(context);
+
+    return new Container
+      (
+        child: GridView.count
+          (
+          shrinkWrap: true,
+          children: artefacts.map((artefact) {
+            if (artefact == null || artefact.downloadUrl == null){
+              return new Container();
+            }
+            return Card(
+              margin: EdgeInsets.fromLTRB(2, 2, 2, 2),
+              color: Colors.transparent,
+              //Shivam work on CardView and SingularArtefactView.
+              child: Column(
+                //alignment: WrapAlignment.start,
+                  children: <Widget>[
+                    Container
+                      (
+                      padding: const EdgeInsets.all(8.0),
+                      child:Image.network(artefact.downloadUrl,),
+                    ),
+
+                    ListTile
+                      (
+                        title: Text(artefact.name),
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) => StreamProvider<ArtefactItem>.value(
+                                    stream: db.streamArtefact(fam.id, artefact.id),
+                                    child: SingularArtefactView(fam),
+                                  )));
+                        }
+                    )
+
+                  ]
+              ),
+            );
+          }).toList(), crossAxisCount: 2,
+
+
+
+        )
+
+
+
+
+    );
+  }
+
+}
+
 class ArtefactsList extends StatelessWidget {
   @override
   final db = DatabaseService();
