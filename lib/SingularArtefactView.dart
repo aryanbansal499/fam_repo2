@@ -37,13 +37,15 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(artefact.name + " - " + artefact.family + " Family"), //Must be fetched
+        title: Text(artefact.name + " - " + /*artefact.family +*/ " Family"), //Must be fetched
       ),
-      body: Column(
+      body: Stack(
+        children: <Widget>[
+          Column( // Separate into details view
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          artefact.image,
+          //artefact.image,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -75,7 +77,7 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
-            artefact.family + " Family",
+            /*artefact.family +*/ " Family",
             textAlign: TextAlign.start,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -87,17 +89,17 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
-            artefact.date.toIso8601String(),
+            artefact.date.toString(),/*.toIso8601String(),*/
             textAlign: TextAlign.start,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          Text(
+          /*Text(
             artefact.tags,
             textAlign: TextAlign.start,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          ),*/
           Expanded(
             child: new TextField(
               decoration: new InputDecoration(
@@ -109,6 +111,8 @@ class _SingularArtefactViewState extends State<SingularArtefactView> {
         ],
       )
       ,
+      ]
+      )
     );
   }
 }

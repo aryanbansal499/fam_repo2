@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "946777965000-49v9j4u8lt7579rktnugu1f9bj75bmr7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fam_repo2",
+            "certificate_hash": "2973456b0e835fe0b3265ba1d59c2ce479ed71f1"
+          }
+        },
+        {
           "client_id": "946777965000-vgtvr6035ntd1ppkqlc04omoik8mmk5e.apps.googleusercontent.com",
           "client_type": 3
         }
